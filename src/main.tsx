@@ -1,9 +1,10 @@
 import { createRoot } from 'react-dom/client';
 import Router from './routes';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Global, ThemeProvider } from '@emotion/react';
+import { Global } from '@emotion/react';
 import { globalStyles } from './styles/globalStyles';
 import theme from './styles/theme';
+import { ThemeProvider } from '@mui/material';
 
 const queryClient = new QueryClient();
 

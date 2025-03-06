@@ -11,12 +11,12 @@
 		"paths": {
 			"@api/*": ["src/api/*"],
 			"@assets/*": ["src/assets/*"],
-			"components/*": ["src/components/*"],
-			"hooks/*": ["src/hooks/*"],
-			"routes/*": ["src/routes/*"],
-			"stores/*": ["src/stores/*"],
-			"styles/*": ["src/styles/*"],
-			"utils/*": ["src/utils/*"],
+			"@components/*": ["src/components/*"],
+			"@hooks/*": ["src/hooks/*"],
+			"@routes/*": ["src/routes/*"],
+			"@stores/*": ["src/stores/*"],
+			"@styles/*": ["src/styles/*"],
+			"@utils/*": ["src/utils/*"],
 		},
 		/* Bundler mode */
 		"moduleResolution": "bundler",

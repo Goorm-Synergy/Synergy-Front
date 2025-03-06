@@ -9,10 +9,10 @@ import { ThemeProvider } from '@mui/material';
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById('root')!).render(
-	<QueryClientProvider client={queryClient}>
-		<ThemeProvider theme={theme}>
-			<Global styles={globalStyles} />
-			<Router />
-		</ThemeProvider>
-	</QueryClientProvider>,
+  <QueryClientProvider client={queryClient}>
+    <ThemeProvider theme={theme}>
+      <Global styles={globalStyles} />
+      <Router />
+    </ThemeProvider>
+  </QueryClientProvider>,
 );

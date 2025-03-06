@@ -1,12 +1,12 @@
 import { Outlet, ScrollRestoration } from 'react-router-dom';
 
 const AdminLayout = () => {
-	return (
-		<>
-			<Outlet />
-			<ScrollRestoration />
-		</>
-	);
+  return (
+    <>
+      <Outlet />
+      <ScrollRestoration />
+    </>
+  );
 };
 
 export default AdminLayout;

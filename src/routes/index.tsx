@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import DefaultLayout from './layouts/Default';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
+import AdminLayout from './layouts/Admin';
 
 const router = createBrowserRouter([
 	{
@@ -10,6 +11,23 @@ const router = createBrowserRouter([
 			{
 				path: '/',
 				element: <Home />,
+			},
+			{
+				path: '/onboarding',
+				element: <div>OnBoardingPage</div>,
+			},
+			{
+				path: '*',
+				element: <NotFound />,
+			},
+		],
+	},
+	{
+		element: <AdminLayout />,
+		children: [
+			{
+				path: '/admin',
+				element: <div>AdminPage</div>,
 			},
 			{
 				path: '*',

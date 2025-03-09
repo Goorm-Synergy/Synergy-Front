@@ -7,6 +7,7 @@ import {
 } from '../../types/funnel/onboarding.type';
 import Interested from '@components/onboarding-process/Interested';
 import { css } from '@emotion/react';
+import Work from '@components/onboarding-process/Work';
 
 const OnBoarding = () => {
   const funnel = useFunnel<{
@@ -40,8 +41,13 @@ const OnBoarding = () => {
             }
           />
         )}
-        work={({ history }) => (
-          <Work onNext={(work) => history.push('info', { work })} />
+        work={({ context, history }) => (
+          <Work
+            interested_list={context.interested_list}
+            onNext={(work) =>
+              history.push('info', (prev) => ({ ...prev, work }))
+            }
+          />
         )}
         info={({ context }) => <Info {...context} />}
       />
@@ -50,21 +56,6 @@ const OnBoarding = () => {
 };
 
 export default OnBoarding;
-
-const Work = (props: { onNext: (work: Jobs) => void }) => {
-  return (
-    <div>
-      <h1>Work Step</h1>
-      <button
-        onClick={() =>
-          props.onNext({ parent: '', child: '', employeement_agree: true })
-        }
-      >
-        Next
-      </button>
-    </div>
-  );
-};
 
 const Info = ({ ...props }) => {
   return (

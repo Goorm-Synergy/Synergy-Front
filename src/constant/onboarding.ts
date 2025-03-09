@@ -35,3 +35,28 @@ export const jobs = [
     ],
   },
 ];
+
+export const hope_job = jobs.flatMap((job) => job.children);
+
+export const expreience_range = [
+  { value: 1, text: '신입' },
+  { value: 2, text: '1~3년차' },
+  { value: 3, text: '3~5년차' },
+  { value: 4, text: '5~7년차' },
+  { value: 5, text: '7~10년차' },
+  { value: 6, text: '10년차 이상' },
+];
+
+export const salary_range = [
+  { value: 1, text: '3000~5000 만원' },
+  { value: 2, text: '5000~7000 만원' },
+  { value: 3, text: '7000~10000 만원' },
+  { value: 4, text: '10000 만원 이상' },
+];
+
+export const company_type = [
+  { value: 1, text: '스타트업' },
+  { value: 2, text: '중소기업' },
+  { value: 3, text: '중견기업' },
+  { value: 4, text: '대기업' },
+];

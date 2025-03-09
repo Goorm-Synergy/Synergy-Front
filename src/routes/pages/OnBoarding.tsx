@@ -8,6 +8,7 @@ import {
 import Interested from '@components/onboarding-process/Interested';
 import { css } from '@emotion/react';
 import Work from '@components/onboarding-process/Work';
+import Info from '@components/onboarding-process/Info';
 
 const OnBoarding = () => {
   const funnel = useFunnel<{
@@ -30,7 +31,7 @@ const OnBoarding = () => {
         justify-content: center;
         align-items: center;
         height: 100%;
-        margin: auto 0px;
+        margin: auto 0;
       `}
     >
       <funnel.Render
@@ -56,12 +57,3 @@ const OnBoarding = () => {
 };
 
 export default OnBoarding;
-
-const Info = ({ ...props }) => {
-  return (
-    <div>
-      <h1>Info Step</h1>
-      <button onClick={() => console.log(props)}>submit</button>
-    </div>
-  );
-};

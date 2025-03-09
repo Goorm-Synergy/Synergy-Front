@@ -1,15 +1,36 @@
+import { useState } from 'react';
 import InputBox from '@components/InputBox';
 import SelectBox from '@components/SelectBox';
 import TextareaBox from '@components/TextareaBox';
 import { Button, css, Typography } from '@mui/material';
 import {
+  company_culture,
   company_type,
-  expreience_range,
+  conference_purpose,
+  experience_range,
   hope_job,
   salary_range,
 } from 'src/constant/onboarding';
+import { Infos } from 'src/types/funnel/onboarding.type';
 
-const Info = ({ ...props }) => {
+const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
+  const [info, setInfo] = useState<Infos>({
+    hope_job: '',
+    skills: '',
+    experience: '',
+    others_experience: '',
+    cover_letter: '',
+    location: '',
+    company: '',
+    culture: '',
+    purpose: '',
+    salary: '',
+  });
+
+  const handleChange = (key: keyof Infos, value: string | number) => {
+    setInfo((prev) => ({ ...prev, [key]: value }));
+  };
+
   return (
     <>
       <Typography
@@ -42,35 +63,37 @@ const Info = ({ ...props }) => {
       >
         {/* 희망 직무 선택 */}
         <SelectBox
-          id="hope_jop"
+          id="hope_job"
           label="희망 직무"
           items={hope_job}
-          value={''}
-          onChange={(value) => console.log(value)}
+          value={info.hope_job}
+          onChange={(value) => handleChange('hope_job', value)}
         />
 
         {/* 보유 기술 */}
         <InputBox
           label="보유 기술"
-          id="skiils"
+          id="skills"
           isRequired={true}
           placeholder="ex) java, aws ..."
+          onChange={(value) => handleChange('skills', value)}
         />
 
         {/* 경력 */}
         <SelectBox
           id="experience"
           label="경력"
-          items={expreience_range}
-          value={''}
-          onChange={(value) => console.log(value)}
+          items={experience_range}
+          value={info.experience}
+          onChange={(value) => handleChange('experience', value)}
         />
 
         {/* 경험 및 기타 정보 */}
         <InputBox
           label="경험 및 기타 정보"
-          id="extra_expreience"
+          id="others_experience"
           isRequired={false}
+          onChange={(value) => handleChange('others_experience', value)}
         />
 
         {/* 희망 연봉 */}
@@ -78,35 +101,57 @@ const Info = ({ ...props }) => {
           id="salary"
           label="희망 연봉"
           items={salary_range}
-          value={''}
-          onChange={(value) => console.log(value)}
+          value={info.salary ?? null}
+          onChange={(value) => handleChange('salary', value)}
         />
 
         {/* 희망 근무 지역 */}
-        <InputBox label="희망 근무 지역" id="location" isRequired={false} />
+        <InputBox
+          label="희망 근무 지역"
+          id="location"
+          isRequired={false}
+          onChange={(value) => handleChange('location', value)}
+        />
 
         {/* 직장 선택 요소 */}
         <SelectBox
           id="company"
           label="희망 회사 규모"
           items={company_type}
-          value={''}
-          onChange={(value) => console.log(value)}
+          value={info.company ?? null}
+          onChange={(value) => handleChange('company', value)}
         />
 
-        {/* 선호 하는 기업 문화 */}
-        <InputBox label="선호 하는 기업 문화" id="culture" isRequired={false} />
+        {/* 선호하는 기업 문화 */}
+        <SelectBox
+          id="culture"
+          label="선호하는 기업 문화"
+          items={company_culture}
+          value={info.culture ?? null}
+          onChange={(value) => handleChange('culture', value)}
+        />
 
         {/* 컨퍼런스 참여 목적 */}
-        <InputBox label="컨퍼런스 참여 목적" id="purpose" isRequired={false} />
+        <SelectBox
+          id="purpose"
+          label="컨퍼런스 참여 목적"
+          items={conference_purpose}
+          value={info.purpose ?? null}
+          onChange={(value) => handleChange('purpose', value)}
+        />
 
         {/* 자기소개서 */}
-        <TextareaBox label="자기소개서" id="purpose" isRequired={false} />
+        <TextareaBox
+          label="자기소개서"
+          id="cover_letter"
+          isRequired={false}
+          onChange={(value) => handleChange('cover_letter', value)}
+        />
       </div>
 
       {/* submit */}
       <Button
-        // onClick={handleButtonClick}
+        onClick={() => onSubmit(info)}
         sx={{
           width: '100%',
           backgroundColor: '#ddd',

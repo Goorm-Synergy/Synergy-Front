@@ -1,16 +1,21 @@
 export type Jobs = {
   parent: string;
   child: string;
-  employeement_agree: boolean;
+  employeement_agree: 'yes' | 'no' | null;
+  private_agree: boolean;
 };
 
-type Infos = {
+export type Infos = {
   hope_job: string;
-  skills: string[];
+  skills: string;
   experience: string;
-  others: string;
+  others_experience: string;
   cover_letter: string;
-  agree: boolean;
+  location?: string; // 추가 가능
+  company?: string; // 추가 가능
+  culture?: string; // 추가 가능
+  purpose?: string; // 추가 가능
+  salary?: string;
 };
 
 // 1. 아무것도 입력 안됨

@@ -7,18 +7,13 @@ import {
   css,
 } from '@mui/material';
 import { useState } from 'react';
+import { checkboxItems } from 'src/constant/onboarding';
 
-const items = [
-  { id: 'ai', label: 'AI' },
-  { id: 'machine-learning', label: '머신러닝' },
-  { id: 'design', label: '디자인' },
-  { id: 'big-data', label: '빅데이터' },
-  { id: 'frontend', label: '프론트엔드 개발' },
-  { id: 'backend', label: '백엔드 개발' },
-  { id: 'cloud', label: '클라우드 기술' },
-];
+interface Props {
+  onNext: (interested_list: string[]) => void;
+}
 
-const Interested = (props: { onNext: (interested_list: string[]) => void }) => {
+const Interested = (props: Props) => {
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
   const handleCheckboxChange = (id: string) => {
@@ -47,7 +42,7 @@ const Interested = (props: { onNext: (interested_list: string[]) => void }) => {
         row
         sx={{ columnGap: '20px', rowGap: '13px', maxWidth: '326px' }}
       >
-        {items.map((item) => (
+        {checkboxItems.map((item) => (
           <FormControlLabel
             key={item.id}
             control={

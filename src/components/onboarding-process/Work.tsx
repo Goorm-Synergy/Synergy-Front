@@ -14,44 +14,33 @@ import { Jobs } from 'src/types/funnel/onboarding.type';
 import { jobs } from 'src/constant/onboarding';
 import SelectBox from '@components/SelectBox';
 
+type ChildJob = {
+  value: string;
+  text: string;
+};
 interface Props {
-  interested_list: string[];
   onNext: (work: Jobs) => void;
 }
 
-const Work = ({ interested_list, onNext }: Props) => {
-  const [selectedParent, setSelectedParent] = useState<number | null>(null);
-  const [selectedChild, setSelectedChild] = useState<string | null>(null);
-  const [childOptions, setChildOptions] = useState<
-    { value: string; text: string }[]
-  >([]);
+const Work = ({ onNext }: Props) => {
+  const [work, setwork] = useState<Jobs>({
+    parent: '',
+    child: '',
+    employeement_agree: null,
+    private_agree: false,
+  });
 
-  const [agreeValue, setAgreeValue] = useState<string | null>(null);
-  const [privateAgree, setPrivateAgree] = useState<boolean>(false); // ✅ 개인정보 동의 상태 추가
+  const [childrenJobs, setChildrenJobs] = useState<ChildJob[]>([]);
 
-  // ✅ 선택된 직업 데이터 관리
-  const work: Jobs = {
-    parent: jobs.find((job) => job.value === selectedParent)?.text || '',
-    child: selectedChild || '',
-    employeement_agree: agreeValue === 'yes',
+  // 상태 변경 핸들러
+  const handleChange = <T extends keyof Jobs>(key: T, value: Jobs[T]) => {
+    setwork((prev) => ({ ...prev, [key]: value }));
   };
 
-  // ✅ 부모 직업 변경 핸들러
-  const handleParentChange = (value: number) => {
-    setSelectedParent(value);
-    setSelectedChild(null);
-    const selectedJob = jobs.find((job) => job.value === value);
-    setChildOptions(selectedJob ? selectedJob.children : []);
-  };
-
-  // ✅ 완료 버튼 클릭 시 처리 로직
-  const handleButtonClick = () => {
-    if (agreeValue === 'no' && privateAgree)
-      return alert(
-        `(${interested_list.join(',')}, ${work.parent}, ${work.child}, ${work.employeement_agree}) 데이터 post, 홈으로 이동`,
-      );
-
-    return onNext(work);
+  // 부모 직업 변경 핸들러
+  const handleParentChange = (value: string) => {
+    const children = jobs.find((job) => job.value === value)?.children;
+    setChildrenJobs(children ?? []);
   };
 
   return (
@@ -90,18 +79,21 @@ const Work = ({ interested_list, onNext }: Props) => {
           id="parent-job"
           label="직업"
           items={jobs}
-          value={selectedParent ?? ''}
-          onChange={(value) => handleParentChange(Number(value))}
+          value={work.parent ?? ''}
+          onChange={(value) => {
+            handleChange('parent', value.toString());
+            handleParentChange(value.toString());
+          }}
         />
 
         {/* 자식 직무 선택 */}
         <SelectBox
           id="child-job"
           label="직무"
-          items={childOptions}
-          value={selectedChild ?? ''}
-          onChange={(value) => setSelectedChild(value.toString())}
-          disabled={childOptions.length === 0}
+          items={childrenJobs}
+          value={work.child ?? ''}
+          onChange={(value) => handleChange('child', value.toString())}
+          disabled={childrenJobs.length === 0}
         />
 
         {/* 채용 희망 여부 선택 */}
@@ -109,8 +101,10 @@ const Work = ({ interested_list, onNext }: Props) => {
           <FormLabel>채용 희망 여부</FormLabel>
           <RadioGroup
             name="controlled-radio-buttons-group"
-            value={agreeValue}
-            onChange={(e) => setAgreeValue(e.target.value)}
+            value={work.employeement_agree}
+            onChange={(e) =>
+              handleChange('employeement_agree', e.target.value as 'yes' | 'no')
+            }
           >
             <FormControlLabel
               value="yes"
@@ -129,8 +123,8 @@ const Work = ({ interested_list, onNext }: Props) => {
         <FormControlLabel
           control={
             <Checkbox
-              checked={privateAgree}
-              onChange={(e) => setPrivateAgree(e.target.checked)}
+              checked={work.private_agree}
+              onChange={(e) => handleChange('private_agree', e.target.checked)}
               sx={{
                 '& .MuiSvgIcon-root': { fontSize: 20 },
                 fontSize: '13px',
@@ -143,7 +137,7 @@ const Work = ({ interested_list, onNext }: Props) => {
 
       {/* 버튼 클릭 시 조건에 따라 submit 또는 onNext 실행 */}
       <Button
-        onClick={handleButtonClick}
+        onClick={() => onNext(work)}
         sx={{
           width: '100%',
           backgroundColor: '#ddd',

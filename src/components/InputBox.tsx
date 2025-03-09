@@ -5,9 +5,10 @@ interface Props {
   id: string;
   isRequired: boolean;
   placeholder?: string;
+  onChange?: (value: string) => void;
 }
-const InputBox = (props: Props) => {
-  const { label, id, isRequired, placeholder } = props;
+
+const InputBox = ({ label, id, isRequired, placeholder, onChange }: Props) => {
   return (
     <FormControl
       required={isRequired}
@@ -18,7 +19,11 @@ const InputBox = (props: Props) => {
       `}
     >
       <InputLabel>{label}</InputLabel>
-      <Input id={id} placeholder={placeholder || ''} />
+      <Input
+        id={id}
+        placeholder={placeholder || ''}
+        onChange={(e) => onChange?.(e.target.value)}
+      />
     </FormControl>
   );
 };

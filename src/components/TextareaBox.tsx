@@ -5,11 +5,19 @@ interface Props {
   id: string;
   isRequired: boolean;
   placeholder?: string;
+  onChange?: (value: string) => void;
 }
-const TextareaBox = (props: Props) => {
-  const { label, id, isRequired } = props;
+
+const TextareaBox = ({ label, id, isRequired, onChange }: Props) => {
   return (
-    <TextField id={id} label={label} multiline rows={5} required={isRequired} />
+    <TextField
+      id={id}
+      label={label}
+      multiline
+      rows={5}
+      required={isRequired}
+      onChange={(e) => onChange?.(e.target.value)}
+    />
   );
 };
 

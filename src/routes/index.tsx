@@ -11,7 +11,6 @@ import FindIdPage from './pages/FindIdPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import OnBoarding from './pages/OnBoarding';
 import DefaultNavLayout from './layouts/DefaultNav';
-// import OnBoarding from './pages/OnBoarding';
 
 const router = createBrowserRouter([
   {
@@ -60,7 +59,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/onboarding',
-        element: <></>,
+        element: <OnBoarding />,
       },
       {
         path: '/session/:id',

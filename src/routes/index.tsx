@@ -3,19 +3,37 @@ import DefaultLayout from './layouts/Default';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import AdminLayout from './layouts/Admin';
-import OnBoarding from './pages/OnBoarding';
+import DefaultNavLayout from './layouts/DefaultNav';
+// import OnBoarding from './pages/OnBoarding';
 
 const router = createBrowserRouter([
   {
-    element: <DefaultLayout />,
+    element: <DefaultNavLayout />,
     children: [
       {
         path: '/',
         element: <Home />,
       },
       {
+        path: '/session',
+        element: <>session</>,
+      },
+      {
+        path: '/booth',
+        element: <>booth</>,
+      },
+    ],
+  },
+  {
+    element: <DefaultLayout />,
+    children: [
+      {
         path: '/onboarding',
-        element: <OnBoarding />,
+        element: <></>,
+      },
+      {
+        path: '/session/:id',
+        element: <>/session/:id</>,
       },
       {
         path: '*',

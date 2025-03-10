@@ -58,6 +58,7 @@ const CustomButton = styled(Button)`
   border-radius: 0;
   font-weight: 800;
   color: inherit;
+  background-color: inherit;
 `;
 
 const CustomLink = styled(NavLink)`

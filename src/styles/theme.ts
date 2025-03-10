@@ -30,6 +30,7 @@ const theme = createTheme({
     },
   },
   typography: {
+    fontFamily: 'Pretendard',
     fontSize: 16,
     h1: {
       fontSize: '42px',
@@ -46,7 +47,15 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: '8px',
-          borderColor: '#e5e7eb',
+          border: '2px solid #ddd',
+          backgroundColor: 'white',
+        },
+      },
+    },
+    MuiCheckbox: {
+      styleOverrides: {
+        root: {
+          fontFamily: 'Pretendard',
         },
       },
     },

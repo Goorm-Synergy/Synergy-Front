@@ -10,42 +10,60 @@ import SignupPage from './pages/SignupPage';
 import FindIdPage from './pages/FindIdPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import OnBoarding from './pages/OnBoarding';
+import DefaultNavLayout from './layouts/DefaultNav';
 
 const router = createBrowserRouter([
   {
-    element: <DefaultLayout />,
+    element: <DefaultNavLayout />,
     children: [
       {
         path: '/',
         element: <Home />,
       },
-	    {
-		    path: '/participant-login',
-		    element: <LoginPage />,
-	    },
-	    {
-		    path:'/rolesection',
-		    element: <RoleSelectionPage/>,
-	    },
       {
-          path: '/admin-login',
-          element: <AdminLoginPage/>,
+        path: '/participant-login',
+        element: <LoginPage />,
+      },
+      {
+        path: '/rolesection',
+        element: <RoleSelectionPage />,
+      },
+      {
+        path: '/admin-login',
+        element: <AdminLoginPage />,
       },
       {
         path: '/signup',
-        element: <SignupPage/>,
+        element: <SignupPage />,
       },
       {
         path: '/find-id',
-        element: <FindIdPage/>,
+        element: <FindIdPage />,
       },
       {
         path: '/reset-password',
-        element: <ResetPasswordPage/>,
+        element: <ResetPasswordPage />,
       },
+      {
+        path: '/session',
+        element: <>session</>,
+      },
+      {
+        path: '/booth',
+        element: <>booth</>,
+      },
+    ],
+  },
+  {
+    element: <DefaultLayout />,
+    children: [
       {
         path: '/onboarding',
         element: <OnBoarding />,
+      },
+      {
+        path: '/session/:id',
+        element: <>/session/:id</>,
       },
       {
         path: '*',

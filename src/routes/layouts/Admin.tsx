@@ -1,11 +1,14 @@
 import { Outlet, ScrollRestoration } from 'react-router-dom';
 import { css, useTheme } from '@mui/material';
 
+import Header from '@components/AdminHeader';
 const AdminLayout = () => {
   const { palette } = useTheme();
   return (
     <div
       css={css`
+        display: flex;
+        flex-direction: column;
         min-height: 100vh;
         min-height: 100svh;
         max-width: 600px;
@@ -16,6 +19,7 @@ const AdminLayout = () => {
         background-color: ${palette.background.primary};
       `}
     >
+      <Header />
       <Outlet />
       <ScrollRestoration />
     </div>

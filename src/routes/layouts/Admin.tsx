@@ -1,7 +1,13 @@
 import { Outlet, ScrollRestoration } from 'react-router-dom';
-import { css, useTheme } from '@mui/material';
-
+import { css, useTheme, Box } from '@mui/material';
 import Header from '@components/AdminHeader';
+import UserCounts from '@components/AdminPage/UserCount';
+import SessionParticipation from '@components/AdminPage/SessionParticipation';
+import BoothParticipation from '@components/AdminPage/BoothParticipation';
+import GradeRankingCard from '@components/AdminPage/GradeRankingCard';
+import PointRankingCard from '@components/AdminPage/PointRankingCard';
+import ConferenceRegistration from '@components/AdminPage/RegButtons';
+
 const AdminLayout = () => {
   const { palette } = useTheme();
   return (
@@ -20,6 +26,20 @@ const AdminLayout = () => {
       `}
     >
       <Header />
+      <UserCounts />
+      <SessionParticipation />
+      <BoothParticipation />
+      <Box
+        css={css`
+          display: flex;
+          justify-content: space-between; 
+          gap: 1rem; 
+        `}
+      >
+        <GradeRankingCard />
+        <PointRankingCard />
+      </Box>
+      <ConferenceRegistration />
       <Outlet />
       <ScrollRestoration />
     </div>

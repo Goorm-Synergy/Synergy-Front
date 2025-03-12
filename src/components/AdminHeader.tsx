@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AppBar, Toolbar, Typography, Box } from '@mui/material';
-import { css, useTheme } from '@mui/material'; // 여기를 수정했습니다
+import { css, useTheme } from '@mui/material';
 
 const Header = () => {
   const theme = useTheme();

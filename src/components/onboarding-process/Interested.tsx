@@ -26,7 +26,14 @@ const Interested = (props: Props) => {
   };
 
   return (
-    <>
+    <div
+      css={css`
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 100%;
+      `}
+    >
       <Typography
         variant="h2"
         css={css`
@@ -88,6 +95,8 @@ const Interested = (props: Props) => {
       <Button
         onClick={() => props.onNext(selectedItems)}
         css={css`
+          position: sticky;
+          bottom: 0;
           ${typo.sub.l}
           color: ${palette.text.primary};
           background-color: ${palette.background.quinary};
@@ -100,7 +109,7 @@ const Interested = (props: Props) => {
       >
         완료
       </Button>
-    </>
+    </div>
   );
 };
 

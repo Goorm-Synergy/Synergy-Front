@@ -26,6 +26,7 @@ interface Props {
 
 const Work = ({ onNext }: Props) => {
   const { palette, typo, radius } = useTheme();
+
   const [work, setwork] = useState<Jobs>({
     parent: '',
     child: '',
@@ -47,7 +48,15 @@ const Work = ({ onNext }: Props) => {
   };
 
   return (
-    <>
+    <div
+      css={css`
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 100%;
+        margin-top: 38px;
+      `}
+    >
       <Typography
         variant="h2"
         css={css`
@@ -197,6 +206,8 @@ const Work = ({ onNext }: Props) => {
       <Button
         onClick={() => onNext(work)}
         css={css`
+          position: sticky;
+          bottom: 0;
           ${typo.sub.l}
           color: ${palette.text.primary};
           background-color: ${palette.background.quinary};
@@ -209,7 +220,7 @@ const Work = ({ onNext }: Props) => {
       >
         완료
       </Button>
-    </>
+    </div>
   );
 };
 

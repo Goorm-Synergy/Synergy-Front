@@ -5,7 +5,7 @@ import {
   SelectWork,
 } from '../../types/funnel/onboarding.type';
 import Interested from '@components/onboarding-process/Interested';
-import { css } from '@mui/material';
+import { css, useTheme } from '@mui/material';
 import Work from '@components/onboarding-process/Work';
 import Info from '@components/onboarding-process/Info';
 import {
@@ -15,8 +15,11 @@ import {
 } from '@utils/schemas/onboarding-schema';
 import { useState } from 'react';
 import ErrorPopover from '@components/ErrorPopover';
+import DefaultHeader from '@components/headers/DefaultHeader';
+import BackHeader from '@components/headers/BackHeader';
 
 const OnBoarding = () => {
+  const { palette } = useTheme();
   const funnel = useFunnel<{
     interested: SelectInterested;
     work: SelectWork;
@@ -36,89 +39,100 @@ const OnBoarding = () => {
     setTimeout(() => setError(newError), 50);
   };
 
-  console.log(error);
-
   return (
-    <div
-      css={css`
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        height: 100%;
-        margin: auto 0;
-      `}
-    >
-      <funnel.Render
-        interested={({ history }) => (
-          <Interested
-            onNext={(interested_list) => {
-              const result = InterestedSchema.safeParse({ interested_list });
+    <>
+      {funnel.step === 'info' ? (
+        <BackHeader
+          backgroundColor={palette.background.tertiary}
+          onClick={() => funnel.history.back()}
+        />
+      ) : (
+        <DefaultHeader backgroundColor={palette.background.tertiary} />
+      )}
 
-              if (!result.success)
-                return handleSetError(
-                  result.error.format().interested_list?._errors[0] || '',
-                );
+      <div
+        css={css`
+          flex: 1;
+          height: 100%;
+          padding: 60px 16px 16px;
+          overflow-y: auto;
+          &::-webkit-scrollbar {
+            display: none;
+          }
+        `}
+      >
+        <funnel.Render
+          interested={({ history }) => (
+            <Interested
+              onNext={(interested_list) => {
+                const result = InterestedSchema.safeParse({ interested_list });
 
-              setError(null);
-              history.push('work', { interested_list });
-            }}
-          />
-        )}
-        work={({ context, history }) => (
-          <Work
-            onNext={(work) => {
-              const result = WorkSchema.safeParse({
-                interested_list: context.interested_list,
-                work,
-              });
+                if (!result.success)
+                  return handleSetError(
+                    result.error.format().interested_list?._errors[0] || '',
+                  );
 
-              if (!result.success) {
-                const workErrors = result.error.format().work;
-                const firstError =
-                  workErrors?._errors?.[0] ||
-                  workErrors?.parent?._errors?.[0] ||
-                  workErrors?.child?._errors?.[0] ||
-                  workErrors?.employeement_agree?._errors?.[0] ||
-                  workErrors?.private_agree?._errors?.[0] ||
-                  '알 수 없는 오류가 발생했습니다.';
+                setError(null);
+                history.push('work', { interested_list });
+              }}
+            />
+          )}
+          work={({ context, history }) => (
+            <Work
+              onNext={(work) => {
+                const result = WorkSchema.safeParse({
+                  interested_list: context.interested_list,
+                  work,
+                });
 
-                return handleSetError(firstError);
-              }
+                if (!result.success) {
+                  const workErrors = result.error.format().work;
+                  const firstError =
+                    workErrors?._errors?.[0] ||
+                    workErrors?.parent?._errors?.[0] ||
+                    workErrors?.child?._errors?.[0] ||
+                    workErrors?.employeement_agree?._errors?.[0] ||
+                    workErrors?.private_agree?._errors?.[0] ||
+                    '알 수 없는 오류가 발생했습니다.';
 
-              setError(null);
+                  return handleSetError(firstError);
+                }
 
-              if (work.employeement_agree === 'yes')
-                return history.push('info', (prev) => ({ ...prev, work }));
+                setError(null);
 
-              console.log(context.interested_list, work);
-            }}
-          />
-        )}
-        info={({ context }) => (
-          <Info
-            {...context}
-            onSubmit={(info) => {
-              const result = MoreInfoSchema.safeParse({
-                interested_list: context.interested_list,
-                work: context.work,
-                info,
-              });
+                if (work.employeement_agree === 'yes')
+                  return history.push('info', (prev) => ({ ...prev, work }));
 
-              if (!result.success) {
-                handleSetError(result.error.errors[0].message);
-                return;
-              }
+                console.log(context.interested_list, work);
+              }}
+            />
+          )}
+          info={({ context }) => (
+            <Info
+              {...context}
+              onSubmit={(info) => {
+                const result = MoreInfoSchema.safeParse({
+                  interested_list: context.interested_list,
+                  work: context.work,
+                  info,
+                });
 
-              setError(null);
-              console.log('최종 데이터:', { ...context, info }); // 최종 데이터 확인
-            }}
-          />
-        )}
-      />
+                if (!result.success) {
+                  handleSetError(result.error.errors[0].message);
+                  return;
+                }
 
-      {/* 에러 메시지 UI */}
-      <ErrorPopover error={error} />
-    </div>
+                setError(null);
+                console.log('최종 데이터:', { ...context, info }); // 최종 데이터 확인
+              }}
+            />
+          )}
+        />
+
+        {/* 에러 메시지 UI */}
+        <ErrorPopover error={error} />
+      </div>
+    </>
   );
 };
 

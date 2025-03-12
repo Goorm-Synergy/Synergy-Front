@@ -10,12 +10,16 @@ export default function DefaultLayout() {
   return (
     <div
       css={css`
+        position: fixed;
+        left: 50%;
+        transform: translateX(-50%);
         display: flex;
         flex-direction: column;
-        min-height: 100%;
         max-width: 600px;
+        min-width: 375px;
+        width: 100%;
+        height: 100%;
         margin: 0 auto;
-        padding: 1rem;
         box-shadow: 0 0 20px #0000000d;
         background-color: ${isOnboarding
           ? palette.background.tertiary

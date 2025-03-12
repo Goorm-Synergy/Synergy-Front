@@ -42,7 +42,11 @@ const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
   };
 
   return (
-    <>
+    <div
+      css={css`
+        margin-top: 20px;
+      `}
+    >
       <div
         css={css`
           display: flex;
@@ -185,6 +189,8 @@ const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
       <Button
         onClick={() => onSubmit(info)}
         css={css`
+          position: sticky;
+          bottom: 0;
           ${typo.sub.l}
           color: ${palette.text.primary};
           background-color: ${palette.background.quinary};
@@ -197,7 +203,7 @@ const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
       >
         완료
       </Button>
-    </>
+    </div>
   );
 };
 

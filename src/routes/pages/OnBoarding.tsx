@@ -5,7 +5,7 @@ import {
   SelectWork,
 } from '../../types/funnel/onboarding.type';
 import Interested from '@components/onboarding-process/Interested';
-import { css, useTheme } from '@mui/material';
+import { css } from '@mui/material';
 import Work from '@components/onboarding-process/Work';
 import Info from '@components/onboarding-process/Info';
 import {

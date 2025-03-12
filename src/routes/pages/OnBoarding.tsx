@@ -5,7 +5,7 @@ import {
   SelectWork,
 } from '../../types/funnel/onboarding.type';
 import Interested from '@components/onboarding-process/Interested';
-import { css } from '@emotion/react';
+import { css } from '@mui/material';
 import Work from '@components/onboarding-process/Work';
 import Info from '@components/onboarding-process/Info';
 import {
@@ -44,7 +44,6 @@ const OnBoarding = () => {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        align-items: center;
         height: 100%;
         margin: auto 0;
       `}

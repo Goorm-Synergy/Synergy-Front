@@ -21,6 +21,7 @@ const theme = createTheme({
       secondary: color.gray200,
       tertiary: color.gray300,
       quaternary: color.gray500,
+      quinary: color.gray100,
       inverse: color.gray100,
       interactive: color.blue300,
     },
@@ -43,6 +44,12 @@ const theme = createTheme({
       opa100: color.gray500a,
       opa200: color.gray700a,
     },
+    icon: {
+      primary: color.gray600,
+      secondary: color.gray800,
+      tertiary: color.gray900,
+      inverse: color.gray0,
+    },
   },
   radius,
   typo: typography,
@@ -64,6 +71,28 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           fontFamily: typography.fontFamily.Pretendard,
+        },
+      },
+    },
+    MuiSelect: {
+      styleOverrides: {
+        root: {
+          fontFamily: typography.fontFamily.Pretendard,
+        },
+      },
+    },
+    MuiList: {
+      styleOverrides: {
+        root: {
+          backgroundColor: color.gray400,
+        },
+      },
+    },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          fontFamily: typography.fontFamily.Pretendard,
+          backgroundColor: color.gray400,
         },
       },
     },

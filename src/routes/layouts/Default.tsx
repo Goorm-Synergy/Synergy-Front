@@ -1,8 +1,11 @@
-import { Outlet, ScrollRestoration } from 'react-router-dom';
+import { Outlet, ScrollRestoration, useLocation } from 'react-router-dom';
 import { css, useTheme } from '@mui/material';
 
 export default function DefaultLayout() {
   const { palette } = useTheme();
+  const location = useLocation();
+
+  const isOnboarding = location.pathname === '/onboarding';
 
   return (
     <div
@@ -14,7 +17,9 @@ export default function DefaultLayout() {
         margin: 0 auto;
         padding: 1rem;
         box-shadow: 0 0 20px #0000000d;
-        background-color: ${palette.background.primary};
+        background-color: ${isOnboarding
+          ? palette.background.tertiary
+          : palette.background.primary};
       `}
     >
       <Outlet />

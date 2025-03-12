@@ -24,6 +24,7 @@ declare module '@mui/material/styles' {
     secondary: string;
     tertiary: string;
     quaternary: string;
+    quinary: string;
     inverse: string;
     interactive: string;
   }
@@ -52,11 +53,20 @@ declare module '@mui/material/styles' {
     opa100: string;
     opa200: string;
   }
+
+  interface TypeIcon {
+    primary: string;
+    secondary: string;
+    tertiary: string;
+    inverse: string;
+  }
+
   interface Palette {
     name: TypeName;
     border: TypeBorder;
     divider_custom: TypeDividerCustom;
     opacity: TypeOpacity;
+    icon: TypeIcon;
   }
 
   interface PaletteOptions {
@@ -64,5 +74,6 @@ declare module '@mui/material/styles' {
     border?: TypeBorder;
     divider_custom?: TypeDividerCustom;
     opacity?: TypeOpacity;
+    icon?: TypeIcon;
   }
 }

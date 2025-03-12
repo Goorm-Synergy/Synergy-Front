@@ -3,16 +3,18 @@ import {
   Checkbox,
   FormControl,
   FormControlLabel,
-  FormLabel,
   Radio,
   RadioGroup,
   Typography,
   css,
+  useTheme,
 } from '@mui/material';
 import { useState } from 'react';
 import { Jobs } from 'src/types/funnel/onboarding.type';
 import { jobs } from 'src/constant/onboarding';
 import SelectBox from '@components/SelectBox';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
 type ChildJob = {
   value: string;
@@ -23,6 +25,7 @@ interface Props {
 }
 
 const Work = ({ onNext }: Props) => {
+  const { palette, typo, radius } = useTheme();
   const [work, setwork] = useState<Jobs>({
     parent: '',
     child: '',
@@ -46,24 +49,25 @@ const Work = ({ onNext }: Props) => {
   return (
     <>
       <Typography
-        variant="h1"
+        variant="h2"
         css={css`
-          font-size: 28px;
+          ${typo.title.l};
+          color: ${palette.text.primary};
         `}
       >
         현재 어떤 일을 하고 계신가요?
       </Typography>
 
       <Typography
-        variant="inherit"
+        variant="body1"
         css={css`
-          font-size: 17px;
-          margin: 17px 0px 47px;
+          ${typo.body.l};
+          color: ${palette.text.secondary};
+          line-height: 130%;
+          margin: 12px 0px 36px;
         `}
-        color="#717171"
       >
         채용을 희망할 경우 알려주세요! <br />
-        <br />
         관련 혜택을 제공해 드립니다.
       </Typography>
 
@@ -84,6 +88,8 @@ const Work = ({ onNext }: Props) => {
             handleChange('parent', value.toString());
             handleParentChange(value.toString());
           }}
+          isRequired
+          placeholder="현재 직업을 선택해주세요."
         />
 
         {/* 자식 직무 선택 */}
@@ -94,11 +100,20 @@ const Work = ({ onNext }: Props) => {
           value={work.child ?? ''}
           onChange={(value) => handleChange('child', value.toString())}
           disabled={childrenJobs.length === 0}
+          isRequired
+          placeholder="현재 직무를 선택해주세요."
         />
 
         {/* 채용 희망 여부 선택 */}
         <FormControl>
-          <FormLabel>채용 희망 여부</FormLabel>
+          <span
+            css={css`
+              ${typo.sub.m}
+              color: ${palette.text.primary};
+            `}
+          >
+            채용 희망 여부 *
+          </span>
           <RadioGroup
             name="controlled-radio-buttons-group"
             value={work.employeement_agree}
@@ -108,13 +123,40 @@ const Work = ({ onNext }: Props) => {
           >
             <FormControlLabel
               value="yes"
-              control={<Radio size="small" />}
+              control={
+                <Radio
+                  size="small"
+                  sx={{
+                    color: palette.icon.primary,
+                    '&.Mui-checked': {
+                      color: palette.icon.secondary,
+                    },
+                  }}
+                />
+              }
               label="예"
+              css={css`
+                color: ${palette.text.primary};
+              `}
             />
             <FormControlLabel
               value="no"
-              control={<Radio size="small" />}
+              control={
+                <Radio
+                  size="small"
+                  sx={{
+                    color: palette.icon.primary,
+                    '&.Mui-checked': {
+                      color: palette.icon.secondary,
+                    },
+                  }}
+                />
+              }
               label="아니오"
+              css={css`
+                ${typo.body.l}
+                color: ${palette.text.primary};
+              `}
             />
           </RadioGroup>
         </FormControl>
@@ -123,26 +165,47 @@ const Work = ({ onNext }: Props) => {
         <FormControlLabel
           control={
             <Checkbox
+              icon={<CheckCircleOutlineIcon />}
+              checkedIcon={<CheckCircleIcon />}
               checked={work.private_agree}
               onChange={(e) => handleChange('private_agree', e.target.checked)}
               sx={{
-                '& .MuiSvgIcon-root': { fontSize: 20 },
-                fontSize: '13px',
+                color: palette.icon.primary,
+                '& .MuiSvgIcon-root': { fontSize: 16 },
+                '&.Mui-checked': {
+                  color: palette.icon.primary,
+                },
+                fontSize: '20px',
               }}
             />
           }
-          label="개인 정보 수집에 동의합니다."
+          label={
+            <Typography
+              variant="body1"
+              css={css`
+                ${typo.body.m}
+                color: ${palette.text.secondary};
+              `}
+            >
+              개인 정보 수집에 동의합니다.
+            </Typography>
+          }
         />
       </div>
 
       {/* 버튼 클릭 시 조건에 따라 submit 또는 onNext 실행 */}
       <Button
         onClick={() => onNext(work)}
-        sx={{
-          width: '100%',
-          backgroundColor: '#ddd',
-          marginTop: '50px',
-        }}
+        css={css`
+          ${typo.sub.l}
+          color: ${palette.text.primary};
+          background-color: ${palette.background.quinary};
+          border: none;
+          width: 100%;
+          margin-top: 20px;
+          border-radius: ${radius.md};
+          height: 50px;
+        `}
       >
         완료
       </Button>

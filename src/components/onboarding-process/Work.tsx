@@ -9,42 +9,24 @@ import {
   css,
   useTheme,
 } from '@mui/material';
-import { useState } from 'react';
 import { Jobs } from 'src/types/funnel/onboarding.type';
 import { jobs } from 'src/constant/onboarding';
 import SelectBox from '@components/SelectBox';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import { useFormStore } from '@stores/client/useFormStore';
 
-type ChildJob = {
-  value: string;
-  text: string;
-};
 interface Props {
   onNext: (work: Jobs) => void;
 }
 
 const Work = ({ onNext }: Props) => {
   const { palette, typo, radius } = useTheme();
-
-  const [work, setwork] = useState<Jobs>({
-    parent: '',
-    child: '',
-    employeement_agree: null,
-    private_agree: false,
-  });
-
-  const [childrenJobs, setChildrenJobs] = useState<ChildJob[]>([]);
+  const { form, setForm } = useFormStore();
 
   // 상태 변경 핸들러
   const handleChange = <T extends keyof Jobs>(key: T, value: Jobs[T]) => {
-    setwork((prev) => ({ ...prev, [key]: value }));
-  };
-
-  // 부모 직업 변경 핸들러
-  const handleParentChange = (value: string) => {
-    const children = jobs.find((job) => job.value === value)?.children;
-    setChildrenJobs(children ?? []);
+    setForm(key, value);
   };
 
   return (
@@ -92,10 +74,10 @@ const Work = ({ onNext }: Props) => {
           id="parent-job"
           label="직업"
           items={jobs}
-          value={work.parent ?? ''}
+          value={form.parent || ''}
           onChange={(value) => {
             handleChange('parent', value.toString());
-            handleParentChange(value.toString());
+            handleChange('child', '');
           }}
           isRequired
           placeholder="현재 직업을 선택해주세요."
@@ -105,10 +87,12 @@ const Work = ({ onNext }: Props) => {
         <SelectBox
           id="child-job"
           label="직무"
-          items={childrenJobs}
-          value={work.child ?? ''}
+          items={
+            jobs.find((parent) => parent.value === form.parent)?.children || []
+          }
+          value={form.child ?? ''}
           onChange={(value) => handleChange('child', value.toString())}
-          disabled={childrenJobs.length === 0}
+          disabled={!form.parent}
           isRequired
           placeholder="현재 직무를 선택해주세요."
         />
@@ -125,7 +109,7 @@ const Work = ({ onNext }: Props) => {
           </span>
           <RadioGroup
             name="controlled-radio-buttons-group"
-            value={work.employeement_agree}
+            value={form.employeement_agree || null}
             onChange={(e) =>
               handleChange('employeement_agree', e.target.value as 'yes' | 'no')
             }
@@ -176,7 +160,7 @@ const Work = ({ onNext }: Props) => {
             <Checkbox
               icon={<CheckCircleOutlineIcon />}
               checkedIcon={<CheckCircleIcon />}
-              checked={work.private_agree}
+              checked={form.private_agree || false}
               onChange={(e) => handleChange('private_agree', e.target.checked)}
               sx={{
                 color: palette.icon.primary,
@@ -204,7 +188,14 @@ const Work = ({ onNext }: Props) => {
 
       {/* 버튼 클릭 시 조건에 따라 submit 또는 onNext 실행 */}
       <Button
-        onClick={() => onNext(work)}
+        onClick={() =>
+          onNext({
+            parent: form.parent,
+            child: form.child,
+            employeement_agree: form.employeement_agree,
+            private_agree: form.private_agree,
+          })
+        }
         css={css`
           position: sticky;
           bottom: 0;

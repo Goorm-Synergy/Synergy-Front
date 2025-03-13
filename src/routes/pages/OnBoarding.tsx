@@ -17,6 +17,7 @@ import { useState } from 'react';
 import ErrorPopover from '@components/ErrorPopover';
 import DefaultHeader from '@components/headers/DefaultHeader';
 import BackHeader from '@components/headers/BackHeader';
+import { useFormStore } from '@stores/client/useFormStore';
 
 const OnBoarding = () => {
   const { palette } = useTheme();
@@ -32,12 +33,16 @@ const OnBoarding = () => {
     },
   });
 
+  console.log(funnel.context);
+
   const [error, setError] = useState<string | null>(null);
 
   const handleSetError = (newError: string) => {
     setError('');
     setTimeout(() => setError(newError), 50);
   };
+
+  const { setForm, initForm } = useFormStore();
 
   return (
     <>
@@ -73,6 +78,7 @@ const OnBoarding = () => {
                   );
 
                 setError(null);
+                setForm('interested_list', interested_list);
                 history.push('work', { interested_list });
               }}
             />
@@ -99,10 +105,13 @@ const OnBoarding = () => {
                 }
 
                 setError(null);
+                setForm('work', work);
 
                 if (work.employeement_agree === 'yes')
                   return history.push('info', (prev) => ({ ...prev, work }));
 
+                // TODO: initform, API 요청
+                initForm();
                 console.log(context.interested_list, work);
               }}
             />
@@ -123,7 +132,11 @@ const OnBoarding = () => {
                 }
 
                 setError(null);
+                setForm('info', info);
+
                 console.log('최종 데이터:', { ...context, info }); // 최종 데이터 확인
+                // TODO: initForm, API 요청
+                initForm();
               }}
             />
           )}

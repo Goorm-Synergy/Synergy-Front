@@ -9,7 +9,6 @@ import {
   css,
   useTheme,
 } from '@mui/material';
-import { useState } from 'react';
 import { Jobs } from 'src/types/funnel/onboarding.type';
 import { jobs } from 'src/constant/onboarding';
 import SelectBox from '@components/SelectBox';
@@ -17,10 +16,6 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { useFormStore } from '@stores/client/useFormStore';
 
-type ChildJob = {
-  value: string;
-  text: string;
-};
 interface Props {
   onNext: (work: Jobs) => void;
 }
@@ -33,8 +28,6 @@ const Work = ({ onNext }: Props) => {
   const handleChange = <T extends keyof Jobs>(key: T, value: Jobs[T]) => {
     setForm(key, value);
   };
-
-  console.log(form.parent);
 
   return (
     <div

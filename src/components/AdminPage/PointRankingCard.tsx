@@ -2,10 +2,16 @@ import { Box, Typography, Paper } from '@mui/material';
 import { css, useTheme } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
-const PointRankingCard = () => {
+const GradeRankingCard = () => {
     const { palette, typography, radius } = useTheme();
     return (
-        <Box>
+        <Box
+            css={css`
+                width: 100%;
+                max-width: 300px;
+                margin: 0 auto;
+            `}
+        >
             <Typography
                 variant="subtitle1"
                 css={css`
@@ -25,8 +31,8 @@ const PointRankingCard = () => {
                     border-radius: ${radius.sm}px;
                     padding: 16px;
                     text-align: center;
-                    width: 274px;
-                    height: 294px;
+                    width: 100%;
+                    aspect-ratio: 1 / 1;
                     display: flex;
                     flex-direction: column;
                     justify-content: center;
@@ -56,4 +62,4 @@ const PointRankingCard = () => {
     );
 };
 
-export default PointRankingCard;
+export default GradeRankingCard;

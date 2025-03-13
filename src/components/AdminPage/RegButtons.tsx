@@ -99,6 +99,7 @@ const ConferenceRegistration = () => {
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        disableEnforceFocus
       >
         <ConferenceModal onClose={handleClose} onRegister={handleModalRegister} />
       </Modal>

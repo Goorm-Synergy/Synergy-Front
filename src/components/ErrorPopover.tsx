@@ -27,7 +27,7 @@ const ErrorPopover = ({ error }: { error: string | null }) => {
       key={key} // key를 변경하여 UI 리렌더링 유도
       css={css`
         position: fixed;
-        top: 20px;
+        bottom: 100px;
         left: 50%;
         transform: translateX(-50%);
         display: flex;

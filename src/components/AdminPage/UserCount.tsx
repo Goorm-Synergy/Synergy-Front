@@ -5,7 +5,7 @@ import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 
 const UserCount = ({ title, count }: { title: string; count?: number | string }) => {
     const theme = useTheme();
-    
+
     return (
         <Paper
             css={css`
@@ -17,8 +17,8 @@ const UserCount = ({ title, count }: { title: string; count?: number | string })
                 background-color: transparent;
                 border: 1px solid ${theme.palette.border.primary};
                 overflow: hidden;
-                width: 260px;
-                height: 50px;
+                width: 100%;
+                height: 60px;
             `}
         >
             <Box
@@ -45,6 +45,7 @@ const UserCount = ({ title, count }: { title: string; count?: number | string })
                         font-weight: 400;
                         line-height: normal;
                         overflow: hidden;
+                        white-space: nowrap;
                     `}
                 >
                     {title}
@@ -70,10 +71,10 @@ const UserCount = ({ title, count }: { title: string; count?: number | string })
 
 const UserCounts = () => {
     const [counts, setCounts] = useState<{
-        sessionCount: number | undefined;
-        boothCount: number | undefined;
-        eventCount: number | undefined;
-        serviceCount: number | undefined;
+        sessionCount?: number;
+        boothCount?: number;
+        eventCount?: number;
+        serviceCount?: number;
     }>({
         sessionCount: undefined,
         boothCount: undefined,
@@ -99,11 +100,12 @@ const UserCounts = () => {
 
     return (
         <Box
-            display="grid"
-            gridTemplateColumns="repeat(2, auto)"
-            gap="12px 41px"
-            padding={2}
-            justifyContent="center"
+            css={css`
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+                padding: 5px;
+            `}
         >
             <UserCount title="세션 참여자 수" count={counts.sessionCount} />
             <UserCount title="부스 참여자 수" count={counts.boothCount} />

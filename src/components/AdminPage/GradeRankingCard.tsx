@@ -5,7 +5,13 @@ import AddIcon from '@mui/icons-material/Add';
 const GradeRankingCard = () => {
     const { palette, typography, radius } = useTheme();
     return (
-        <Box>
+        <Box
+            css={css`
+                width: 100%;
+                max-width: 300px; // 최대 너비 설정
+                margin: 0 auto; // 중앙 정렬
+            `}
+        >
             <Typography
                 variant="subtitle1"
                 css={css`
@@ -25,8 +31,8 @@ const GradeRankingCard = () => {
                     border-radius: ${radius.sm}px;
                     padding: 16px;
                     text-align: center;
-                    width: 274px;
-                    height: 294px;
+                    width: 100%; // 부모 요소의 너비에 맞춤
+                    aspect-ratio: 1 / 1; // 정사각형 비율 유지
                     display: flex;
                     flex-direction: column;
                     justify-content: center;

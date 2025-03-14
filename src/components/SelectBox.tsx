@@ -52,23 +52,25 @@ const SelectBox = ({
         renderValue={(v) => (v ? value : placeholder)}
         onChange={(e) => onChange(e.target.value)}
         css={css`
-          padding-left: 10px;
-          border-radius: ${radius.sm};
-          border: 1px solid ${palette.border.secondary};
           color: ${palette.text.tertiary};
+          border-radius: ${radius.sm};
           background-color: ${palette.background.quaternary};
+          fieldset {
+            border: 1px solid ${palette.border.secondary};
+            padding: 0;
+          }
+          .MuiSelect-select {
+            padding: 15px 20px;
+          }
+          .MuiSvgIcon-root {
+            fill: ${palette.icon.primary} !important;
+          }
         `}
-        sx={{
-          '.MuiSvgIcon-root ': {
-            fill: 'white !important',
-          },
-        }}
         IconComponent={(props) => (
           <KeyboardArrowDownIcon
             css={css`
-              margin-right: 15px;
+              margin-right: 6px;
             `}
-            color={palette.icon.primary}
             {...props}
           />
         )}

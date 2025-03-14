@@ -11,14 +11,15 @@ import FindIdPage from './pages/FindIdPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import OnBoarding from './pages/OnBoarding';
 import DefaultNavLayout from './layouts/DefaultNav';
+import Mypage from './pages/Mypage';
 
 const router = createBrowserRouter([
   {
     element: <DefaultNavLayout />,
     children: [
       {
-        path: '/',
-        element: <Home />,
+        path: '/mypage',
+        element: <Mypage />,
       },
       {
         path: '/session',
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
   {
     element: <DefaultLayout />,
     children: [
+      {
+        path: '/',
+        element: <Home />,
+      },
       {
         path: '/participant-login',
         element: <LoginPage />,

@@ -49,7 +49,9 @@ const SelectBox = ({
         labelId={`${id}-label`}
         id={id}
         value={value}
-        renderValue={(v) => (v ? value : placeholder)}
+        renderValue={(v) =>
+          v ? items.find((item) => item.value === v)?.text : placeholder
+        }
         onChange={(e) => onChange(e.target.value)}
         css={css`
           color: ${palette.text.tertiary};

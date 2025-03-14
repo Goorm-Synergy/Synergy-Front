@@ -15,6 +15,7 @@ import {
   salary_range,
 } from 'src/constant/onboarding';
 import { Infos } from 'src/types/funnel/onboarding.type';
+import FileInputBox from '@components/FileInputBox';
 
 const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
   const { palette, typo, radius } = useTheme();
@@ -27,9 +28,9 @@ const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
     skills: '',
     experience: '',
     hope_location: '',
-    profile_img: '',
     cover_letter: '',
     // 선택 속성
+    profile_img: null,
     others_experience: '',
     salary: '',
     company: '',
@@ -37,7 +38,7 @@ const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
     purpose: '',
   });
 
-  const handleChange = (key: keyof Infos, value: string) => {
+  const handleChange = (key: keyof Infos, value: any) => {
     setInfo((prev) => ({ ...prev, [key]: value }));
   };
 
@@ -119,15 +120,6 @@ const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
           placeholder="희망하는 근무 지역을 선택해주세요."
         />
 
-        {/* 경험 및 기타 정보 */}
-        <InputBox
-          id="profile_img"
-          label="증명사진"
-          isRequired
-          onChange={(value) => handleChange('profile_img', value)}
-          placeholder="JPG, PNG 파일 업로드"
-        />
-
         {/* 자기소개서 */}
         <TextareaBox
           id="cover_letter"
@@ -136,6 +128,14 @@ const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
           onChange={(value) => handleChange('cover_letter', value)}
           placeholder="자기소개를 400자 이내로 작성해주세요."
           max_length={400}
+        />
+
+        {/* 증명 사진 */}
+        <FileInputBox
+          id="profile_img"
+          label="증명사진"
+          onChange={(value) => handleChange('profile_img', value)}
+          placeholder="JPG, PNG 파일 업로드"
         />
 
         {/* 경험 및 기타 정보 */}

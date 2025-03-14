@@ -65,16 +65,16 @@ const FileInputBox = ({
 
           label {
             cursor: pointer;
-            .MuiFileInput-placeholder {
-              color: ${palette.text.tertiary};
-              opacity: 1;
-            }
           }
 
           .MuiInputBase-root {
             padding: 0px 20px;
             width: 100%;
             cursor: pointer;
+            .MuiFileInput-placeholder {
+              color: ${palette.text.tertiary};
+              opacity: 1;
+            }
           }
         `}
         InputProps={{

@@ -64,6 +64,12 @@ const TextareaBox = ({
           & ::-webkit-scrollbar-thumb:hover {
             background-color: '#555';
           }
+          .MuiInputBase-input {
+            &::placeholder {
+              color: ${palette.text.tertiary};
+              opacity: 1;
+            }
+          }
         `}
       />
       <span

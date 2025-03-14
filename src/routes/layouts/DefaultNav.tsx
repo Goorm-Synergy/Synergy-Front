@@ -8,13 +8,17 @@ const DefaultNavLayout = () => {
   return (
     <div
       css={css`
-        min-height: 100vh;
-        min-height: 100svh;
+        position: fixed;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
         max-width: 600px;
+        min-width: 375px;
+        height: 100%;
+        width: 100%;
         margin: 0 auto;
-        padding: 1rem;
         box-shadow: 0 0 20px #0000000d;
-        position: relative;
         background-color: ${palette.background.primary};
       `}
     >

@@ -8,6 +8,7 @@ interface Props {
   placeholder?: string;
   onChange?: (value: string) => void;
   max_length: number;
+  value?: string;
 }
 
 const TextareaBox = ({
@@ -17,6 +18,7 @@ const TextareaBox = ({
   onChange,
   placeholder,
   max_length,
+  value = '',
 }: Props) => {
   const { typo, palette } = useTheme();
   const [text, setText] = useState('');
@@ -42,12 +44,14 @@ const TextareaBox = ({
         inputProps={{ maxLength: max_length }}
         rows={5}
         required={isRequired}
+        defaultValue={value}
         onChange={handleChange}
         placeholder={placeholder || ''}
         css={css`
           border-radius: 10px;
           padding: 15px 20px;
           background-color: ${palette.background.quaternary};
+          color: ${palette.text.primary};
           fieldset {
             border: 1px solid ${palette.border.secondary};
             padding: 0;

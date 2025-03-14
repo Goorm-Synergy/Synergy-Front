@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import InputBox from '@components/InputBox';
 import SelectBox from '@components/SelectBox';
 import TextareaBox from '@components/TextareaBox';
@@ -12,34 +11,17 @@ import {
   experience_range,
   hope_job,
   location,
-  salary_range,
 } from 'src/constant/onboarding';
 import { Infos } from 'src/types/funnel/onboarding.type';
 import FileInputBox from '@components/FileInputBox';
+import { useFormStore } from '@stores/client/useFormStore';
 
 const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
   const { palette, typo, radius } = useTheme();
-
-  const [info, setInfo] = useState<Infos>({
-    // 필수 속성
-    hope_job: '',
-    education: '',
-    age: '',
-    skills: '',
-    experience: '',
-    hope_location: '',
-    cover_letter: '',
-    // 선택 속성
-    profile_img: null,
-    others_experience: '',
-    salary: '',
-    company: '',
-    culture: '',
-    purpose: '',
-  });
+  const { form, setForm } = useFormStore();
 
   const handleChange = (key: keyof Infos, value: any) => {
-    setInfo((prev) => ({ ...prev, [key]: value }));
+    setForm(key, value);
   };
 
   return (
@@ -61,7 +43,7 @@ const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
           id="hope_job"
           label="희망 직무"
           items={hope_job}
-          value={info.hope_job}
+          value={form.hope_job || ''}
           onChange={(value) => handleChange('hope_job', value)}
           isRequired
           placeholder="희망 직무를 선택해 주세요."
@@ -72,7 +54,7 @@ const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
           id="education"
           label="학력"
           items={education_levels}
-          value={info.education}
+          value={form.education || ''}
           onChange={(value) => handleChange('education', value)}
           isRequired
           placeholder="학력을 선택해 주세요."
@@ -83,7 +65,7 @@ const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
           id="age"
           label="연령대"
           items={age_range}
-          value={info.age}
+          value={form.age || ''}
           onChange={(value) => handleChange('age', value)}
           isRequired
           placeholder="연령대를 선택해 주세요."
@@ -103,7 +85,7 @@ const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
           id="experience"
           label="경력"
           items={experience_range}
-          value={info.experience}
+          value={form.experience || ''}
           onChange={(value) => handleChange('experience', value)}
           isRequired
           placeholder="경력을 선택해주세요."
@@ -114,10 +96,11 @@ const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
           id="hope_location"
           label="희망 근무 지역"
           items={location}
-          value={info.hope_location}
+          value={form.hope_location || []}
           onChange={(value) => handleChange('hope_location', value)}
           isRequired
           placeholder="희망하는 근무 지역을 선택해주세요."
+          multiple
         />
 
         {/* 자기소개서 */}
@@ -125,6 +108,7 @@ const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
           id="cover_letter"
           label="자기소개서"
           isRequired
+          value={form.others_experience || ''}
           onChange={(value) => handleChange('cover_letter', value)}
           placeholder="자기소개를 400자 이내로 작성해주세요."
           max_length={400}
@@ -143,18 +127,9 @@ const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
           id="others_experience"
           label="경험 및 기타 정보"
           isRequired={false}
+          value={form.others_experience || ''}
           onChange={(value) => handleChange('others_experience', value)}
           placeholder="상세 경력 및 경험을 작성해 주세요."
-        />
-
-        {/* 희망 연봉 */}
-        <SelectBox
-          id="salary"
-          label="희망 연봉"
-          items={salary_range}
-          value={info.salary || ''}
-          onChange={(value) => handleChange('salary', value)}
-          placeholder="희망 연봉을 선택해 주세요."
         />
 
         {/* 직장 선택 요소 */}
@@ -162,7 +137,7 @@ const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
           id="company"
           label="희망 회사 규모"
           items={company_type}
-          value={info.company || ''}
+          value={form.company || ''}
           onChange={(value) => handleChange('company', value)}
         />
 
@@ -171,7 +146,7 @@ const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
           id="culture"
           label="선호하는 기업 문화"
           items={company_culture}
-          value={info.culture || ''}
+          value={form.culture || ''}
           onChange={(value) => handleChange('culture', value)}
         />
 
@@ -180,14 +155,29 @@ const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
           id="purpose"
           label="컨퍼런스 참여 목적"
           items={conference_purpose}
-          value={info.purpose || ''}
+          value={form.purpose || ''}
           onChange={(value) => handleChange('purpose', value)}
         />
       </div>
 
       {/* submit */}
       <Button
-        onClick={() => onSubmit(info)}
+        onClick={() =>
+          onSubmit({
+            hope_job: form.hope_job || '',
+            education: form.education || '',
+            age: form.age || '',
+            skills: form.skills || '',
+            experience: form.experience || '',
+            hope_location: form.hope_location || [],
+            cover_letter: form.cover_letter || '',
+            profile_img: form.profile_img || null,
+            others_experience: form.others_experience || '',
+            company: form.company || '',
+            culture: form.culture || '',
+            purpose: form.purpose || '',
+          })
+        }
         css={css`
           position: sticky;
           bottom: 0;

@@ -7,6 +7,7 @@ interface Props {
   isRequired?: boolean;
   placeholder?: string;
   onChange?: (value: string) => void;
+  value?: string;
   type?: HTMLInputTypeAttribute;
 }
 
@@ -16,6 +17,7 @@ const InputBox = ({
   isRequired,
   placeholder,
   onChange,
+  value = '',
   type = 'text',
 }: Props) => {
   const { palette, typo, radius } = useTheme();
@@ -35,9 +37,10 @@ const InputBox = ({
         id={id}
         placeholder={placeholder || ''}
         type={type}
+        defaultValue={value}
         onChange={(e) => onChange?.(e.target.value)}
         css={css`
-          color: ${palette.text.tertiary};
+          color: ${palette.text.primary};
           border-radius: ${radius.sm};
           background-color: ${palette.background.quaternary};
           input {

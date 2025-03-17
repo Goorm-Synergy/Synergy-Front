@@ -11,6 +11,8 @@ import FindIdPage from './pages/FindIdPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import OnBoarding from './pages/OnBoarding';
 import DefaultNavLayout from './layouts/DefaultNav';
+import SessionDetail from './pages/SessionDetail';
+import BoothDetail from './pages/BoothDetail';
 
 const router = createBrowserRouter([
   {
@@ -69,6 +71,14 @@ const router = createBrowserRouter([
         path: '*',
         element: <NotFound />,
       },
+      {
+        path: '/sessionDetail',  /* 추후 뺄 예정 */
+        element: <SessionDetail />,
+      },
+      {
+        path: '/boothDetail',  /* 추후 뺄 예정 */
+        element: <BoothDetail />,
+      }
     ],
   },
   {

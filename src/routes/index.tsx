@@ -13,14 +13,15 @@ import OnBoarding from './pages/OnBoarding';
 import DefaultNavLayout from './layouts/DefaultNav';
 import SessionDetail from './pages/SessionDetail';
 import BoothDetail from './pages/BoothDetail';
+import Mypage from './pages/Mypage';
 
 const router = createBrowserRouter([
   {
     element: <DefaultNavLayout />,
     children: [
       {
-        path: '/',
-        element: <Home />,
+        path: '/mypage',
+        element: <Mypage />,
       },
       {
         path: '/session',
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
   {
     element: <DefaultLayout />,
     children: [
+      {
+        path: '/',
+        element: <Home />,
+      },
       {
         path: '/participant-login',
         element: <LoginPage />,
@@ -72,13 +77,13 @@ const router = createBrowserRouter([
         element: <NotFound />,
       },
       {
-        path: '/sessionDetail',  /* 추후 뺄 예정 */
+        path: '/sessionDetail' /* 추후 뺄 예정 */,
         element: <SessionDetail />,
       },
       {
-        path: '/boothDetail',  /* 추후 뺄 예정 */
+        path: '/boothDetail' /* 추후 뺄 예정 */,
         element: <BoothDetail />,
-      }
+      },
     ],
   },
   {

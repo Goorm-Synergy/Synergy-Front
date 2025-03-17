@@ -11,6 +11,7 @@ import FindIdPage from './pages/FindIdPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import OnBoarding from './pages/OnBoarding';
 import DefaultNavLayout from './layouts/DefaultNav';
+import SessionPage from './pages/SessionPage';
 import SessionDetail from './pages/SessionDetail';
 import BoothDetail from './pages/BoothDetail';
 import Mypage from './pages/Mypage';
@@ -25,7 +26,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/session',
-        element: <>session</>,
+        element: <SessionPage />,
       },
       {
         path: '/booth',

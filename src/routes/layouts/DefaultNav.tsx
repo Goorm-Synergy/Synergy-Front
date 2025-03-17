@@ -1,6 +1,5 @@
 import { NavLink, Outlet, ScrollRestoration } from 'react-router-dom';
-import styled from '@emotion/styled';
-import { Button, css, useTheme } from '@mui/material';
+import { Button, css, useTheme, styled } from '@mui/material';
 
 const DefaultNavLayout = () => {
   const { palette } = useTheme();
@@ -47,33 +46,34 @@ const Navigation = () => {
   );
 };
 
-const Nav = styled.nav`
+const Nav = styled('nav')`
   display: flex;
   justify-content: center;
-  position: fixed;
+  position: sticky;
   bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
   width: 100%;
   max-width: 600px;
 `;
 
-const CustomButton = styled(Button)`
-  width: 100%;
-  padding: 16px 10px;
-  border: 1px solid #434343;
-  border-radius: 0;
-  font-weight: 800;
-  color: inherit;
-  background-color: inherit;
-`;
+const CustomLink = styled(NavLink)(
+  ({ theme }) => css`
+    width: 33.33333333%;
+    background-color: ${theme.palette.background.primary};
+  `,
+);
 
-const CustomLink = styled(NavLink)`
-  width: 33.33333333%;
-  background-color: black;
-  color: #f5f5f5;
-  &.active {
-    background-color: #333;
-    color: #949494;
-  }
-`;
+const CustomButton = styled(Button)(
+  ({ theme }) => css`
+    width: 100%;
+    padding: 16px 10px;
+    border: 1px solid ${theme.palette.border.primary};
+    border-radius: 0;
+    font-weight: 800;
+    color: ${theme.palette.text.primary};
+    background-color: ${theme.palette.background.primary};
+
+    .active & {
+      background-color: ${theme.palette.background.secondary};
+    }
+  `,
+);

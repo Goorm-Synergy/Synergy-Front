@@ -22,7 +22,7 @@ const theme = createTheme({
       tertiary: color.gray300,
       quaternary: color.gray500,
       quinary: color.gray100,
-      inverse: color.gray100,
+      inverse: color.gray900,
       interactive: color.blue300,
     },
     border: {

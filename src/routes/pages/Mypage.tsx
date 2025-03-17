@@ -13,6 +13,7 @@ const Mypage = () => {
       <BottomContainer>
         <ActionColumn onClick={() => {}} text="포인트 적립 내역" />
         <RecentPoints />
+        <ActionColumn onClick={() => {}} text="내 정보를 열람한 기업 (5)" />
         <ActionColumn onClick={() => {}} text="내 정보 보기" />
         <ActionColumn onClick={() => {}} text="비밀번호 변경" />
         <ActionColumn onClick={() => {}} text="로그아웃" />
@@ -32,13 +33,11 @@ const Wrapper = styled('div')(() => ({
 }));
 
 const TopContainer = styled('div')(({ theme }) => ({
-  position: 'sticky',
-  top: 0,
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   gap: '20px',
-  backgroundColor: theme.palette.background.secondary,
+  backgroundColor: theme.palette.opacity.opa100,
   width: '100%',
   padding: '24px',
   height: '357px',

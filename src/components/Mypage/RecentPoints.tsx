@@ -43,7 +43,7 @@ const Column = ({ title, desc, point = 0 }: Props) => {
     <div
       css={css`
         display: flex;
-        padding: 21.5px 16px;
+        padding: 14px 16px;
         justify-content: space-between;
         align-items: center;
         align-self: stretch;

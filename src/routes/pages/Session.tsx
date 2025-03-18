@@ -1,13 +1,38 @@
+import { useState } from 'react';
 import { Typography, Box, Button } from '@mui/material';
 import Header from '@components/AdminHeader';
 import SessionBox from '@components/AdminPage/SessionBox';
 import { css, useTheme } from '@mui/material/styles';
 import { typography } from '@styles/foundation';
 import AddIcon from '@mui/icons-material/Add';
+import AddSession from '@components/AdminPage/Popup/AddSession';
 
-const SessionDetail = () => {
+const Session = () => {
   const theme = useTheme();
   const { palette, spacing } = theme;
+  const [openAddSession, setOpenAddSession] = useState(false);
+  const [mode, setMode] = useState<'add' | 'edit'>('add');
+  const [editData, setEditData] = useState<any | null>(null);
+
+  const handleRegisterClick = () => {
+    setMode('add');
+    setEditData(null);
+    setOpenAddSession(true);
+  };
+
+  const handleCloseAddSession = () => {
+    setOpenAddSession(false);
+  };
+  
+  const handleDeleteSession = () => {
+    console.log('세션 삭제');
+  };
+
+  const handleEditSession = (sessionData: any) => {
+    setMode('edit');
+    setEditData(sessionData);
+    setOpenAddSession(true);
+  };
 
   const pageStyle = css`
     display: flex;
@@ -38,13 +63,6 @@ const SessionDetail = () => {
     gap: ${spacing(2)}px;
   `;
 
-  const handleRegisterClick = () => {
-    //TODO: 세션 등록 모달 이동
-  };
-
-  const handleDeleteSession = () => {
-    console.log('세션 삭제');
-  };
 
   return (
     <Box css={pageStyle}>
@@ -65,7 +83,7 @@ const SessionDetail = () => {
 
       {/* Session List */}
       <Box css={sessionListStyle} sx={{gap: 2}}>
-        <SessionBox
+      <SessionBox
           date="9/15"
           place="세션 1-1"
           title="최신 기술 동향"
@@ -73,19 +91,30 @@ const SessionDetail = () => {
           speaker="김지혁"
           chartData={[]}
           onDelete={handleDeleteSession}
-        />
-        <SessionBox
-          date="9/15"
-          place="세션 1-2"
-          title="최신 기술 동향"
-          time="10:30-11:30"
-          speaker="홍길동"
-          chartData={[]}
-          onDelete={handleDeleteSession}
+          onEdit={() =>
+            handleEditSession({
+              title: '최신 기술 동향',
+              presenter: '김지혁',
+              presenterRole: '수석 연구원',
+              date: '9/15',
+              startTime: '10:30',
+              endTime: '11:30',
+              sessionDescription: 'AI 및 최신 트렌드 소개 세션',
+              imageFile: null,
+              maxCapacity: '200',
+            })
+          }
         />
       </Box>
+
+      <AddSession
+        open={openAddSession}
+        onClose={handleCloseAddSession}
+        mode={mode}
+        initialData={editData}
+      />
     </Box>
   );
 };
 
-export default SessionDetail;
+export default Session;

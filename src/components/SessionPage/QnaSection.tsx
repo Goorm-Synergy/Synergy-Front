@@ -1,5 +1,6 @@
 import { Box, Button, css, Typography, useTheme } from '@mui/material';
-import { useParams } from 'react-router-dom';
+import QnaDialog from './QnaDialog';
+import { useState } from 'react';
 
 const json = {
   qna: [
@@ -25,7 +26,7 @@ const json = {
 };
 
 const QnaSection = () => {
-  const { id } = useParams();
+  const [open, setOpen] = useState(false);
   const { palette, typo, radius } = useTheme();
 
   return (
@@ -72,9 +73,17 @@ const QnaSection = () => {
           ${typo.sub.s}
           color: ${palette.text.primary};
         `}
+        onClick={() => setOpen(true)}
       >
         질문 제출하기
       </Button>
+
+      <QnaDialog
+        open={open}
+        onClose={() => setOpen(false)}
+        title="디지털 시대의 리더십과 팀 빌딩"
+        speaker="이종현, FlowLink HR 팀 총괄에게 질문하기"
+      />
     </div>
   );
 };

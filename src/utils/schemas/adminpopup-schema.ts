@@ -34,4 +34,24 @@ export const boothSchema = z.object({
     boothDescription: z.string().max(150, '부스 설명은 150자 이내로 입력해 주세요.'),
     imageFile: z.instanceof(File).optional().or(z.null()),
   });
-  
+
+  export const conferenceSchema = z.object({
+    name: z.string().max(30, { message: '컨퍼런스 명은 최대 30자까지 입력 가능합니다.' }),
+    host: z.string().max(10, { message: '컨퍼런스 주최자는 최대 10자까지 입력 가능합니다.' }),
+    startDate: z.string()
+      .regex(dateRegex, { message: '시작일은 YYYY.MM.DD 형식으로 입력해 주세요.' })
+      .refine(isFutureDate, { message: '시작일은 오늘 이후의 날짜만 입력 가능합니다.' }),
+    startTime: z.string()
+      .regex(timeRegex, { message: '시작 시간은 24시간제로 00:00 형식으로 입력해 주세요.' }),
+    endDate: z.string()
+      .regex(dateRegex, { message: '종료일은 YYYY.MM.DD 형식으로 입력해 주세요.' })
+      .refine(isFutureDate, { message: '종료일은 오늘 이후의 날짜만 입력 가능합니다.' }),
+    endTime: z.string()
+      .regex(timeRegex, { message: '종료 시간은 24시간제로 00:00 형식으로 입력해 주세요.' }),
+    location: z.enum(['그랜드볼룸', '아셈볼룸', 'THE PLATZ', '오리토리움'], {
+      errorMap: () => ({ message: '컨퍼런스 위치를 선택해 주세요.' }),
+    }),
+    conferenceType: z.enum(['IT', '무역', '산업'], {
+      errorMap: () => ({ message: '컨퍼런스 유형을 선택해 주세요.' }),
+    }),
+  });

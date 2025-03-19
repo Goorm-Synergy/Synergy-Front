@@ -14,6 +14,10 @@ import DefaultNavLayout from './layouts/DefaultNav';
 import SessionDetail from './pages/Session';
 import BoothDetail from './pages/Booth';
 import Mypage from './pages/Mypage';
+import SessionDetails from './pages/SessionDetails';
+import BoothPage from './pages/BoothPage';
+import BoothDetails from './pages/BoothDetails';
+import SessionPage from './pages/SessionPage';
 
 const router = createBrowserRouter([
   {
@@ -25,11 +29,11 @@ const router = createBrowserRouter([
       },
       {
         path: '/session',
-        element: <>session</>,
+        element: <SessionPage />,
       },
       {
         path: '/booth',
-        element: <>booth</>,
+        element: <BoothPage />,
       },
     ],
   },
@@ -70,7 +74,11 @@ const router = createBrowserRouter([
       },
       {
         path: '/session/:id',
-        element: <>/session/:id</>,
+        element: <SessionDetails />,
+      },
+      {
+        path: '/booth/:id',
+        element: <BoothDetails />,
       },
       {
         path: '*',

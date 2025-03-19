@@ -14,7 +14,6 @@ const theme = createTheme({
       quaternary: color.gray600,
       inverse: color.gray0,
       warning: color.red500,
-      interactive: color.blue500,
     },
     background: {
       primary: color.gray0,
@@ -23,22 +22,18 @@ const theme = createTheme({
       quaternary: color.gray500,
       quinary: color.gray100,
       inverse: color.gray900,
-      interactive: color.blue300,
     },
     border: {
       primary: color.gray500,
       secondary: color.gray600,
       tertiary: color.gray400,
       dark_warning: color.red100,
-      interactive: '미정',
+      focused: color.blue500,
     },
     divider_custom: {
       primary: color.gray500,
       secondary: color.gray600,
       tertiary: color.gray400,
-      dark_warning: color.red100,
-      inverse: '미정',
-      interactive: '미정',
     },
     opacity: {
       opa100: color.gray500a,
@@ -49,6 +44,11 @@ const theme = createTheme({
       secondary: color.gray800,
       tertiary: color.gray900,
       inverse: color.gray0,
+      quaternary: color.blue500,
+    },
+    graph: {
+      default: color.blue100,
+      hovered: color.blue500,
     },
   },
   radius,

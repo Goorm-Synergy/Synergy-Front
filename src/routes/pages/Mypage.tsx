@@ -1,6 +1,9 @@
 import AnimatedModal from '@components/AnimatedModal';
 import ActionColumn from '@components/Mypage/ActionColumn';
+import CompanyList from '@components/Mypage/CompanyList';
 import Information from '@components/Mypage/Information';
+import MyPoint from '@components/Mypage/MyPoint';
+import PointSystem from '@components/Mypage/PointSystem';
 import RecentPoints from '@components/Mypage/RecentPoints';
 import { styled } from '@mui/material';
 import { useState } from 'react';
@@ -9,6 +12,7 @@ type ModalType = 'point-system' | 'my-point' | 'company-list' | null;
 
 const Mypage = () => {
   const [modalOpen, setModalOpen] = useState<ModalType>(null);
+
   return (
     <Wrapper>
       <TopContainer>
@@ -35,21 +39,21 @@ const Mypage = () => {
         open={modalOpen === 'point-system'}
         onClose={() => setModalOpen(null)}
       >
-        <div>point system</div>
+        <PointSystem />
       </AnimatedModal>
 
       <AnimatedModal
         open={modalOpen === 'my-point'}
         onClose={() => setModalOpen(null)}
       >
-        <div>my point</div>
+        <MyPoint />
       </AnimatedModal>
 
       <AnimatedModal
         open={modalOpen === 'company-list'}
         onClose={() => setModalOpen(null)}
       >
-        <div>company list</div>
+        <CompanyList />
       </AnimatedModal>
     </Wrapper>
   );

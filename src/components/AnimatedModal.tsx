@@ -70,6 +70,11 @@ const MotionWrapper = styled(motion.div)(({ theme }) => ({
   padding: '24px',
   display: 'flex',
   flexDirection: 'column',
+  maxHeight: '65%',
+  overflowY: 'auto',
+  '&::-webkit-scrollbar': {
+    display: 'none',
+  },
 }));
 
 const CloseBtn = styled(CloseIcon)(({ theme }) => ({

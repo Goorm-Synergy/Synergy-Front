@@ -1,10 +1,13 @@
 import BackHeader from '@components/headers/BackHeader';
+import SuccessPopup from '@components/SuccessPopup';
 import { css, styled, Typography, useTheme } from '@mui/material';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const BoothDetails = () => {
   const { palette, typo } = useTheme();
   const navigate = useNavigate();
+  const [qrSuccess, setQrSuccess] = useState(false);
 
   return (
     <>
@@ -63,6 +66,18 @@ const BoothDetails = () => {
           Kubernetes 경험자를 환영합니다.
         </p>
       </Container>
+
+      {qrSuccess && (
+        <SuccessPopup
+          open={true}
+          onClose={() => setQrSuccess(false)}
+          title="부스에 오신 것을 환영합니다!"
+          earnPoint={50}
+          totalPoint={250}
+          needPoint={50}
+          rating="SILVER"
+        />
+      )}
     </>
   );
 };

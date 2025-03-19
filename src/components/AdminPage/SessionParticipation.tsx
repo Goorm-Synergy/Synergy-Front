@@ -4,7 +4,7 @@ import { css, useTheme } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import AddSession from './Popup/AddSession';
 import { useConferenceStore } from '@stores/client/useConferenceStore';
-import { useSessionStore } from '@stores/client/useSessionStore'; 
+import { useSessionStore } from '@stores/client/useSessionStore'; 
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { useNavigate } from 'react-router-dom';
 

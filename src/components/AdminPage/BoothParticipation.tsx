@@ -6,7 +6,7 @@ import AddBooth from './Popup/AddBooth';
 import { useConferenceStore } from '@stores/client/useConferenceStore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { useNavigate } from 'react-router-dom';
-import { useBoothStore } from '@stores/client/UseBoothStore';
+import { useBoothStore } from '@stores/client/useBoothStore';
 
 const BoothParticipation = () => {
     const { palette, typography, radius } = useTheme();

@@ -22,7 +22,7 @@ const BoothParticipation = () => {
                     text-align: center;
                     color: ${palette.text.secondary};
                     border-radius: ${radius.sm}px;
-                    background-color: ${palette.background.inverse};
+                    background-color: ${palette.background.secondary};
                     padding: 50px;
                     border: ${palette.divider_custom.primary};
                 `}

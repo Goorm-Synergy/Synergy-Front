@@ -14,9 +14,10 @@ interface SessionBoxProps {
   speaker: string;
   chartData?: any[];
   onDelete: () => void;
+  onEdit: () => void;
 }
 
-const SessionBox = ({ date, place, time, title, speaker, onDelete }: SessionBoxProps) => {
+const SessionBox = ({ date, place, time, title, speaker, onDelete, onEdit }: SessionBoxProps) => {
   const theme = useTheme();
   const { palette, spacing, typo } = theme;
   const [open, setOpen] = useState(false);
@@ -63,7 +64,7 @@ const SessionBox = ({ date, place, time, title, speaker, onDelete }: SessionBoxP
         <IconButton size="small" color="inherit">
           <QrCodeIcon fontSize="small" />
         </IconButton>
-        <IconButton size="small" color="inherit">
+        <IconButton size="small" color="inherit" onClick={onEdit}>
           <EditIcon fontSize="small" />
         </IconButton>
         <IconButton size="small" color="inherit" onClick={() => setOpen(true)}>

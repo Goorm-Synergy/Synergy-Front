@@ -1,13 +1,39 @@
+import { useState } from 'react';
 import { Typography, Box, Button } from '@mui/material';
 import Header from '@components/AdminHeader';
 import BoothBox from '@components/AdminPage/BoothBox';
 import { css, useTheme } from '@mui/material/styles';
 import { typography } from '@styles/foundation';
 import AddIcon from '@mui/icons-material/Add';
+import AddBooth from '@components/AdminPage/Popup/AddBooth';
 
-const BoothDetail = () => {
+const Booth = () => {
   const theme = useTheme();
   const { palette, spacing } = theme;
+
+  const [isAddBoothOpen, setIsAddBoothOpen] = useState(false);
+  const [editMode, setEditMode] = useState<'add' | 'edit'>('add');
+  const [editData, setEditData] = useState<any | null>(null);
+
+  const handleRegisterClick = () => {
+    setEditMode('add');
+    setEditData(null);
+    setIsAddBoothOpen(true);
+  };
+
+  const handleCloseAddBooth = () => {
+    setIsAddBoothOpen(false);
+  };
+
+  const handleEditBooth = (boothInfo: any) => {
+    setEditMode('edit');
+    setEditData(boothInfo);
+    setIsAddBoothOpen(true);
+  };
+
+  const handleDeleteSession = () => {
+    console.log('세션 삭제');
+  };
 
   const pageStyle = css`
     display: flex;
@@ -37,14 +63,6 @@ const BoothDetail = () => {
     gap: ${spacing(2)}px;
   `;
 
-  const handleRegisterClick = () => {
-    //TODO: 부스 등록 모달 이동
-  };
-
-  const handleDeleteSession = () => {
-    console.log('세션 삭제');
-  };
-
   return (
     <Box css={pageStyle}>
       <Header />
@@ -52,29 +70,40 @@ const BoothDetail = () => {
         <Typography variant="h4" css={titleStyle}>
           부스 참여 현황
         </Typography>
-        <Button
-          startIcon={<AddIcon />}
-          onClick={handleRegisterClick}
-          css={registerButtonStyle}
-        >
+        <Button startIcon={<AddIcon />} onClick={handleRegisterClick} css={registerButtonStyle}>
           부스 등록
         </Button>
       </Box>
 
-      {/* Booth List */}
-      <Box css={BoothListStyle} sx={{gap: 2}}>
-        {/* 예시 데이터 */}
-        <BoothBox
+      <Box css={BoothListStyle}>
+        <BoothBox //임시 확인용
           date="9/15"
           place="부스 A"
           title="DevWave"
           category="AI"
           chartData={[]}
           onDelete={handleDeleteSession}
+          onEdit={() =>
+            handleEditBooth({
+              companyName: 'DevWave',
+              companyType: '스타트업',
+              boothLocation: 'hallA',
+              boothNumber: 'A-01',
+              boothDescription: 'AI 관련 기술 소개',
+              imageFile: null,
+            })
+          }
         />
       </Box>
+
+      <AddBooth
+        open={isAddBoothOpen}
+        onClose={handleCloseAddBooth}
+        mode={editMode}
+        initialData={editData}
+      />
     </Box>
   );
 };
 
-export default BoothDetail;
+export default Booth;

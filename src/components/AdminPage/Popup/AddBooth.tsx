@@ -6,7 +6,7 @@ import TextareaBox from '@components/TextareaBox';
 import FileInputBox from '@components/FileInputBox';
 import { boothSchema } from '@utils/schemas/adminpopup-schema';
 import ErrorPopover from '@components/ErrorPopover';
-import { useBoothStore } from '@stores/client/UseBoothStore';
+import { useBoothStore } from '@stores/client/useBoothStore';
 
 export type BoothData = {
   companyName: string;

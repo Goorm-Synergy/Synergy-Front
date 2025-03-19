@@ -6,7 +6,7 @@ import TextareaBox from '@components/TextareaBox';
 import FileInputBox from '@components/FileInputBox';
 import { sessionSchema } from '@utils/schemas/adminpopup-schema';
 import ErrorPopover from '@components/ErrorPopover';
-import { useSessionStore } from '@stores/client/useSessionStore';
+import { useSessionStore } from '@stores/client/useSessionStore';
 
 interface AddSessionProps {
   open: boolean;

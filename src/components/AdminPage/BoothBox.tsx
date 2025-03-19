@@ -13,9 +13,10 @@ interface BoothBoxProps {
   category: string;
   chartData?: any[];
   onDelete: () => void;
+  onEdit: () => void;
 }
 
-const BoothBox = ({ date, place, title, category, onDelete }: BoothBoxProps) => {
+const BoothBox = ({ date, place, title, category, onDelete, onEdit }: BoothBoxProps) => {
   const theme = useTheme();
   const { palette, spacing, typo } = theme;
   const [open, setOpen] = useState(false);
@@ -62,7 +63,7 @@ const BoothBox = ({ date, place, title, category, onDelete }: BoothBoxProps) => 
         <IconButton size="small" color="inherit">
           <QrCodeIcon fontSize="small" />
         </IconButton>
-        <IconButton size="small" color="inherit">
+        <IconButton size="small" color="inherit" onClick={onEdit}>
           <EditIcon fontSize="small" />
         </IconButton>
         <IconButton size="small" color="inherit" onClick={() => setOpen(true)}>

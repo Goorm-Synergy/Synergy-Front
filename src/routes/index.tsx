@@ -17,6 +17,7 @@ import Mypage from './pages/Mypage';
 import SessionDetails from './pages/SessionDetails';
 import BoothPage from './pages/BoothPage';
 import BoothDetails from './pages/BoothDetails';
+import SessionPage from './pages/SessionPage';
 
 const router = createBrowserRouter([
   {

@@ -1,23 +1,56 @@
+import AnimatedModal from '@components/AnimatedModal';
 import ActionColumn from '@components/Mypage/ActionColumn';
 import Information from '@components/Mypage/Information';
 import RecentPoints from '@components/Mypage/RecentPoints';
 import { styled } from '@mui/material';
+import { useState } from 'react';
+
+type ModalType = 'point-system' | 'my-point' | 'company-list' | null;
 
 const Mypage = () => {
+  const [modalOpen, setModalOpen] = useState<ModalType>(null);
   return (
     <Wrapper>
       <TopContainer>
         <HeaderText>F’LINK 2025</HeaderText>
-        <Information />
+        <Information buttonClick={() => setModalOpen('point-system')} />
       </TopContainer>
       <BottomContainer>
-        <ActionColumn onClick={() => {}} text="포인트 적립 내역" />
+        <ActionColumn
+          onClick={() => setModalOpen('my-point')}
+          text="포인트 적립 내역"
+        />
         <RecentPoints />
-        <ActionColumn onClick={() => {}} text="내 정보를 열람한 기업 (5)" />
+        <ActionColumn
+          onClick={() => setModalOpen('company-list')}
+          text="내 정보를 열람한 기업 (5)"
+        />
         <ActionColumn onClick={() => {}} text="내 정보 보기" />
         <ActionColumn onClick={() => {}} text="비밀번호 변경" />
         <ActionColumn onClick={() => {}} text="로그아웃" />
       </BottomContainer>
+
+      {/* 모달 */}
+      <AnimatedModal
+        open={modalOpen === 'point-system'}
+        onClose={() => setModalOpen(null)}
+      >
+        <div>point system</div>
+      </AnimatedModal>
+
+      <AnimatedModal
+        open={modalOpen === 'my-point'}
+        onClose={() => setModalOpen(null)}
+      >
+        <div>my point</div>
+      </AnimatedModal>
+
+      <AnimatedModal
+        open={modalOpen === 'company-list'}
+        onClose={() => setModalOpen(null)}
+      >
+        <div>company list</div>
+      </AnimatedModal>
     </Wrapper>
   );
 };

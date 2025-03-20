@@ -7,11 +7,15 @@ import PointSystem from '@components/Mypage/PointSystem';
 import RecentPoints from '@components/Mypage/RecentPoints';
 import { styled } from '@mui/material';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 type ModalType = 'point-system' | 'my-point' | 'company-list' | null;
 
+const id = '1';
+
 const Mypage = () => {
   const [modalOpen, setModalOpen] = useState<ModalType>(null);
+  const navigate = useNavigate();
 
   return (
     <Wrapper>
@@ -29,7 +33,10 @@ const Mypage = () => {
           onClick={() => setModalOpen('company-list')}
           text="내 정보를 열람한 기업 (5)"
         />
-        <ActionColumn onClick={() => {}} text="내 정보 보기" />
+        <ActionColumn
+          onClick={() => navigate(`/my-info/${id}`)}
+          text="내 정보 보기"
+        />
         <ActionColumn onClick={() => {}} text="비밀번호 변경" />
         <ActionColumn onClick={() => {}} text="로그아웃" />
       </BottomContainer>

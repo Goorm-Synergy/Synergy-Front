@@ -18,6 +18,7 @@ import SessionDetails from './pages/SessionDetails';
 import BoothPage from './pages/BoothPage';
 import BoothDetails from './pages/BoothDetails';
 import SessionPage from './pages/SessionPage';
+import MyInfo from './pages/MyInfo';
 
 const router = createBrowserRouter([
   {
@@ -79,6 +80,10 @@ const router = createBrowserRouter([
       {
         path: '/booth/:id',
         element: <BoothDetails />,
+      },
+      {
+        path: '/my-info/:id',
+        element: <MyInfo />,
       },
       {
         path: '*',

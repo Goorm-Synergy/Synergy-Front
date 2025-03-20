@@ -20,8 +20,7 @@ const AdminLayout = () => {
           min-height: 100vh;
           max-width: 600px;
           margin: 0 auto;
-          padding: 100px 1rem 1rem; // 헤더 높이 + 여유
-          box-shadow: 0 0 20px #0000000d;
+          padding: 100px 1rem 1rem;
           background-color: ${palette.background.primary};
         `}
       >

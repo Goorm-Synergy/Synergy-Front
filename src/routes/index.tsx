@@ -85,11 +85,11 @@ const router = createBrowserRouter([
         element: <NotFound />,
       },
       {
-        path: '/admin/session' /* 추후 뺄 예정 */,
+        path: '/admin/session',
         element: <SessionDetail />,
       },
       {
-        path: '/admin/booth' /* 추후 뺄 예정 */,
+        path: '/admin/booth',
         element: <BoothDetail />,
       },
     ],
@@ -99,7 +99,6 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/admin',
-        element: <div>AdminPage</div>,
       },
       {
         path: '*',

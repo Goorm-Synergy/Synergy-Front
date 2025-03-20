@@ -5,6 +5,7 @@ import QrCodeIcon from '@mui/icons-material/QrCode';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ConfirmDeleteDialog from '../ConfirmDeleteDialog';
+import QRPopup from './Popup/QRPopup';
 
 interface BoothBoxProps {
   date: string;
@@ -19,7 +20,8 @@ interface BoothBoxProps {
 const BoothBox = ({ date, place, title, category, onDelete, onEdit }: BoothBoxProps) => {
   const theme = useTheme();
   const { palette, spacing, typo } = theme;
-  const [open, setOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [qrPopupOpen, setQrPopupOpen] = useState(false);
 
   const boxStyle = css`
     position: relative;
@@ -50,23 +52,29 @@ const BoothBox = ({ date, place, title, category, onDelete, onEdit }: BoothBoxPr
   return (
     <Box css={boxStyle}>
       <ConfirmDeleteDialog
-        open={open}
+        open={deleteDialogOpen}
         title="부스를 삭제하시겠습니까?"
         description="부스 삭제 시 복구가 불가능합니다."
-        onClose={() => setOpen(false)}
+        onClose={() => setDeleteDialogOpen(false)}
         onConfirm={() => {
           onDelete();
-          setOpen(false);
+          setDeleteDialogOpen(false);
         }}
       />
+      <QRPopup
+          open={qrPopupOpen}
+          onClose={() => setQrPopupOpen(false)}
+          qrCodeLabel={title}
+          description={place}
+        />
       <Box css={iconContainerStyle}>
-        <IconButton size="small" color="inherit">
+        <IconButton size="small" color="inherit" onClick={() => setQrPopupOpen(true)}>
           <QrCodeIcon fontSize="small" />
         </IconButton>
         <IconButton size="small" color="inherit" onClick={onEdit}>
           <EditIcon fontSize="small" />
         </IconButton>
-        <IconButton size="small" color="inherit" onClick={() => setOpen(true)}>
+        <IconButton size="small" color="inherit" onClick={() => setDeleteDialogOpen(true)}>
           <DeleteIcon fontSize="small" />
         </IconButton>
       </Box>

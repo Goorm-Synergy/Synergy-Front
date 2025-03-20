@@ -7,19 +7,21 @@ import { useConferenceStore } from '@stores/client/useConferenceStore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { useNavigate } from 'react-router-dom';
 import { useBoothStore } from '@stores/client/useBoothStore';
+import ConferenceForm from './Popup/ConferenceForm';
 
 const BoothParticipation = () => {
     const { palette, typography, radius } = useTheme();
     const isConferenceRegistered = useConferenceStore((state) => state.isConferenceRegistered);
     const { isBoothRegistered, hasAggregationData } = useBoothStore();
     const [showAddBooth, setShowAddBooth] = useState(false);
+    const [showAddConference, setShowAddConference] = useState(false);
     const navigate = useNavigate();
 
     const handleAddIconClick = () => {
         if (isConferenceRegistered) {
             setShowAddBooth(true);
         } else {
-            alert('컨퍼런스를 등록해주세요');
+            setShowAddConference(true);
         }
     };
 
@@ -29,6 +31,11 @@ const BoothParticipation = () => {
         } else {
             alert('컨퍼런스를 등록해주세요');
         }
+    };
+
+    const handleConferenceSubmit = (data: any) => {
+        console.log('컨퍼런스 등록 완료:', data);
+        setShowAddConference(false);
     };
 
     return (
@@ -122,6 +129,14 @@ const BoothParticipation = () => {
                 <AddBooth
                     open={showAddBooth}
                     onClose={() => setShowAddBooth(false)}
+                />
+            )}
+            {showAddConference && (
+                <ConferenceForm
+                    mode="add"
+                    open={showAddConference}
+                    onClose={() => setShowAddConference(false)}
+                    onSubmit={handleConferenceSubmit}
                 />
             )}
         </Box>

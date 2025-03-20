@@ -7,19 +7,21 @@ import { useConferenceStore } from '@stores/client/useConferenceStore';
 import { useSessionStore } from '@stores/client/useSessionStore'; 
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { useNavigate } from 'react-router-dom';
+import ConferenceForm from './Popup/ConferenceForm';
 
 const SessionParticipation = () => {
     const { palette, typography, radius } = useTheme();
     const isConferenceRegistered = useConferenceStore((state) => state.isConferenceRegistered);
     const { isSessionRegistered, hasAggregationData } = useSessionStore(); 
     const [showAddSession, setShowAddSession] = useState(false);
+    const [showAddConference, setShowAddConference] = useState(false);
     const navigate = useNavigate();
 
     const handleAddIconClick = () => {
         if (isConferenceRegistered) {
             setShowAddSession(true);
         } else {
-            alert('컨퍼런스를 등록해주세요');
+            setShowAddConference(true);
         }
     };
 
@@ -29,6 +31,10 @@ const SessionParticipation = () => {
         } else {
             alert('컨퍼런스를 등록해주세요');
         }
+    };
+    const handleConferenceSubmit = (data: any) => {
+        console.log('컨퍼런스 등록 완료:', data);
+        setShowAddConference(false);
     };
 
     return (
@@ -122,6 +128,14 @@ const SessionParticipation = () => {
                 <AddSession 
                     open={showAddSession}
                     onClose={() => setShowAddSession(false)}
+                />
+            )}
+            {showAddConference && (
+                <ConferenceForm
+                    mode="add"
+                    open={showAddConference}
+                    onClose={() => setShowAddConference(false)}
+                    onSubmit={handleConferenceSubmit}
                 />
             )}
         </Box>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Typography, Box, Button } from '@mui/material';
-import Header from '@components/AdminHeader';
+import Header from '@components/headers/AdminHeader';
 import SessionBox from '@components/AdminPage/SessionBox';
 import { css, useTheme } from '@mui/material/styles';
 import { typography } from '@styles/foundation';

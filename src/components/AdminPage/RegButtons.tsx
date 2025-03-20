@@ -1,11 +1,16 @@
 import { useState } from 'react';
-import { Box, Button, Modal, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { css, useTheme } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import ConferenceForm from './Popup/ConferenceForm';
+import { useConferenceStore } from '@stores/client/useConferenceStore';
 
-const ConferenceRegistration = () => {
+interface ConferenceRegistrationProps {
+  onRegister?: () => void;
+}
+
+const ConferenceRegistration = ({ onRegister = () => {} }: ConferenceRegistrationProps) => {
   const { palette, typography, radius } = useTheme();
   const [isConferenceRegistered, setIsConferenceRegistered] = useState(false);
   const [open, setOpen] = useState(false);
@@ -23,7 +28,6 @@ const ConferenceRegistration = () => {
 
   const handleModify = () => {
     if (isConferenceRegistered) {
-      // 임시 데이터로 초기값 세팅 (실제 데이터는 API에서 가져오거나 state로 관리)
       const dummyData = {
         name: '샘플 컨퍼런스',
         host: '주최자',
@@ -46,8 +50,10 @@ const ConferenceRegistration = () => {
 
   const handleModalSubmit = (data: any) => {
     console.log('등록 또는 수정 완료:', data);
+    useConferenceStore.getState().setConferenceRegistered(true);
     setIsConferenceRegistered(true);
     handleClose();
+    onRegister();
   };
 
   const buttonStyle = css`
@@ -115,22 +121,13 @@ const ConferenceRegistration = () => {
           컨퍼런스 수정
         </Typography>
       </Button>
-
-      <Modal
+      <ConferenceForm
+        mode={mode}
         open={open}
         onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-        disableEnforceFocus
-      >
-        <ConferenceForm
-          mode={mode}
-          open={open}
-          onClose={handleClose}
-          onSubmit={handleModalSubmit}
-          initialData={conferenceData}
-        />
-      </Modal>
+        onSubmit={handleModalSubmit}
+        initialData={conferenceData}
+      />
     </Box>
   );
 };

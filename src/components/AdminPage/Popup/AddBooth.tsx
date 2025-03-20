@@ -6,8 +6,9 @@ import TextareaBox from '@components/TextareaBox';
 import FileInputBox from '@components/FileInputBox';
 import { boothSchema } from '@utils/schemas/adminpopup-schema';
 import ErrorPopover from '@components/ErrorPopover';
+import { useBoothStore } from '@stores/client/useBoothStore';
 
-type BoothData = {
+export type BoothData = {
   companyName: string;
   companyType: string;
   boothLocation: string;
@@ -38,13 +39,15 @@ const AddBooth = ({
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
 
+  const setIsBoothRegistered = useBoothStore((state) => state.setIsBoothRegistered);
+  const setHasAggregationData = useBoothStore((state) => state.setHasAggregationData);
+
   const locationOptions = [
     { value: 'hallA', text: 'Hall A' },
     { value: 'hallB', text: 'Hall B' },
     { value: 'hallC', text: 'Hall C' },
   ];
 
-  // initialData 있을 때 상태 초기화
   useEffect(() => {
     if (initialData) {
       setCompanyName(initialData.companyName);
@@ -54,7 +57,6 @@ const AddBooth = ({
       setBoothDescription(initialData.boothDescription);
       setImageFile(initialData.imageFile);
     } else {
-      // 초기화 (수정 모드였다가 닫고 다시 열 경우 대비)
       setCompanyName('');
       setCompanyType('');
       setBoothLocation('');
@@ -80,8 +82,10 @@ const AddBooth = ({
       return;
     }
 
-    if (mode === 'add') { //TODO: api 연동 시 mode에 따라 처리
+    if (mode === 'add') {
       console.log('등록 요청', result.data);
+      setIsBoothRegistered(true);
+      setHasAggregationData(false);
     } else {
       console.log('수정 요청', result.data);
     }

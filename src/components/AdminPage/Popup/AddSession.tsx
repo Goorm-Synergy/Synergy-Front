@@ -6,6 +6,7 @@ import TextareaBox from '@components/TextareaBox';
 import FileInputBox from '@components/FileInputBox';
 import { sessionSchema } from '@utils/schemas/adminpopup-schema';
 import ErrorPopover from '@components/ErrorPopover';
+import { useSessionStore } from '@stores/client/useSessionStore';
 
 interface AddSessionProps {
   open: boolean;
@@ -28,6 +29,8 @@ const AddSession = ({ open, onClose, mode = 'add', initialData }: AddSessionProp
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [maxCapacity, setMaxCapacity] = useState('');
   const [formError, setFormError] = useState<string | null>(null);
+
+  const setSessionRegistered = useSessionStore((state) => state.setSessionRegistered);
 
   useEffect(() => {
     if (mode === 'edit' && initialData) {
@@ -83,6 +86,7 @@ const AddSession = ({ open, onClose, mode = 'add', initialData }: AddSessionProp
       console.log('수정 완료', result.data);
     } else {
       console.log('등록 완료', result.data);
+      setSessionRegistered(true);
     }
 
     onClose();
@@ -127,8 +131,9 @@ const AddSession = ({ open, onClose, mode = 'add', initialData }: AddSessionProp
         <InputBox
           label="제목"
           id="title"
-          isRequired value={title}
-          onChange={setTitle} 
+          isRequired
+          value={title}
+          onChange={setTitle}
           placeholder="세션 제목을 입력해 주세요."
         />
         <InputBox
@@ -149,7 +154,8 @@ const AddSession = ({ open, onClose, mode = 'add', initialData }: AddSessionProp
         />
         <InputBox
           label="진행일"
-          id="date" isRequired
+          id="date"
+          isRequired
           value={date}
           onChange={setDate}
           placeholder="진행 날짜를 입력해 주세요."
@@ -188,7 +194,8 @@ const AddSession = ({ open, onClose, mode = 'add', initialData }: AddSessionProp
         <SelectBox
           id="maxCapacity"
           label="최대 수용 인원"
-          isRequired placeholder="선택"
+          isRequired
+          placeholder="선택"
           items={capacityOptions}
           value={maxCapacity}
           onChange={setMaxCapacity}

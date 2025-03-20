@@ -98,7 +98,6 @@ const ConferenceForm = ({ mode, open, onClose, onSubmit, initialData }: Conferen
     }
 
     onSubmit(result.data);
-    onClose();
   };
 
   return (

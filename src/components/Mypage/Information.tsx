@@ -1,7 +1,7 @@
 import { Button, css, Typography, useTheme } from '@mui/material';
 import ImageModifier from './ImageModifier';
 
-const Information = () => {
+const Information = ({ buttonClick }: { buttonClick: () => void }) => {
   const { palette, typo, radius } = useTheme();
 
   return (
@@ -62,6 +62,7 @@ const Information = () => {
           color: ${palette.text.primary};
           border: none;
         `}
+        onClick={buttonClick}
       >
         포인트 자세히 알아보기
       </Button>

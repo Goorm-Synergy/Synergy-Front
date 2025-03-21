@@ -6,6 +6,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ConfirmDeleteDialog from '../ConfirmDeleteDialog';
 import QRPopup from './Popup/QRPopup';
+import DetailChart from './DetailChart';
 
 interface SessionBoxProps {
   date: string;
@@ -18,7 +19,15 @@ interface SessionBoxProps {
   onEdit: () => void;
 }
 
-const SessionBox = ({ date, place, time, title, speaker, onDelete, onEdit }: SessionBoxProps) => {
+const SessionBox = ({
+  date,
+  place,
+  time,
+  title,
+  speaker,
+  onDelete,
+  onEdit,
+}: SessionBoxProps) => {
   const theme = useTheme();
   const { palette, spacing, typo } = theme;
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -29,10 +38,11 @@ const SessionBox = ({ date, place, time, title, speaker, onDelete, onEdit }: Ses
     display: flex;
     flex-direction: column;
     background-color: ${palette.background.quaternary};
-    padding: ${spacing(2)}px;
+    padding: 24px;
     border-radius: 18px;
     margin-bottom: ${spacing(2)}px;
     color: ${palette.text.primary};
+    overflow-x: auto;
   `;
 
   const infoStyle = css`
@@ -44,8 +54,8 @@ const SessionBox = ({ date, place, time, title, speaker, onDelete, onEdit }: Ses
   const iconContainerStyle = css`
     color: ${palette.icon.primary};
     position: absolute;
-    top: 8px;
-    right: 8px;
+    top: 24px;
+    right: 24px;
     display: flex;
     gap: 2px;
   `;
@@ -71,24 +81,36 @@ const SessionBox = ({ date, place, time, title, speaker, onDelete, onEdit }: Ses
         />
 
         <Box css={iconContainerStyle}>
-          <IconButton size="small" color="inherit" onClick={() => setQrPopupOpen(true)}>
+          <IconButton
+            size="small"
+            color="inherit"
+            onClick={() => setQrPopupOpen(true)}
+          >
             <QrCodeIcon fontSize="small" />
           </IconButton>
           <IconButton size="small" color="inherit" onClick={onEdit}>
             <EditIcon fontSize="small" />
           </IconButton>
-          <IconButton size="small" color="inherit" onClick={() => setDeleteDialogOpen(true)}>
+          <IconButton
+            size="small"
+            color="inherit"
+            onClick={() => setDeleteDialogOpen(true)}
+          >
             <DeleteIcon fontSize="small" />
           </IconButton>
         </Box>
 
         {/* 정보 영역 */}
-        <Typography css={infoStyle}>{date} {place}</Typography>
+        <Typography css={infoStyle}>
+          {date} {place}
+        </Typography>
         <Typography css={infoStyle}>{time}</Typography>
-        <Typography css={infoStyle}>{title} {speaker}</Typography>
+        <Typography css={infoStyle}>
+          {title} {speaker}
+        </Typography>
 
         {/* 차트 데이터 영역 */}
-        <Typography variant="body2">!차트 데이터 표시 영역!</Typography>
+        <DetailChart />
       </Box>
     </>
   );

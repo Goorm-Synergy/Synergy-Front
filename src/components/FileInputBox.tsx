@@ -9,6 +9,7 @@ interface Props {
   isRequired?: boolean;
   placeholder?: string;
   onChange?: (value: File | null) => void;
+  description?: string;
 }
 
 const FileInputBox = ({
@@ -17,6 +18,7 @@ const FileInputBox = ({
   isRequired,
   placeholder,
   onChange,
+  description,
 }: Props) => {
   const { palette, typo, radius } = useTheme();
   const [value, setValue] = useState<File | null>(null);
@@ -39,7 +41,6 @@ const FileInputBox = ({
       >
         {`${label} ${isRequired ? '*' : ''}`}
       </span>
-
       {/* MuiFileInput을 직접 클릭 가능하도록 설정 */}
       <MuiFileInput
         id={id}
@@ -99,6 +100,15 @@ const FileInputBox = ({
           ),
         }}
       />
+      <span
+        css={css`
+          ${typo.body.s}
+          color: ${palette.text.tertiary};
+          margin-top: 4px;
+        `}
+      >
+        {description}
+      </span>
     </FormControl>
   );
 };

@@ -76,6 +76,10 @@ const FileInputBox = ({
               opacity: 1;
             }
           }
+
+          .MuiInputBase-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+            border-color: ${palette.border.focused};
+          }
         `}
         InputProps={{
           endAdornment: (

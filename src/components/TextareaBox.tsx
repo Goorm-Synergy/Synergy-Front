@@ -68,7 +68,7 @@ const TextareaBox = ({
             border-color: ${palette.border.focused};
           }
 
-          &::-webkit-scrollbar-track {
+          & ::-webkit-scrollbar-track {
             background: ${palette.background.quaternary};
           }
         `}

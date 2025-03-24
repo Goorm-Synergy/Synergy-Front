@@ -7,10 +7,8 @@ import PointSystem from '@components/Mypage/PointSystem';
 import RecentPoints from '@components/Mypage/RecentPoints';
 import { styled } from '@mui/material';
 import { useState } from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
 import { useNavigate } from 'react-router-dom';
-import ErrorFallback from '@components/ErrorFallback';
-import { useAttendeeProfile } from '@stores/server/attendee';
+import { useAttendeePoints, useAttendeeProfile } from '@stores/server/attendee';
 
 type ModalType = 'point-system' | 'my-point' | 'company-list' | null;
 
@@ -18,63 +16,62 @@ const Mypage = () => {
   const [modalOpen, setModalOpen] = useState<ModalType>(null);
   const navigate = useNavigate();
   const { data: myData } = useAttendeeProfile();
+  const { data: myPoints } = useAttendeePoints();
 
   return (
-    <ErrorBoundary fallback={<ErrorFallback />}>
-      <Wrapper>
-        <TopContainer>
-          <HeaderText>F’LINK 2025</HeaderText>
-          <Information
-            {...myData.data}
-            buttonClick={() => setModalOpen('point-system')}
-          />
-        </TopContainer>
-        <BottomContainer>
-          <ActionColumn
-            onClick={() => setModalOpen('my-point')}
-            text="포인트 적립 내역"
-          />
-          <RecentPoints />
-          {myData.data.isHiringInterested && (
-            <>
-              <ActionColumn
-                onClick={() => setModalOpen('company-list')}
-                text="내 정보를 열람한 기업 (5)"
-              />
-              <ActionColumn
-                onClick={() => navigate(`/my-info/${myData.data.attendeeId}`)}
-                text="내 정보 보기"
-              />
-            </>
-          )}
+    <Wrapper>
+      <TopContainer>
+        <HeaderText>F’LINK 2025</HeaderText>
+        <Information
+          {...myData.data}
+          buttonClick={() => setModalOpen('point-system')}
+        />
+      </TopContainer>
+      <BottomContainer>
+        <ActionColumn
+          onClick={() => setModalOpen('my-point')}
+          text="포인트 적립 내역"
+        />
+        <RecentPoints data={myPoints.data.slice(0, 3)} />
+        {myData.data.isHiringInterested && (
+          <>
+            <ActionColumn
+              onClick={() => setModalOpen('company-list')}
+              text="내 정보를 열람한 기업 (5)"
+            />
+            <ActionColumn
+              onClick={() => navigate(`/my-info/${myData.data.attendeeId}`)}
+              text="내 정보 보기"
+            />
+          </>
+        )}
 
-          <ActionColumn onClick={() => {}} text="비밀번호 변경" />
-          <ActionColumn onClick={() => {}} text="로그아웃" />
-        </BottomContainer>
+        <ActionColumn onClick={() => {}} text="비밀번호 변경" />
+        <ActionColumn onClick={() => {}} text="로그아웃" />
+      </BottomContainer>
 
-        {/* 모달 */}
-        <AnimatedModal
-          open={modalOpen === 'point-system'}
-          onClose={() => setModalOpen(null)}
-        >
-          <PointSystem />
-        </AnimatedModal>
+      {/* 모달 */}
+      <AnimatedModal
+        open={modalOpen === 'point-system'}
+        onClose={() => setModalOpen(null)}
+      >
+        <PointSystem />
+      </AnimatedModal>
 
-        <AnimatedModal
-          open={modalOpen === 'my-point'}
-          onClose={() => setModalOpen(null)}
-        >
-          <MyPoint />
-        </AnimatedModal>
+      <AnimatedModal
+        open={modalOpen === 'my-point'}
+        onClose={() => setModalOpen(null)}
+      >
+        <MyPoint data={myPoints.data} />
+      </AnimatedModal>
 
-        <AnimatedModal
-          open={modalOpen === 'company-list'}
-          onClose={() => setModalOpen(null)}
-        >
-          <CompanyList />
-        </AnimatedModal>
-      </Wrapper>
-    </ErrorBoundary>
+      <AnimatedModal
+        open={modalOpen === 'company-list'}
+        onClose={() => setModalOpen(null)}
+      >
+        <CompanyList />
+      </AnimatedModal>
+    </Wrapper>
   );
 };
 

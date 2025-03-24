@@ -15,3 +15,11 @@ export const useAttendeeProfile = () => {
 
   return query;
 };
+
+export const useAttendeePoints = () => {
+  const query = useSuspenseQuery(
+    attendeeQueries.points(useAuthStore.getState().user.identifier),
+  );
+
+  return query;
+};

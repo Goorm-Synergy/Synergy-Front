@@ -44,24 +44,28 @@ const QnaSection = () => {
       <Box
         component={'div'}
         css={css`
-          display: flex;
-          flex-direction: column;
-          gap: 20px;
-          padding: 16px;
-          height: 200px;
-          width: 100%;
+          border-radius: ${radius.xl};
           background-color: ${palette.opacity.opa100};
           border: 1px solid ${palette.border.primary};
-          border-radius: ${radius.xl};
-          overflow-y: auto;
-          &::-webkit-scrollbar {
-            display: none;
-          }
+          padding: 16px;
+          width: 100%;
+          height: 200px;
         `}
       >
-        {json.qna.map((item) => (
-          <Question key={item.id} {...item} />
-        ))}
+        <Box
+          css={css`
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            height: 100%;
+            overflow-y: auto;
+            padding-right: 10px;
+          `}
+        >
+          {json.qna.map((item) => (
+            <Question key={item.id} {...item} />
+          ))}
+        </Box>
       </Box>
       <Button
         css={css`

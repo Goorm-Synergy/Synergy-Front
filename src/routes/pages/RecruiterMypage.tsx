@@ -3,6 +3,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import defaultProfileImg from 'src/assets/default-profile-img.png';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import { useNavigate } from 'react-router-dom';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 const talentList = [
   {
@@ -270,16 +271,14 @@ const RecruiterMypage = () => {
           >
             내가 저장한 인재 ({talentList.length})
           </Typography>
-          <Typography
+          <ArrowForwardIosIcon
             css={css`
-              font-size: 20px;
+              font-size: 16px;
               cursor: pointer;
               color: ${palette.icon.primary};
             `}
             onClick={() => navigate('/recruiter/main')}
-          >
-            &gt;
-          </Typography>
+          />
         </Box>
 
         {talentList.length === 0 ? (

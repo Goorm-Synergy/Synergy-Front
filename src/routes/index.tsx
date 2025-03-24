@@ -19,6 +19,10 @@ import BoothPage from './pages/BoothPage';
 import BoothDetails from './pages/BoothDetails';
 import SessionPage from './pages/SessionPage';
 import MyInfo from './pages/MyInfo';
+import RecruiterNavLayout from './layouts/RecruiterNav';
+import RecruiterPage from './pages/RecruiterPage';
+import RecruiterMyPage from './pages/RecruiterMypage';
+import RecruiterMain from './pages/RecruiterMain';
 
 const router = createBrowserRouter([
   {
@@ -111,6 +115,24 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: '/recruiter',
+    element: <RecruiterNavLayout />,
+    children: [
+      {
+        path: 'list',
+        element: <RecruiterPage />,
+      },
+      {
+        path: 'mypage',
+        element: <RecruiterMyPage />,
+      },
+      {
+        path: 'main',
+        element: <RecruiterMain />,
+      }
+    ],
+  }
 ]);
 
 export default function Router() {

@@ -10,21 +10,24 @@ import { useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useNavigate } from 'react-router-dom';
 import ErrorFallback from '@components/ErrorFallback';
+import { useAttendeeProfile } from '@stores/server/attendee';
 
 type ModalType = 'point-system' | 'my-point' | 'company-list' | null;
-
-const id = '1';
 
 const Mypage = () => {
   const [modalOpen, setModalOpen] = useState<ModalType>(null);
   const navigate = useNavigate();
+  const { data: myData } = useAttendeeProfile();
 
   return (
     <ErrorBoundary fallback={<ErrorFallback />}>
       <Wrapper>
         <TopContainer>
           <HeaderText>F’LINK 2025</HeaderText>
-          <Information buttonClick={() => setModalOpen('point-system')} />
+          <Information
+            {...myData.data}
+            buttonClick={() => setModalOpen('point-system')}
+          />
         </TopContainer>
         <BottomContainer>
           <ActionColumn
@@ -32,14 +35,19 @@ const Mypage = () => {
             text="포인트 적립 내역"
           />
           <RecentPoints />
-          <ActionColumn
-            onClick={() => setModalOpen('company-list')}
-            text="내 정보를 열람한 기업 (5)"
-          />
-          <ActionColumn
-            onClick={() => navigate(`/my-info/${id}`)}
-            text="내 정보 보기"
-          />
+          {myData.data.isHiringInterested && (
+            <>
+              <ActionColumn
+                onClick={() => setModalOpen('company-list')}
+                text="내 정보를 열람한 기업 (5)"
+              />
+              <ActionColumn
+                onClick={() => navigate(`/my-info/${myData.data.attendeeId}`)}
+                text="내 정보 보기"
+              />
+            </>
+          )}
+
           <ActionColumn onClick={() => {}} text="비밀번호 변경" />
           <ActionColumn onClick={() => {}} text="로그아웃" />
         </BottomContainer>

@@ -7,6 +7,7 @@ const apiClient = axios.create({
     'Content-Type': 'application/json',
   },
 });
+
 // 요청 인터셉터
 apiClient.interceptors.request.use(
   (config) => {
@@ -56,3 +57,5 @@ apiClient.interceptors.response.use(
 );
 */
 }
+
+export default apiClient;

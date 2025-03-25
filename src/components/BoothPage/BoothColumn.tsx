@@ -1,15 +1,16 @@
 import { css, styled, useTheme } from '@mui/material';
+import { BoothContent } from '@routes/pages/BoothPage';
 import { useNavigate } from 'react-router-dom';
+import DefaultImage from '@assets/default-booth-image.png';
 
-interface Props {
-  id: number;
-  title: string;
-  desc: string;
-  location: string;
-  hall: string;
-}
-
-const BoothColumn = ({ id, title, desc, location, hall }: Props) => {
+const BoothColumn = ({
+  id,
+  company,
+  companyType,
+  location,
+  detailLocation,
+  image,
+}: BoothContent) => {
   const { palette, typo } = useTheme();
   const navigate = useNavigate();
   const flexrow = css`
@@ -17,6 +18,7 @@ const BoothColumn = ({ id, title, desc, location, hall }: Props) => {
     justify-content: space-between;
     width: 100%;
   `;
+
   return (
     <div
       css={css`
@@ -25,7 +27,7 @@ const BoothColumn = ({ id, title, desc, location, hall }: Props) => {
       `}
       onClick={() => navigate(`/booth/${id}`)}
     >
-      <StyledImage src="" />
+      <StyledImage src={image || DefaultImage} />
       <div
         css={css`
           ${flexrow}
@@ -33,7 +35,7 @@ const BoothColumn = ({ id, title, desc, location, hall }: Props) => {
           color: ${palette.text.primary};
         `}
       >
-        <span>{title}</span>
+        <span>{company}</span>
         <span>{location}</span>
       </div>
       <div
@@ -43,8 +45,8 @@ const BoothColumn = ({ id, title, desc, location, hall }: Props) => {
           color: ${palette.text.secondary};
         `}
       >
-        <span>{desc}</span>
-        <span>{hall}</span>
+        <span>{companyType}</span>
+        <span>{detailLocation}</span>
       </div>
     </div>
   );

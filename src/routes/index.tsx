@@ -7,7 +7,6 @@ import LoginPage from './pages/ParticipantLoginPage';
 import RoleSelectionPage from './pages/RoleSelectionPage';
 import AdminLoginPage from './pages/AdminLoginPage';
 import SignupPage from './pages/SignupPage';
-import FindIdPage from './pages/FindIdPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import OnBoarding from './pages/OnBoarding';
 import DefaultNavLayout from './layouts/DefaultNav';
@@ -64,10 +63,6 @@ const router = createBrowserRouter([
       {
         path: '/signup',
         element: <SignupPage />,
-      },
-      {
-        path: '/find-id',
-        element: <FindIdPage />,
       },
       {
         path: '/reset-password',

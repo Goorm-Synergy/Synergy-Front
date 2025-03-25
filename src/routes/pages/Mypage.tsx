@@ -8,7 +8,11 @@ import RecentPoints from '@components/Mypage/RecentPoints';
 import { styled } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAttendeePoints, useAttendeeProfile } from '@stores/server/attendee';
+import {
+  useAttendeeLinkedRecruiters,
+  useAttendeePoints,
+  useAttendeeProfile,
+} from '@stores/server/attendee';
 
 type ModalType = 'point-system' | 'my-point' | 'company-list' | null;
 
@@ -17,6 +21,7 @@ const Mypage = () => {
   const navigate = useNavigate();
   const { data: myData } = useAttendeeProfile();
   const { data: myPoints } = useAttendeePoints();
+  const { data: myRecruiters } = useAttendeeLinkedRecruiters();
 
   return (
     <Wrapper>
@@ -37,7 +42,7 @@ const Mypage = () => {
           <>
             <ActionColumn
               onClick={() => setModalOpen('company-list')}
-              text="내 정보를 열람한 기업 (5)"
+              text={`내 정보를 열람한 기업 (${myRecruiters.data.length})`}
             />
             <ActionColumn
               onClick={() => navigate(`/my-info/${myData.data.attendeeId}`)}
@@ -69,7 +74,7 @@ const Mypage = () => {
         open={modalOpen === 'company-list'}
         onClose={() => setModalOpen(null)}
       >
-        <CompanyList />
+        <CompanyList data={myRecruiters.data} />
       </AnimatedModal>
     </Wrapper>
   );

@@ -10,7 +10,7 @@ export const useAttendeeProfile = () => {
   });
 
   const query = useSuspenseQuery(
-    attendeeQueries.user(useAuthStore.getState().user.identifier),
+    attendeeQueries.users(useAuthStore.getState().user.identifier),
   );
 
   return query;
@@ -19,6 +19,14 @@ export const useAttendeeProfile = () => {
 export const useAttendeePoints = () => {
   const query = useSuspenseQuery(
     attendeeQueries.points(useAuthStore.getState().user.identifier),
+  );
+
+  return query;
+};
+
+export const useAttendeeLinkedRecruiters = () => {
+  const query = useSuspenseQuery(
+    attendeeQueries.linkedRecruiters(useAuthStore.getState().user.identifier),
   );
 
   return query;

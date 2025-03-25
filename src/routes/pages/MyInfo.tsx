@@ -4,7 +4,7 @@ import OtherInformation from '@components/MyInfoPage/OtherInformation';
 import { styled, useTheme } from '@mui/material';
 import { useAuthStore } from '@stores/client/useAuthStore';
 import { useAttendeeDetailInfo } from '@stores/server/attendee';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const MyInfo = () => {
   const { palette } = useTheme();
@@ -17,12 +17,9 @@ const MyInfo = () => {
     'id': 1,
   });
 
-  const {
-    data: { data },
-  } = useAttendeeDetailInfo({
-    identifier: useAuthStore.getState().user.identifier,
-    id: useAuthStore.getState().user.id,
-  });
+  const { id } = useParams();
+
+  const { data: detailInfo } = useAttendeeDetailInfo(Number(id));
 
   return (
     <>
@@ -31,8 +28,8 @@ const MyInfo = () => {
         onClick={() => navigate(-1)}
       />
       <Container>
-        <BasicInformation {...data.baseInfo} />
-        <OtherInformation {...data.detailInfo} />
+        <BasicInformation {...detailInfo.data.baseInfo} />
+        <OtherInformation {...detailInfo.data.detailInfo} />
       </Container>
     </>
   );

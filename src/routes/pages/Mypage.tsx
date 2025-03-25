@@ -13,12 +13,21 @@ import {
   useAttendeePoints,
   useAttendeeProfile,
 } from '@stores/server/attendee';
+import { useAuthStore } from '@stores/client/useAuthStore';
 
 type ModalType = 'point-system' | 'my-point' | 'company-list' | null;
 
 const Mypage = () => {
   const [modalOpen, setModalOpen] = useState<ModalType>(null);
   const navigate = useNavigate();
+
+  useAuthStore.getState().setAuth({
+    'accessToken': import.meta.env.VITE_AUTH_TOKEN,
+    'identifier': 'jiwon.kim@example.com',
+    'role': 'ATTENDEE',
+    'id': 1,
+  });
+
   const { data: myData } = useAttendeeProfile();
   const { data: myPoints } = useAttendeePoints();
   const { data: myRecruiters } = useAttendeeLinkedRecruiters();

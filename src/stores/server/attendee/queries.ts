@@ -22,9 +22,9 @@ export const attendeeQueries = {
       queryKey: [...attendeeQueries.user(identifier), 'linked-recruiters'],
       queryFn: () => fetchLinkedRecruiters(),
     }),
-  detailInfo: (identifier: string | null, id: number | null) =>
+  detailInfo: (id: number | null) =>
     queryOptions({
-      queryKey: [...attendeeQueries.user(identifier), 'detail-info', id],
+      queryKey: ['detail-info', id],
       queryFn: () => fetchAttendeeDetailInfo(id),
     }),
 };

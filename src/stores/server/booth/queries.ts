@@ -2,7 +2,7 @@ import { fetchBoothDetail, fetchBoothList } from '@api/booth-controller';
 import { queryOptions } from '@tanstack/react-query';
 
 export const boothQueries = {
-  all: () => ['attendee'],
+  all: () => ['booth'],
   list: () => [...boothQueries.all(), 'list'],
   lists: () =>
     queryOptions({

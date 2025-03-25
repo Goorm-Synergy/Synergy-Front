@@ -24,6 +24,7 @@ export const useLoginMutation = () => {
         accessToken: data.accessToken,
         identifier: data.identifier,
         role: data.role,
+        id: data.id,
       });
       navigate('/onboarding');
     },
@@ -46,6 +47,7 @@ export const useAdminLoginMutation = () => {
         accessToken: data.accessToken,
         identifier: data.identifier,
         role: data.role,
+        id: data.id,
       });
       if (data.role === 'ADMIN') {
         navigate('/admin');
@@ -118,10 +120,10 @@ export const useResetPasswordRequestMutation = () => {
   });
 };
 
-//비밀번호 재설정 
+//비밀번호 재설정
 export const useResetPasswordMutation = () => {
   const navigate = useNavigate();
-  
+
   return useMutation({
     mutationKey: resetPasswordQuery.queryKey,
     mutationFn: resetPasswordQuery.queryFn,

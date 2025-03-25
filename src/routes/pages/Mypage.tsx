@@ -60,7 +60,10 @@ const Mypage = () => {
           </>
         )}
 
-        <ActionColumn onClick={() => {}} text="비밀번호 변경" />
+        <ActionColumn
+          onClick={() => navigate('/reset-password')}
+          text="비밀번호 변경"
+        />
         <ActionColumn onClick={() => {}} text="로그아웃" />
       </BottomContainer>
 

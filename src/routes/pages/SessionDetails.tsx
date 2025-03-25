@@ -3,12 +3,18 @@ import Information from '@components/SessionPage/Information';
 import QnaSection from '@components/SessionPage/QnaSection';
 import SuccessPopup from '@components/SuccessPopup';
 import { styled, useTheme } from '@mui/material';
+import { useSessionDetail } from '@stores/server/session';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const SessionDetails = () => {
   const { palette } = useTheme();
   const navigate = useNavigate();
+  const { id } = useParams();
+  const {
+    data: { data },
+  } = useSessionDetail(Number(id));
+
   const [qnaSuccess, setQnaSuccess] = useState(false);
   const [qrSuccess, setQrSuccess] = useState(false);
 
@@ -21,10 +27,19 @@ const SessionDetails = () => {
       />
       <Container>
         {/* Session Information */}
-        <Information />
+        <Information
+          id={data.sessionId}
+          title={data.title}
+          speaker={data.speaker}
+          speakerPosition={data.speakerPosition}
+          startTime={data.startTime}
+          endTime={data.endTime}
+          image={data.image}
+          description={data.description}
+        />
 
         {/* Q&A */}
-        <QnaSection />
+        <QnaSection qnaData={data.questionResDto} />
       </Container>
 
       {qnaSuccess && (

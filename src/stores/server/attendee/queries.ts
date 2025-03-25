@@ -1,6 +1,8 @@
-import { fetchMyProfile } from '@api/attendee-controller';
-import { fetchAttendeeDetailInfo } from '@api/attendee-controller/fetchAttendeeDetailInfo';
-import { fetchLinkedRecruiters } from '@api/attendee-controller/fetchLinkedRecruiters';
+import {
+  fetchMyProfile,
+  fetchAttendeeDetailInfo,
+  fetchLinkedRecruiters,
+} from '@api/attendee-controller';
 import { fetchMyPoints } from '@api/point-controller/fetchMyPoints';
 import { queryOptions } from '@tanstack/react-query';
 

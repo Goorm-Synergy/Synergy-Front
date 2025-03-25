@@ -1,7 +1,20 @@
 import { Button, css, Typography, useTheme } from '@mui/material';
 import ImageModifier from './ImageModifier';
+import { POINT_SYSTEM } from 'src/constant/point-system';
 
-const Information = ({ buttonClick }: { buttonClick: () => void }) => {
+interface Props {
+  membershipLevel: 'BRONZE' | 'SILVER' | 'GOLD' | 'PLATINUM';
+  name: string;
+  totalPoints: number;
+  buttonClick: () => void;
+}
+
+const Information = ({
+  membershipLevel,
+  name,
+  totalPoints,
+  buttonClick,
+}: Props) => {
   const { palette, typo, radius } = useTheme();
 
   return (
@@ -22,17 +35,25 @@ const Information = ({ buttonClick }: { buttonClick: () => void }) => {
             margin-top: 2px;
           `}
         >
-          김지원 님, 반갑습니다.
+          {name} 님, 반갑습니다.
         </Typography>
         <Typography
           variant="h3"
           css={css`
+            display: flex;
+            align-items: center;
             ${typo.title.xs}
             color: ${palette.text.primary};
             margin: 8px 0px 4px;
           `}
         >
-          BRONZE 250P
+          <img
+            src={POINT_SYSTEM[membershipLevel].image}
+            width={26}
+            height={30}
+            css={{ padding: '1px 5px', boxSizing: 'content-box' }}
+          />{' '}
+          {membershipLevel} {totalPoints}P
         </Typography>
         <Typography
           variant="h3"

@@ -45,15 +45,11 @@ const router = createBrowserRouter([
     element: <DefaultLayout />,
     children: [
       {
-        path: '/',
-        element: <Home />,
-      },
-      {
         path: '/participant-login',
         element: <LoginPage />,
       },
       {
-        path: '/role-selection',
+        path: '/',
         element: <RoleSelectionPage />,
       },
       {

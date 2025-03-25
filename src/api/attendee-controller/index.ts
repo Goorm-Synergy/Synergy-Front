@@ -10,16 +10,6 @@ export const fetchMyProfile = async () => {
   }
 };
 
-export const fetchAttendeeDetailInfo = async (attendeeId: number) => {
-  try {
-    const res = await apiClient.get(`/api/v1/attendee/${attendeeId}`);
-    return res.data;
-  } catch (err) {
-    console.log(err);
-    return Promise.reject(err);
-  }
-};
-
 export const patchOnboardingInfos = async () => {
   try {
     const res = await apiClient.patch('/api/v1/attendee/onboarding/job-info', {

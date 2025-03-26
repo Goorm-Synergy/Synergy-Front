@@ -103,7 +103,6 @@ const OnBoarding = () => {
                 }
 
                 setError(null);
-                setForm('work', work);
 
                 if (work.employeement_agree === 'yes')
                   return history.push('info', (prev) => ({ ...prev, work }));

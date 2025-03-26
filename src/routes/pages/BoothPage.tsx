@@ -5,10 +5,10 @@ import { useBoothList } from '@stores/server/booth';
 
 export type BoothContent = {
   id: number;
-  company: string;
+  companyName: string;
   companyType: string;
-  location: string;
-  detailLocation: string;
+  boothLocation: string;
+  boothNumber: string;
   image: string;
 };
 
@@ -17,6 +17,8 @@ const BoothPage = () => {
   const {
     data: { data },
   } = useBoothList();
+
+  console.log(data.content);
 
   return (
     <>

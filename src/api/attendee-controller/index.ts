@@ -1,11 +1,36 @@
 import apiClient from '@utils/axios';
+import { AxiosError } from 'axios';
 
 export const fetchMyProfile = async () => {
   try {
     const res = await apiClient.get('/api/v1/attendee/my');
     return res.data;
   } catch (err) {
+    if (err instanceof AxiosError) {
+      if (err.status === 403) return (window.location.href = '/');
+    }
+    return Promise.reject(err);
+  }
+};
+
+export const fetchLinkedRecruiters = async () => {
+  try {
+    const res = await apiClient.get('/api/v1/attendee/liked-recruiters');
+    return res.data;
+  } catch (err) {
     console.log(err);
+    return Promise.reject(err);
+  }
+};
+
+export const fetchAttendeeDetailInfo = async (attendeeId: number | null) => {
+  try {
+    const res = await apiClient.get(`/api/v1/attendee/${attendeeId}`);
+    return res.data;
+  } catch (err) {
+    if (err instanceof AxiosError) {
+      if (err.status === 403) return (window.location.href = '/');
+    }
     return Promise.reject(err);
   }
 };

@@ -1,21 +1,18 @@
 import { css, styled, useTheme } from '@mui/material';
+import { SessionContent } from '@routes/pages/SessionPage';
+import { getTimeDifferenceText } from '@utils/time';
 import { useNavigate } from 'react-router-dom';
-
-interface Props {
-  id: number;
-  title: string;
-  speaker: string;
-  startTime: string;
-  sessionTime: string;
-}
+import DefaultImage from '@assets/deafult-session-image.png';
 
 const SessionColumn = ({
   id,
   title,
   speaker,
+  speakerPosition,
   startTime,
-  sessionTime,
-}: Props) => {
+  endTime,
+  image,
+}: SessionContent) => {
   const { palette, typo } = useTheme();
   const navigate = useNavigate();
   const flexrow = css`
@@ -31,7 +28,7 @@ const SessionColumn = ({
       `}
       onClick={() => navigate(`/session/${id}`)}
     >
-      <StyledImage src="" />
+      <StyledImage src={image || DefaultImage} />
       <div
         css={css`
           ${flexrow}
@@ -49,8 +46,10 @@ const SessionColumn = ({
           color: ${palette.text.secondary};
         `}
       >
-        <span>{speaker}</span>
-        <span>{sessionTime}</span>
+        <span>
+          {speaker} {speakerPosition}
+        </span>
+        <span>{getTimeDifferenceText(startTime, endTime)}</span>
       </div>
     </div>
   );

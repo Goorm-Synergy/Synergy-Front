@@ -3,7 +3,7 @@ import ImageModifier from './ImageModifier';
 import { POINT_SYSTEM } from 'src/constant/point-system';
 
 interface Props {
-  membershipLevel: 'BRONZE' | 'SILVER' | 'GOLD' | 'PLATINUM';
+  membershipLevel: 'DEFAULT' | 'BRONZE' | 'SILVER' | 'GOLD' | 'PLATINUM';
   name: string;
   totalPoints: number;
   buttonClick: () => void;
@@ -47,13 +47,30 @@ const Information = ({
             margin: 8px 0px 4px;
           `}
         >
-          <img
-            src={POINT_SYSTEM[membershipLevel].image}
-            width={26}
-            height={30}
-            css={{ padding: '1px 5px', boxSizing: 'content-box' }}
-          />{' '}
-          {membershipLevel} {totalPoints}P
+          {membershipLevel !== 'DEFAULT' && (
+            <img
+              src={POINT_SYSTEM[membershipLevel].image}
+              width={26}
+              height={30}
+              alt={`${membershipLevel} 등급 이미지`}
+              css={css`
+                padding: 1px 5px;
+                box-sizing: content-box;
+              `}
+            />
+          )}
+
+          <span>
+            {membershipLevel === 'DEFAULT' ? '내 포인트' : membershipLevel}
+          </span>
+          <span
+            css={{
+              color: palette.text.secondary,
+              marginLeft: '4px',
+            }}
+          >
+            {totalPoints}P
+          </span>
         </Typography>
         <Typography
           variant="h3"

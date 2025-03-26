@@ -26,7 +26,7 @@ export const useLoginMutation = () => {
         role: data.role,
         id: data.id,
       });
-      navigate('/onboarding');
+      navigate('/mypage');
     },
     onError: (error: any) => {
       alert(error.message || '로그인 중 오류가 발생했습니다.');
@@ -70,7 +70,7 @@ export const useAuthSignupMutation = () => {
     mutationFn: signupRequestQuery.queryFn,
     onSuccess: () => {
       alert('회원가입이 완료되었습니다.');
-      navigate('/participant-login');
+      navigate('/onboarding');
     },
     onError: (error: any) => {
       alert(error.message || '회원가입 중 오류가 발생했습니다.');

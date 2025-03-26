@@ -4,7 +4,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 type SelectBoxProps<T extends boolean> = {
   id: string;
   label: string;
-  items: { code: number; name: string }[];
+  items: { code: number | string; name: string }[];
   value: T extends true ? string[] : string; // 조건부 타입
   onChange: (value: T extends true ? string[] : string) => void;
   disabled?: boolean;

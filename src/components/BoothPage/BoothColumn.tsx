@@ -5,10 +5,10 @@ import DefaultImage from '@assets/default-booth-image.png';
 
 const BoothColumn = ({
   id,
-  company,
+  companyName,
   companyType,
-  location,
-  detailLocation,
+  boothLocation,
+  boothNumber,
   image,
 }: BoothContent) => {
   const { palette, typo } = useTheme();
@@ -35,8 +35,8 @@ const BoothColumn = ({
           color: ${palette.text.primary};
         `}
       >
-        <span>{company}</span>
-        <span>{location}</span>
+        <span>{companyName}</span>
+        <span>{boothLocation}</span>
       </div>
       <div
         css={css`
@@ -46,7 +46,7 @@ const BoothColumn = ({
         `}
       >
         <span>{companyType}</span>
-        <span>{detailLocation}</span>
+        <span>{boothNumber}</span>
       </div>
     </div>
   );

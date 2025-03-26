@@ -7,7 +7,8 @@ export type Jobs = {
 
 export type Infos = {
   // 필수 속성
-  hope_job: string;
+  hope_job_group: string;
+  hope_job_position: string;
   education: string;
   age: string;
   skills: string;

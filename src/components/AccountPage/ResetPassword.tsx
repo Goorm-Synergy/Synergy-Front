@@ -7,6 +7,10 @@ import {
   useResetPasswordRequestMutation,
   useResetPasswordMutation
 } from '@stores/server/auth';
+import { signupSchema } from '@utils/schemas/signup-schema';
+import ErrorPopover from '@components/ErrorPopover';
+
+const passwordSchema = signupSchema.shape.password;
 
 const ResetPassword = (): React.JSX.Element => {
   const theme = useTheme();
@@ -19,6 +23,7 @@ const ResetPassword = (): React.JSX.Element => {
   const [phone, setPhone] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
+  const [error, setFormError] = useState<string | null>(null);
 
   const requestAuthCodeMutation = useRequestAuthCodeMutation();
   const confirmAuthCodeMutation = useConfirmAuthCodeMutation();
@@ -60,6 +65,12 @@ const ResetPassword = (): React.JSX.Element => {
 
   const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const result = passwordSchema.safeParse(newPassword);
+    if (!result.success) {
+      const firstError = result.error.errors[0]?.message || '입력값을 다시 확인해 주세요.';
+      setFormError(firstError);
+      return;
+    }
     resetPasswordMutation.mutateAsync({ email, newPassword });
   };
 
@@ -265,6 +276,7 @@ const ResetPassword = (): React.JSX.Element => {
           </Button>
         </form>
       )}
+      <ErrorPopover error={error} />
     </Box>
   );
 };

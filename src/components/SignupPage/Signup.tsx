@@ -5,6 +5,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ErrorPopover from '@components/ErrorPopover';
 import { useAuthSignupMutation, useRequestAuthCodeMutation, useConfirmAuthCodeMutation } from '@stores/server/auth';
+import { signupSchema } from '@utils/schemas/signup-schema';
 
 const Signup = (): React.JSX.Element => {
   const theme = useTheme();
@@ -18,7 +19,7 @@ const Signup = (): React.JSX.Element => {
   const [phone, setPhone] = useState('');
   const [agreePersonalInfo, setAgreePersonalInfo] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setFormError] = useState<string | null>(null);
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
 
   const signupMutation = useAuthSignupMutation();
@@ -48,20 +49,25 @@ const Signup = (): React.JSX.Element => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!name) return setError('이름을 입력해주세요.');
-    if (!email) return setError('이메일을 입력해주세요.');
-    if (!authCode) return setError('인증번호를 입력해주세요.');
-    if (!ticketCode) return setError('티켓 코드를 입력해주세요.');
-    if (!password) return setError('비밀번호를 입력해주세요.');
-    if (!phone) return setError('휴대폰 번호를 입력해주세요.');
-    if (!agreePersonalInfo) return setError('개인정보 수집에 동의해주세요.');
-    if (!agreeTerms) return setError('이용 약관에 동의해주세요.');
-
+    const result = signupSchema.safeParse({
+      name,
+      email,
+      authCode,
+      ticketCode,
+      password,
+      phone,
+      agreePersonalInfo,
+      agreeTerms,
+    });
+    if (!result.success) {
+      const firstError = result.error.errors[0]?.message || '입력값을 다시 확인해 주세요.';
+      setFormError(firstError);
+      return;
+    }
     signupMutation.mutate({ name, email, password, phone });
   };
 
-  const handleRequestAuthCode = () => {
+  const handleRequestAuthCode = () => { 
     requestAuthCodeMutation.mutate(email, {
       onSuccess: () => {
         setTimeLeft(300);
@@ -69,7 +75,7 @@ const Signup = (): React.JSX.Element => {
     });
   };
 
-  const handleConfirmAuthCode = () => {
+  const handleConfirmAuthCode = () => { 
     confirmAuthCodeMutation.mutate({ email, code: authCode });
   };
 
@@ -347,12 +353,10 @@ const Signup = (): React.JSX.Element => {
             padding-right: ${spacing(2)};
           `}
         />
-
         <Button type="submit" variant="contained" fullWidth css={buttonStyle}>
           가입 완료
         </Button>
       </Box>
-
       <ErrorPopover error={error} />
     </Box>
   );

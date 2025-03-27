@@ -136,3 +136,21 @@ export const useResetPasswordMutation = () => {
     },
   });
 };
+
+export const useLogoutMutation = () => {
+  const navigate = useNavigate();
+
+  return useMutation({
+    mutationFn: async () => {
+      console.log(document.cookie);
+    },
+    onSuccess: () => {
+      alert('로그아웃 되었습니다.');
+      useAuthStore.getState().clearAuth();
+      navigate('/');
+    },
+    onError: (error: any) => {
+      alert(error.message || '로그아웃에 실패하였습니다.');
+    },
+  });
+};

@@ -44,6 +44,8 @@ const AddSession = ({
   const [maxCapacity, setMaxCapacity] = useState('');
   const [formError, setFormError] = useState<string | null>(null);
 
+  const createSessionMutation = useCreateSession();
+  
   const setSessionRegistered = useSessionStore(
     (state) => state.setSessionRegistered,
   );

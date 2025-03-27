@@ -2,6 +2,7 @@ import BackHeader from '@components/headers/BackHeader';
 import Information from '@components/SessionPage/Information';
 import QnaSection from '@components/SessionPage/QnaSection';
 import SuccessPopup from '@components/SuccessPopup';
+import { useQrVerifyCheck } from '@hooks/useQrVerifyCheck';
 import { styled, useTheme } from '@mui/material';
 import { useSessionDetail } from '@stores/server/session';
 import { useState } from 'react';
@@ -15,8 +16,10 @@ const SessionDetails = () => {
     data: { data },
   } = useSessionDetail(Number(id));
 
-  const [qnaSuccess, setQnaSuccess] = useState(false);
   const [qrSuccess, setQrSuccess] = useState(false);
+  const [qnaSuccess, setQnaSuccess] = useState(false);
+
+  useQrVerifyCheck({ onQrSuccess: () => setQrSuccess(true) });
 
   return (
     <>
@@ -48,9 +51,6 @@ const SessionDetails = () => {
           onClose={() => setQnaSuccess(false)}
           title="질문을 제출하였습니다."
           earnPoint={50}
-          totalPoint={250}
-          needPoint={50}
-          rating="SILVER"
         />
       )}
 
@@ -59,10 +59,7 @@ const SessionDetails = () => {
           open={true}
           onClose={() => setQrSuccess(false)}
           title="세션에 오신 것을 환영합니다!"
-          earnPoint={50}
-          totalPoint={250}
-          needPoint={50}
-          rating="SILVER"
+          earnPoint={30}
         />
       )}
     </>

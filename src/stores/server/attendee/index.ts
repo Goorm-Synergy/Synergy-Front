@@ -1,6 +1,14 @@
-import { useSuspenseQuery } from '@tanstack/react-query';
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from '@tanstack/react-query';
 import { attendeeQueries } from './queries';
 import { useAuthStore } from '@stores/client/useAuthStore';
+import {
+  patchOnboardingDetails,
+  patchOnboardingInfos,
+} from '@api/attendee-controller';
 
 export const useAttendeeProfile = () => {
   const { identifier } = useAuthStore.getState().user;
@@ -19,4 +27,29 @@ export const useAttendeeLinkedRecruiters = () => {
 
 export const useAttendeeDetailInfo = (id: number) => {
   return useSuspenseQuery(attendeeQueries.detailInfo(id));
+};
+
+export const useOnboardingPatch = () => {
+  const queryClient = useQueryClient();
+  const { identifier, id } = useAuthStore.getState().user;
+
+  const basicMutation = useMutation({
+    mutationFn: ({ form }: any) => patchOnboardingInfos({ form }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: attendeeQueries.user(identifier),
+      });
+    },
+  });
+
+  const detailMutation = useMutation({
+    mutationFn: ({ form }: any) => patchOnboardingDetails({ form }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: attendeeQueries.detailInfo(id),
+      });
+    },
+  });
+
+  return { basicMutation, detailMutation };
 };

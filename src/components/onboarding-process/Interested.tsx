@@ -11,12 +11,17 @@ import { useState } from 'react';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { INTERESTS } from 'src/constant/onboarding-lookups';
+import { useAttendeeProfile } from '@stores/server/attendee';
 interface Props {
   onNext: (interested_list: string[]) => void;
 }
 
 const Interested = (props: Props) => {
   const { palette, typo, radius } = useTheme();
+  const {
+    data: { data },
+  } = useAttendeeProfile();
+  console.log(data);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
   const handleCheckboxChange = (id: string) => {
@@ -46,7 +51,7 @@ const Interested = (props: Props) => {
             ${typo.title.l};
           `}
         >
-          김지원 님! <br />
+          {data.name} 님! <br />
           지금 정보를 입력하고, <br />
           포인트를 적립하여 <br />
           특별한 혜택을 누려보세요
@@ -60,7 +65,7 @@ const Interested = (props: Props) => {
             ${typo.body.l}
           `}
         >
-          관심 있는 분야를 선택해주세요.
+          관심 있는 분야를 3개 선택해주세요.
         </Typography>
 
         <FormGroup row sx={{ gap: '16px', width: '100%', margin: '0px' }}>

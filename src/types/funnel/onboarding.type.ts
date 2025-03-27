@@ -18,9 +18,9 @@ export type Infos = {
   // 선택 속성
   profile_img?: File | null;
   others_experience?: string;
-  company?: string;
-  culture?: string;
-  purpose?: string;
+  company?: string[];
+  culture?: string[];
+  purpose?: string[];
 };
 
 // 1. 아무것도 입력 안됨

@@ -14,6 +14,7 @@ import {
   useAttendeeProfile,
 } from '@stores/server/attendee';
 import { useLogoutMutation } from '@stores/server/auth';
+import mypageBackground from '@assets/background/mypage-bg.png';
 
 type ModalType = 'point-system' | 'my-point' | 'company-list' | null;
 
@@ -108,6 +109,10 @@ const TopContainer = styled('div')(({ theme }) => ({
   borderBottomLeftRadius: '18px',
   borderBottomRightRadius: '18px',
   zIndex: 100,
+  backgroundImage: `url(${mypageBackground})`,
+  backgroundRepeat: 'no-repeat',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
 }));
 
 const HeaderText = styled('header')(({ theme }) => ({

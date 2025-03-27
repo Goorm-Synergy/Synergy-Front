@@ -103,7 +103,7 @@ const Information = ({
         css={css`
           ${typo.sub.xs}
           padding: 10px 20px;
-          background-color: ${palette.opacity.opa100};
+          background: ${palette.opacity.opa100};
           border-radius: ${radius.xl};
           color: ${palette.text.primary};
           border: none;

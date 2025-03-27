@@ -39,6 +39,7 @@ const Booth = () => {
     display: flex;
     flex-direction: column;
     padding: ${spacing(2)};
+    padding-top: 80px;
   `;
 
   const titleStyle = css`

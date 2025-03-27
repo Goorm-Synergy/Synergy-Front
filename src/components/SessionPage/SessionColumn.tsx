@@ -3,6 +3,7 @@ import { SessionContent } from '@routes/pages/SessionPage';
 import { getTimeDifferenceText } from '@utils/time';
 import { useNavigate } from 'react-router-dom';
 import DefaultImage from '@assets/deafult-session-image.png';
+import dayjs from 'dayjs';
 
 const SessionColumn = ({
   id,
@@ -11,7 +12,7 @@ const SessionColumn = ({
   speakerPosition,
   startTime,
   endTime,
-  image,
+  imageUrl,
 }: SessionContent) => {
   const { palette, typo } = useTheme();
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ const SessionColumn = ({
       `}
       onClick={() => navigate(`/session/${id}`)}
     >
-      <StyledImage src={image || DefaultImage} />
+      <StyledImage src={imageUrl.trim() || DefaultImage} />
       <div
         css={css`
           ${flexrow}
@@ -37,7 +38,7 @@ const SessionColumn = ({
         `}
       >
         <span>{title}</span>
-        <span>{startTime}</span>
+        <span>{dayjs(startTime).format('HH:mm')}</span>
       </div>
       <div
         css={css`

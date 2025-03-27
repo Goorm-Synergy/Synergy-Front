@@ -34,7 +34,7 @@ const SessionDetails = () => {
           speakerPosition={data.speakerPosition}
           startTime={data.startTime}
           endTime={data.endTime}
-          image={data.image}
+          image={data.imageUrl}
           description={data.description}
         />
 

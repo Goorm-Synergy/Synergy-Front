@@ -5,7 +5,7 @@ import { useSessionList } from '@stores/server/session';
 
 export type SessionContent = {
   id: number;
-  image: string;
+  imageUrl: string;
   title: string;
   speaker: string;
   speakerPosition: string;

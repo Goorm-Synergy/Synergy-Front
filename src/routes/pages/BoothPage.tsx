@@ -9,7 +9,7 @@ export type BoothContent = {
   companyType: string;
   boothLocation: string;
   boothNumber: string;
-  image: string;
+  imageUrl: string;
 };
 
 const BoothPage = () => {
@@ -17,8 +17,6 @@ const BoothPage = () => {
   const {
     data: { data },
   } = useBoothList();
-
-  console.log(data.content);
 
   return (
     <>

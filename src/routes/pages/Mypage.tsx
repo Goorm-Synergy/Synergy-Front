@@ -13,7 +13,6 @@ import {
   useAttendeePoints,
   useAttendeeProfile,
 } from '@stores/server/attendee';
-import { useAuthStore } from '@stores/client/useAuthStore';
 import { useLogoutMutation } from '@stores/server/auth';
 
 type ModalType = 'point-system' | 'my-point' | 'company-list' | null;

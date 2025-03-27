@@ -2,11 +2,14 @@ import apiClient from '@utils/axios';
 
 interface CreateConferenceRequest {
   name: string;
+  host: string;
   startDate: string;
+  startTime: string;
   endDate: string;
+  endTime: string;
   location: string;
-  organizer: string;
-  type: string;
+  place: string;
+  conferenceType: string;
 }
 
 interface CreateConferenceResponse {

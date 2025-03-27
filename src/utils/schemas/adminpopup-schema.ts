@@ -49,10 +49,17 @@ export const boothSchema = z.object({
       .refine(isFutureDate, { message: '종료일은 오늘 이후의 날짜만 입력 가능합니다.' }),
     endTime: z.string()
       .regex(timeRegex, { message: '종료 시간은 24시간제로 00:00 형식으로 입력해 주세요.' }),
+    place: z.string().max(30, { message: '컨퍼런스 장소는 최대 30자까지 입력 가능합니다.' }),
     location: z.enum(['그랜드볼룸', '아셈볼룸', 'THE PLATZ', '오리토리움'], {
       errorMap: () => ({ message: '컨퍼런스 위치를 선택해 주세요.' }),
     }),
     conferenceType: z.enum(['IT', '무역', '산업'], {
       errorMap: () => ({ message: '컨퍼런스 유형을 선택해 주세요.' }),
     }),
+  }).refine((data) => {
+    const startDateTime = new Date(`${data.startDate}T${data.startTime}`);
+    const endDateTime = new Date(`${data.endDate}T${data.endTime}`);
+    return startDateTime < endDateTime;
+  }, {
+    message: '종료일과 종료 시간은 시작일과 시작 시간 이후여야 합니다.',
   });

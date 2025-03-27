@@ -32,7 +32,7 @@ const BoothDetails = () => {
             ${typo.sub.s}
           `}
         >
-          {data.detailLocation}
+          {data.boothNumber}
         </Typography>
         <Typography
           variant="h1"
@@ -41,7 +41,7 @@ const BoothDetails = () => {
             ${typo.title.m}
           `}
         >
-          {data.company}
+          {data.companyName}
         </Typography>
         <Typography
           variant="body1"
@@ -60,7 +60,7 @@ const BoothDetails = () => {
             ${typo.body.s}
           `}
         >
-          {data.location}
+          {data.boothLocation}
         </Typography>
         <StyledImage src={data.image || DefaultImage} />
         <p
@@ -69,7 +69,7 @@ const BoothDetails = () => {
             color: ${palette.text.primary};
           `}
         >
-          {data.description}
+          {data.boothDescription}
         </p>
       </Container>
 

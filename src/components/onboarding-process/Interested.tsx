@@ -8,9 +8,9 @@ import {
   useTheme,
 } from '@mui/material';
 import { useState } from 'react';
-import { checkboxItems } from 'src/constant/onboarding';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import { INTERESTS } from 'src/constant/onboarding-lookups';
 interface Props {
   onNext: (interested_list: string[]) => void;
 }
@@ -64,13 +64,13 @@ const Interested = (props: Props) => {
         </Typography>
 
         <FormGroup row sx={{ gap: '16px', width: '100%', margin: '0px' }}>
-          {checkboxItems.map((item) => (
+          {INTERESTS.map((item) => (
             <FormControlLabel
-              key={item.id}
+              key={item.code}
               control={
                 <Checkbox
-                  checked={selectedItems.includes(item.id)}
-                  onChange={() => handleCheckboxChange(item.id)}
+                  checked={selectedItems.includes(item.code.toString())}
+                  onChange={() => handleCheckboxChange(item.code.toString())}
                   sx={{
                     color: palette.icon.primary,
                     '& .MuiSvgIcon-root': { fontSize: 16 },
@@ -83,7 +83,7 @@ const Interested = (props: Props) => {
                   checkedIcon={<CheckCircleIcon color={'inherit'} />}
                 />
               }
-              label={item.label}
+              label={item.name}
               css={css`
                 ${typo.body.m}
                 color: ${palette.text.secondary};

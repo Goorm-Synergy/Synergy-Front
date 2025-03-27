@@ -2,21 +2,12 @@ import BackHeader from '@components/headers/BackHeader';
 import BasicInformation from '@components/MyInfoPage/BasicInformation';
 import OtherInformation from '@components/MyInfoPage/OtherInformation';
 import { styled, useTheme } from '@mui/material';
-import { useAuthStore } from '@stores/client/useAuthStore';
 import { useAttendeeDetailInfo } from '@stores/server/attendee';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const MyInfo = () => {
   const { palette } = useTheme();
   const navigate = useNavigate();
-
-  useAuthStore.getState().setAuth({
-    'accessToken': import.meta.env.VITE_AUTH_TOKEN,
-    'identifier': 'jiwon.kim@example.com',
-    'role': 'ATTENDEE',
-    'id': 1,
-  });
-
   const { id } = useParams();
 
   const { data: detailInfo } = useAttendeeDetailInfo(Number(id));

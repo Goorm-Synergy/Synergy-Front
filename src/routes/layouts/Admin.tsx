@@ -20,6 +20,7 @@ const AdminLayout = () => {
           min-height: 100vh;
           max-width: 600px;
           margin: 0 auto;
+          gap: 30px;
           padding: 100px 1rem 1rem;
           background-color: ${palette.background.primary};
         `}

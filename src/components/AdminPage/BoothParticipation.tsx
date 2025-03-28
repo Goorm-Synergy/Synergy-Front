@@ -12,34 +12,14 @@ import PreviewChart from './PreviewChart';
 import { fetchBoothList } from '@api/booth-controller';
 
 const BoothParticipation = () => {
-  const { palette, typography, radius } = useTheme();
+  const { palette, typo, radius } = useTheme();
   const isConferenceRegistered = useConferenceStore(
     (state) => state.isConferenceRegistered,
   );
   const { isBoothRegistered, hasAggregationData } = useBoothStore();
   const [showAddBooth, setShowAddBooth] = useState(false);
   const [showAddConference, setShowAddConference] = useState(false);
-  // const [boothData, setBoothData] = useState([]);
   const navigate = useNavigate();
-
-  // const loadBoothData = async () => {
-  //     try{
-  //         const response = await fetchBoothList();     //동균님!!!!! 여기에요!!!!!!fetchBoothList아니에요!!!
-
-  //         const formattedData = response.data.map((booth: any) => ({
-  //             companyName: booth.companyName
-  //         }));
-
-  //         setBoothData(formattedData);
-  //         useBoothStore.getState().setHasAggregationData(formattedData.length > 0);
-  //     } catch (error) {
-  //         console.error('부스 데이터를 가져오는 중 오류 발생:', error);
-  //     }
-  // };
-
-  // useEffect(() => {
-  //     loadBoothData();
-  // }, []);
 
   const handleAddIconClick = () => {
     if (isConferenceRegistered) {
@@ -76,7 +56,7 @@ const BoothParticipation = () => {
           fontWeight="bold"
           css={css`
             color: ${palette.text.primary};
-            font-family: ${typography.fontFamily};
+            ${typo.title.m}
           `}
         >
           부스 참여 현황

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Typography, Box, Button } from '@mui/material';
 import Header from '@components/headers/AdminHeader';
 import SessionBox from '@components/AdminPage/SessionBox';
@@ -6,6 +6,18 @@ import { css, useTheme } from '@mui/material/styles';
 import { typography } from '@styles/foundation';
 import AddIcon from '@mui/icons-material/Add';
 import AddSession from '@components/AdminPage/Popup/AddSession';
+import { fetchSessionList } from '@api/session-controller';
+
+interface SessionData {
+  id: number;
+  date: string;
+  place: string;
+  title: string;
+  startTime: string;
+  endTime: string;
+  speaker: string;
+  chartData?: any[];
+}
 
 const Session = () => {
   const theme = useTheme();
@@ -13,6 +25,20 @@ const Session = () => {
   const [openAddSession, setOpenAddSession] = useState(false);
   const [mode, setMode] = useState<'add' | 'edit'>('add');
   const [editData, setEditData] = useState<any | null>(null);
+  const [sessions, setSessions] = useState<SessionData[]>([]);
+  
+  const loadSessions = async () => {
+    try {
+      const response = await fetchSessionList();   //TODO: 세션별 상세 참여율 조회로 수정 필요
+      setSessions(response.data); 
+    } catch (error) {
+      console.error('세션 데이터를 가져오는 중 오류 발생:', error);
+    }
+  };
+
+  useEffect(() => {
+    loadSessions();
+  }, []);
 
   const handleRegisterClick = () => {
     setMode('add');
@@ -24,7 +50,7 @@ const Session = () => {
     setOpenAddSession(false);
   };
   
-  const handleDeleteSession = () => {
+  const handleDeleteSession = (sessionId: number) => {
     console.log('세션 삭제');
   };
 
@@ -39,6 +65,10 @@ const Session = () => {
     flex-direction: column;
     padding: ${spacing(2)};
     padding-top: 80px;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      display: none;
+    }
   `;
 
   const titleStyle = css`
@@ -83,30 +113,34 @@ const Session = () => {
       </Box>
 
       {/* Session List */}
-      <Box css={sessionListStyle} sx={{gap: 2}}>
-      <SessionBox
-          date="9/15"
-          place="세션 1-1"
-          title="최신 기술 동향"
-          time="10:30-11:30"
-          speaker="김지혁"
-          chartData={[]}
-          onDelete={handleDeleteSession}
-          onEdit={() =>
-            handleEditSession({
-              title: '최신 기술 동향',
-              presenter: '김지혁',
-              presenterRole: '수석 연구원',
-              date: '9/15',
-              startTime: '10:30',
-              endTime: '11:30',
-              sessionDescription: 'AI 및 최신 트렌드 소개 세션',
-              imageFile: null,
-              maxCapacity: '200',
-            })
-          }
-        />
-      </Box>
+      {sessions.length === 0 ? (
+        <Typography
+          variant="body2"
+          css={css`
+            text-align: center;
+            margin-top: ${spacing(4)};
+            color: ${palette.text.secondary};
+          `}
+        >
+          등록된 세션이 없습니다.
+        </Typography>
+      ) : (
+        <Box css={sessionListStyle} sx={{ gap: spacing(2) }}>
+          {sessions.map((session) => (
+            <SessionBox
+              key={session.id}
+              date={session.date}
+              place={session.place}
+              title={session.title}
+              time={`${session.startTime} ~ ${session.endTime}`}
+              speaker={session.speaker}
+              chartData={session.chartData} 
+              onDelete={() => handleDeleteSession(session.id)}
+              onEdit={() => handleEditSession(session)}
+            />
+          ))}
+        </Box>
+      )}
 
       <AddSession
         open={openAddSession}

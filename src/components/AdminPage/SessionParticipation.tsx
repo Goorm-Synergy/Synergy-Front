@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Box, Typography, Paper } from '@mui/material';
 import { css, useTheme } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
@@ -9,6 +9,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { useNavigate } from 'react-router-dom';
 import ConferenceForm from './Popup/ConferenceForm';
 import PreviewChart from './PreviewChart';
+import { fetchParticipationRates } from '@api/session-controller';
 
 const SessionParticipation = () => {
   const { palette, typography, radius } = useTheme();
@@ -18,7 +19,29 @@ const SessionParticipation = () => {
   const { isSessionRegistered, hasAggregationData } = useSessionStore();
   const [showAddSession, setShowAddSession] = useState(false);
   const [showAddConference, setShowAddConference] = useState(false);
+  const [sessionData, setSessionData] = useState([]);
   const navigate = useNavigate();
+
+  const loadSessionData = async () => {
+    try {
+      const response = await fetchParticipationRates();
+      
+      const formattedData = response.data.map((session: any) => ({
+        title: session.title,
+        currentAttendee: session.currentCapacity,
+        maximumAttendee: session.maxCapacity
+      }));
+      
+      setSessionData(formattedData);
+      useSessionStore.getState().setAggregationData(formattedData.length > 0);
+    } catch (error) {
+      console.error('세션 데이터를 가져오는 중 오류 발생:', error);
+    }
+  };
+
+  useEffect(() => {
+    loadSessionData();
+  }, []);
 
   const handleAddIconClick = () => {
     if (isConferenceRegistered) {
@@ -37,6 +60,7 @@ const SessionParticipation = () => {
   };
   const handleConferenceSubmit = (data: any) => {
     console.log('컨퍼런스 등록 완료:', data);
+    useConferenceStore.getState().setConferenceRegistered(1);
     setShowAddConference(false);
   };
 
@@ -131,7 +155,7 @@ const SessionParticipation = () => {
           </Typography>
         </Paper>
       ) : (
-        <PreviewChart />
+        <PreviewChart data={sessionData} />
       )}
 
       {showAddSession && (

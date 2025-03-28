@@ -42,7 +42,10 @@ const SessionDetails = () => {
         />
 
         {/* Q&A */}
-        <QnaSection qnaData={data.questionResDto} />
+        <QnaSection
+          qnaData={data.questionResDto}
+          onSuccess={() => setQnaSuccess(true)}
+        />
       </Container>
 
       {qnaSuccess && (

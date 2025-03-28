@@ -9,7 +9,7 @@ import {
   patchOnboardingDetails,
   patchOnboardingInfos,
 } from '@api/attendee-controller';
-import { postQrVerify } from '@api/session-verify-controller';
+import { postQna, postQrVerify } from '@api/session-verify-controller';
 
 export const useAttendeeProfile = () => {
   const { identifier } = useAuthStore.getState().user;
@@ -67,8 +67,7 @@ export const useSessionVerify = () => {
       sessionId: number;
       qrCode: string;
     }) => postQrVerify(sessionId, qrCode),
-    onSuccess: (data) => {
-      console.log('success:', data);
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: attendeeQueries.user(identifier),
       });
@@ -76,4 +75,26 @@ export const useSessionVerify = () => {
   });
 
   return { qrMutation };
+};
+
+export const useSessionQna = () => {
+  const queryClient = useQueryClient();
+  const { identifier } = useAuthStore.getState().user;
+
+  const qnaMutation = useMutation({
+    mutationFn: ({
+      sessionId,
+      content,
+    }: {
+      sessionId: number;
+      content: string;
+    }) => postQna(sessionId, content),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: attendeeQueries.user(identifier),
+      });
+    },
+  });
+
+  return { qnaMutation };
 };

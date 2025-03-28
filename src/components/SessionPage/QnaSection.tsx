@@ -8,7 +8,13 @@ type QnaData = {
   content: string;
 };
 
-const QnaSection = ({ qnaData }: { qnaData: QnaData[] }) => {
+const QnaSection = ({
+  qnaData,
+  onSuccess,
+}: {
+  qnaData: QnaData[];
+  onSuccess: () => void;
+}) => {
   const [open, setOpen] = useState(false);
   const { palette, typo, radius } = useTheme();
 
@@ -83,6 +89,7 @@ const QnaSection = ({ qnaData }: { qnaData: QnaData[] }) => {
       <QnaDialog
         open={open}
         onClose={() => setOpen(false)}
+        onSuccess={onSuccess}
         title="디지털 시대의 리더십과 팀 빌딩"
         speaker="이종현, FlowLink HR 팀 총괄에게 질문하기"
       />

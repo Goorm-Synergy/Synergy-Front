@@ -9,39 +9,32 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { useNavigate } from 'react-router-dom';
 import ConferenceForm from './Popup/ConferenceForm';
 import PreviewChart from './PreviewChart';
-import { fetchParticipationRates } from '@api/session-controller';
+import { useDashboardSessions } from '@stores/server/dashboard';
+
+export type TodaySessionItem = {
+  title: string;
+  currentDate: string;
+  currentAttendee: number;
+  maximumAttendee: number;
+};
 
 const SessionParticipation = () => {
   const { palette, typography, radius } = useTheme();
+  const navigate = useNavigate();
+
   const isConferenceRegistered = useConferenceStore(
     (state) => state.isConferenceRegistered,
   );
-  const { isSessionRegistered, hasAggregationData } = useSessionStore();
+
+  const {
+    data: { data },
+  } = useDashboardSessions();
+  const sessionData = data.filter(
+    (item: TodaySessionItem) => item.currentAttendee,
+  );
+
   const [showAddSession, setShowAddSession] = useState(false);
   const [showAddConference, setShowAddConference] = useState(false);
-  const [sessionData, setSessionData] = useState([]);
-  const navigate = useNavigate();
-
-  const loadSessionData = async () => {
-    try {
-      const response = await fetchParticipationRates();
-      
-      const formattedData = response.data.map((session: any) => ({
-        title: session.title,
-        currentAttendee: session.currentCapacity,
-        maximumAttendee: session.maxCapacity
-      }));
-      
-      setSessionData(formattedData);
-      useSessionStore.getState().setAggregationData(formattedData.length > 0);
-    } catch (error) {
-      console.error('세션 데이터를 가져오는 중 오류 발생:', error);
-    }
-  };
-
-  useEffect(() => {
-    loadSessionData();
-  }, []);
 
   const handleAddIconClick = () => {
     if (isConferenceRegistered) {
@@ -116,7 +109,7 @@ const SessionParticipation = () => {
             컨퍼런스 등록 후 확인 가능합니다.
           </Typography>
         </Paper>
-      ) : !isSessionRegistered ? (
+      ) : !data.length ? (
         <Paper
           css={css`
             text-align: center;
@@ -139,7 +132,7 @@ const SessionParticipation = () => {
           <Typography variant="body2">등록된 세션이 없습니다.</Typography>
           <Typography variant="body2">세션 등록 후 확인 가능합니다.</Typography>
         </Paper>
-      ) : !hasAggregationData ? (
+      ) : !sessionData.length ? (
         <Paper
           css={css`
             text-align: center;
@@ -155,7 +148,7 @@ const SessionParticipation = () => {
           </Typography>
         </Paper>
       ) : (
-        <PreviewChart data={sessionData} />
+        <PreviewChart data={data} />
       )}
 
       {showAddSession && (

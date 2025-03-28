@@ -1,11 +1,8 @@
 import { Box, css, Paper, Typography, useTheme } from '@mui/material';
-
+import { TodaySessionItem } from './SessionParticipation';
+import dayjs from 'dayjs';
 interface PreviewChartProps {
-  data: Array<{
-    title: string;
-    currentAttendee: number;
-    maximumAttendee: number;
-  }>;
+  data: TodaySessionItem[];
 }
 
 const PreviewChart = ({ data }: PreviewChartProps) => {
@@ -48,14 +45,14 @@ const PreviewChart = ({ data }: PreviewChartProps) => {
         >
           <div css={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
             <Typography variant="body1" css={styles.date}>
-              09/15
+              {dayjs(new Date()).format('MM/DD')}
             </Typography>
             <Typography variant="body2" css={styles.now}>
-              18:20 18시 기준
+              {dayjs(new Date()).format('HH:mm')} 기준
             </Typography>
           </div>
           <div css={styles.list}>
-          {data.map((item, index) => (
+            {data.map((item, index) => (
               <ChartColumn
                 key={index}
                 text={`세션 ${index + 1}`}
@@ -82,6 +79,7 @@ interface ChartColumnProps {
 const ChartColumn = (props: ChartColumnProps) => {
   const { palette, typo } = useTheme();
   const percentage = Math.ceil((props.current / props.max) * 100);
+  const widthPercentage = Math.ceil((props.current / props.max) * 10) * 8;
 
   const styles = {
     container: css`
@@ -92,13 +90,14 @@ const ChartColumn = (props: ChartColumnProps) => {
     graph: css`
       display: flex;
       justify-content: end;
-      width: ${percentage}%;
+      width: ${widthPercentage}%;
       background-color: ${palette.graph.default};
       ${typo.sub.s}
       color: ${palette.text.primary};
       padding: 4px;
       border-top-right-radius: 4px;
       border-bottom-right-radius: 4px;
+      min-width: fit-content;
     `,
     textlist: css`
       display: flex;
@@ -115,7 +114,7 @@ const ChartColumn = (props: ChartColumnProps) => {
       ${typo.body.m};
       font-weight: bold;
       color: ${palette.text.primary};
-    `
+    `,
   };
   return (
     <Box css={styles.container}>

@@ -6,18 +6,20 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ConfirmDeleteDialog from '../ConfirmDeleteDialog';
 import QRPopup from './Popup/QRPopup';
+import DetailChart from './DetailChart';
 
-interface BoothBoxProps {
+interface BoothBoxProps {      //부스별 상세 참여율 조회 필요
+  id?: number;
   date: string;
   place: string;
-  title: string;
-  category: string;
+  companyName: string;
+  companyType: string;
   chartData?: any[];
   onDelete: () => void;
   onEdit: () => void;
 }
 
-const BoothBox = ({ date, place, title, category, onDelete, onEdit }: BoothBoxProps) => {
+const BoothBox = ({ date, place, companyName, companyType, onDelete, onEdit }: BoothBoxProps) => {
   const theme = useTheme();
   const { palette, spacing, typo } = theme;
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -64,8 +66,8 @@ const BoothBox = ({ date, place, title, category, onDelete, onEdit }: BoothBoxPr
       <QRPopup
           open={qrPopupOpen}
           onClose={() => setQrPopupOpen(false)}
-          qrCodeLabel={title}
-          description={place}
+          qrCodeLabel={companyName}
+          description={companyType}
         />
       <Box css={iconContainerStyle}>
         <IconButton size="small" color="inherit" onClick={() => setQrPopupOpen(true)}>
@@ -81,10 +83,9 @@ const BoothBox = ({ date, place, title, category, onDelete, onEdit }: BoothBoxPr
       
       {/* 정보 영역 */}
       <Typography css={infoStyle}>{date}  {place}</Typography>
-      <Typography css={infoStyle}>{title}  {category}</Typography>
+      <Typography css={infoStyle}>{companyName}  {companyType}</Typography>
 
-      {/* 차트 데이터 영역 */}
-      <Typography variant="body2"> !차트 데이터 표시 영역!</Typography>
+      <DetailChart />
     </Box>
   );
 };

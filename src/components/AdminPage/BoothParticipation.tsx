@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Box, Typography, Paper } from '@mui/material';
 import { css, useTheme } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
@@ -8,6 +8,8 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { useNavigate } from 'react-router-dom';
 import { useBoothStore } from '@stores/client/useBoothStore';
 import ConferenceForm from './Popup/ConferenceForm';
+import PreviewChart from './PreviewChart';
+import { fetchBoothList } from '@api/booth-controller';
 
 const BoothParticipation = () => {
     const { palette, typography, radius } = useTheme();
@@ -15,7 +17,27 @@ const BoothParticipation = () => {
     const { isBoothRegistered, hasAggregationData } = useBoothStore();
     const [showAddBooth, setShowAddBooth] = useState(false);
     const [showAddConference, setShowAddConference] = useState(false);
+    const [boothData, setBoothData] = useState([]);
     const navigate = useNavigate();
+
+    const loadBoothData = async () => {
+        try{
+            const response = await fetchBoothList();     //동균님!!!!! 여기에요!!!!!!fetchBoothList아니에요!!!
+
+            const formattedData = response.data.map((booth: any) => ({
+                companyName: booth.companyName
+            }));
+
+            setBoothData(formattedData);
+            useBoothStore.getState().setHasAggregationData(formattedData.length > 0);
+        } catch (error) {
+            console.error('부스 데이터를 가져오는 중 오류 발생:', error);
+        }
+    };
+
+    useEffect(() => {
+        loadBoothData();
+    }, []);
 
     const handleAddIconClick = () => {
         if (isConferenceRegistered) {
@@ -35,6 +57,7 @@ const BoothParticipation = () => {
 
     const handleConferenceSubmit = (data: any) => {
         console.log('컨퍼런스 등록 완료:', data);
+        useConferenceStore.getState().setConferenceRegistered(1);
         setShowAddConference(false);
     };
 
@@ -122,7 +145,7 @@ const BoothParticipation = () => {
                     </Typography>
                 </Paper>
             ) : (
-                <Typography>집계된 부스 정보 표시</Typography>
+                <PreviewChart data={boothData} />
             )}
 
             {showAddBooth && (

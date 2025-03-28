@@ -121,7 +121,7 @@ export default DetailChart;
 const CustomItemTooltipContent = ({ ...props }) => {
   const { palette, typo, radius } = useTheme();
   console.log(props);
-  const { name, value } = props.dataset[props.itemData.dataIndex];
+  const { tech, attendeeCount } = props.dataset[props.itemData.dataIndex];
 
   return (
     <Paper
@@ -145,10 +145,10 @@ const CustomItemTooltipContent = ({ ...props }) => {
           color: palette.text.primary,
         }}
       >
-        {name}
+        {tech}
       </p>
-      <p>참여: {value}명</p>
-      <p>비율: {Math.ceil((value / MAX_PARTICIPANT) * 100)}%</p>
+      <p>참여: {attendeeCount}명</p>
+      <p>비율: {Math.ceil((attendeeCount / MAX_PARTICIPANT) * 100)}%</p>
     </Paper>
   );
 };

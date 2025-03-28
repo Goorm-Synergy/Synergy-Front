@@ -1,4 +1,4 @@
-import { fetchSessionDetail, fetchSessionList, fetchParticipationRates } from '@api/session-controller';
+import { fetchSessionDetail, fetchSessionList } from '@api/session-controller';
 import { queryOptions } from '@tanstack/react-query';
 
 export const sessionQueries = {
@@ -15,9 +15,4 @@ export const sessionQueries = {
       queryKey: [...sessionQueries.detail(sessionId)],
       queryFn: () => fetchSessionDetail(sessionId),
     }),
-    participationRates: () =>
-      queryOptions({
-        queryKey: [...sessionQueries.all(), 'participation'],
-        queryFn: () => fetchParticipationRates,
-      }),
 };

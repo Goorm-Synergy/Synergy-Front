@@ -38,26 +38,12 @@ export const createSession = async (formData: FormData) => {
   try {
     const res = await apiClient.post(
       `/api/v1/conference/${CONFERENCE_ID}/session`,
-      formData, {
+      formData,
+      {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
-      }
-    );
-    return res.data;
-  } catch (err) {
-    if (err instanceof AxiosError) {
-      if (err.status === 403) return (window.location.href = '/');
-    }
-    return Promise.reject(err);
-  }
-};
-
-// 세션별 참여율 조회
-export const fetchParticipationRates = async () => {
-  try {
-    const res = await apiClient.get(
-      `/api/v1/dashboard/conference/${CONFERENCE_ID}`,
+      },
     );
     return res.data;
   } catch (err) {

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Typography, Box, Button } from '@mui/material';
 import Header from '@components/headers/AdminHeader';
 import SessionBox from '@components/AdminPage/SessionBox';
@@ -6,7 +6,7 @@ import { css, useTheme } from '@mui/material/styles';
 import { typography } from '@styles/foundation';
 import AddIcon from '@mui/icons-material/Add';
 import AddSession from '@components/AdminPage/Popup/AddSession';
-import { fetchSessionList } from '@api/session-controller';
+import { useDashboardSessions } from '@stores/server/dashboard';
 
 interface SessionData {
   id: number;
@@ -19,26 +19,15 @@ interface SessionData {
   chartData?: any[];
 }
 
-const Session = () => {
+const DashboardSessionDetail = () => {
   const theme = useTheme();
   const { palette, spacing } = theme;
   const [openAddSession, setOpenAddSession] = useState(false);
   const [mode, setMode] = useState<'add' | 'edit'>('add');
   const [editData, setEditData] = useState<any | null>(null);
-  const [sessions, setSessions] = useState<SessionData[]>([]);
-  
-  const loadSessions = async () => {
-    try {
-      const response = await fetchSessionList();   //TODO: 세션별 상세 참여율 조회로 수정 필요
-      setSessions(response.data); 
-    } catch (error) {
-      console.error('세션 데이터를 가져오는 중 오류 발생:', error);
-    }
-  };
+  const { data } = useDashboardSessions();
 
-  useEffect(() => {
-    loadSessions();
-  }, []);
+  console.log(data);
 
   const handleRegisterClick = () => {
     setMode('add');
@@ -49,7 +38,7 @@ const Session = () => {
   const handleCloseAddSession = () => {
     setOpenAddSession(false);
   };
-  
+
   const handleDeleteSession = (sessionId: number) => {
     console.log('세션 삭제');
   };
@@ -94,12 +83,17 @@ const Session = () => {
     gap: ${spacing(2)}px;
   `;
 
-
   return (
     <Box css={pageStyle}>
       <Header />
 
-      <Box display="flex" justifyContent="space-between" alignItems="center" mt={2} mb={2}>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mt={2}
+        mb={2}
+      >
         <Typography variant="h4" css={titleStyle}>
           세션 참여 현황
         </Typography>
@@ -113,7 +107,7 @@ const Session = () => {
       </Box>
 
       {/* Session List */}
-      {sessions.length === 0 ? (
+      {data.length === 0 ? (
         <Typography
           variant="body2"
           css={css`
@@ -126,7 +120,7 @@ const Session = () => {
         </Typography>
       ) : (
         <Box css={sessionListStyle} sx={{ gap: spacing(2) }}>
-          {sessions.map((session) => (
+          {/* {sessions.map((session) => (
             <SessionBox
               key={session.id}
               date={session.date}
@@ -138,7 +132,7 @@ const Session = () => {
               onDelete={() => handleDeleteSession(session.id)}
               onEdit={() => handleEditSession(session)}
             />
-          ))}
+          ))} */}
         </Box>
       )}
 
@@ -152,4 +146,4 @@ const Session = () => {
   );
 };
 
-export default Session;
+export default DashboardSessionDetail;

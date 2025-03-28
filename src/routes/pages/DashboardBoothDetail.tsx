@@ -8,7 +8,7 @@ import AddIcon from '@mui/icons-material/Add';
 import AddBooth from '@components/AdminPage/Popup/AddBooth';
 import { fetchBoothList } from '@api/booth-controller';
 
-interface BoothData{
+interface BoothData {
   id: number;
   date: string;
   place: string;
@@ -17,7 +17,7 @@ interface BoothData{
   chartData?: any[];
 }
 
-const Booth = () => {
+const DashboardBoothDetail = () => {
   const theme = useTheme();
   const { palette, spacing } = theme;
   const [isAddBoothOpen, setIsAddBoothOpen] = useState(false);
@@ -26,10 +26,10 @@ const Booth = () => {
   const [booths, setBooths] = useState<BoothData[]>([]);
 
   const loadBooths = async () => {
-    try{
-      const response = await fetchBoothList();   //TODO: 부스별 상세 참여율 조회로 수정 필요
+    try {
+      const response = await fetchBoothList(); //TODO: 부스별 상세 참여율 조회로 수정 필요
       setBooths(response.data);
-    } catch (error){
+    } catch (error) {
       console.error('부스 데이터를 가져오는 중 오류 발생:', error);
     }
   };
@@ -90,7 +90,13 @@ const Booth = () => {
   return (
     <Box css={pageStyle}>
       <Header />
-      <Box display="flex" justifyContent="space-between" alignItems="center" mt={2} mb={2}>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mt={2}
+        mb={2}
+      >
         <Typography variant="h4" css={titleStyle}>
           부스 참여 현황
         </Typography>
@@ -114,8 +120,8 @@ const Booth = () => {
         >
           등록된 부스가 없습니다.
         </Typography>
-      ): (
-        <Box css={BoothListStyle} sx={{gap : spacing(2)}}>
+      ) : (
+        <Box css={BoothListStyle} sx={{ gap: spacing(2) }}>
           {booths.map((booth) => (
             <BoothBox
               key={booth.id}
@@ -141,4 +147,4 @@ const Booth = () => {
   );
 };
 
-export default Booth;
+export default DashboardBoothDetail;

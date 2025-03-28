@@ -62,7 +62,7 @@ const BoothDetails = () => {
         >
           {data.boothLocation}
         </Typography>
-        <StyledImage src={data.image || DefaultImage} />
+        <StyledImage src={data.imageUrl.trim() || DefaultImage} />
         <p
           css={css`
             ${typo.body.m}

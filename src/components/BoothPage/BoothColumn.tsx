@@ -9,7 +9,7 @@ const BoothColumn = ({
   companyType,
   boothLocation,
   boothNumber,
-  imageUrl,
+  image,
 }: BoothContent) => {
   const { palette, typo } = useTheme();
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ const BoothColumn = ({
       `}
       onClick={() => navigate(`/booth/${id}`)}
     >
-      <StyledImage src={imageUrl.trim() || DefaultImage} />
+      <StyledImage src={image.trim() || DefaultImage} />
       <div
         css={css`
           ${flexrow}

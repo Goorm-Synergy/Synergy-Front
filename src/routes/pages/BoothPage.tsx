@@ -9,7 +9,7 @@ export type BoothContent = {
   companyType: string;
   boothLocation: string;
   boothNumber: string;
-  imageUrl: string;
+  image: string;
 };
 
 const BoothPage = () => {

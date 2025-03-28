@@ -79,7 +79,7 @@ interface ChartColumnProps {
 const ChartColumn = (props: ChartColumnProps) => {
   const { palette, typo } = useTheme();
   const percentage = Math.ceil((props.current / props.max) * 100);
-  const widthPercentage = Math.ceil((props.current / props.max) * 10) * 8;
+  const widthPercentage = Math.ceil((props.current / props.max) * 10) * 5;
 
   const styles = {
     container: css`
@@ -97,7 +97,11 @@ const ChartColumn = (props: ChartColumnProps) => {
       padding: 4px;
       border-top-right-radius: 4px;
       border-bottom-right-radius: 4px;
-      min-width: fit-content;
+    `,
+    none_graph: css`
+      background-color: ${palette.graph.default};
+      width: 1px;
+      height: 27px;
     `,
     textlist: css`
       display: flex;
@@ -118,7 +122,12 @@ const ChartColumn = (props: ChartColumnProps) => {
   };
   return (
     <Box css={styles.container}>
-      <div css={styles.graph}>{percentage}%</div>
+      {percentage ? (
+        <div css={styles.graph}>{percentage}%</div>
+      ) : (
+        <div css={styles.none_graph} />
+      )}
+
       <div css={styles.textlist}>
         <span css={styles.bodyText}>{props.text}</span>
         <span css={styles.subText}>{props.title}</span>

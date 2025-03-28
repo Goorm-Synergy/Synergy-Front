@@ -1,10 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Box, Typography, Paper } from '@mui/material';
 import { css, useTheme } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import AddSession from './Popup/AddSession';
 import { useConferenceStore } from '@stores/client/useConferenceStore';
-import { useSessionStore } from '@stores/client/useSessionStore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { useNavigate } from 'react-router-dom';
 import ConferenceForm from './Popup/ConferenceForm';
@@ -19,19 +18,14 @@ export type TodaySessionItem = {
 };
 
 const SessionParticipation = () => {
-  const { palette, typography, radius } = useTheme();
+  const { palette, typo, radius } = useTheme();
   const navigate = useNavigate();
-
   const isConferenceRegistered = useConferenceStore(
     (state) => state.isConferenceRegistered,
   );
-
   const {
     data: { data },
   } = useDashboardSessions();
-  const sessionData = data.filter(
-    (item: TodaySessionItem) => item.currentAttendee,
-  );
 
   const [showAddSession, setShowAddSession] = useState(false);
   const [showAddConference, setShowAddConference] = useState(false);
@@ -70,7 +64,7 @@ const SessionParticipation = () => {
           fontWeight="bold"
           css={css`
             color: ${palette.text.primary};
-            font-family: ${typography.fontFamily};
+            ${typo.title.m}
           `}
         >
           세션 참여 현황
@@ -131,21 +125,6 @@ const SessionParticipation = () => {
           />
           <Typography variant="body2">등록된 세션이 없습니다.</Typography>
           <Typography variant="body2">세션 등록 후 확인 가능합니다.</Typography>
-        </Paper>
-      ) : !sessionData.length ? (
-        <Paper
-          css={css`
-            text-align: center;
-            color: ${palette.text.secondary};
-            border-radius: ${radius.sm}px;
-            background-color: ${palette.background.secondary};
-            padding: 50px;
-            border: ${palette.divider_custom.primary};
-          `}
-        >
-          <Typography variant="body2" mb={1}>
-            집계된 정보가 없습니다.
-          </Typography>
         </Paper>
       ) : (
         <PreviewChart data={data} />

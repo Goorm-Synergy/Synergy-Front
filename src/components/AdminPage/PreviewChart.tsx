@@ -1,6 +1,14 @@
 import { Box, css, Paper, Typography, useTheme } from '@mui/material';
 
-const PreviewChart = () => {
+interface PreviewChartProps {
+  data: Array<{
+    title: string;
+    currentAttendee: number;
+    maximumAttendee: number;
+  }>;
+}
+
+const PreviewChart = ({ data }: PreviewChartProps) => {
   const { palette, typo, radius } = useTheme();
 
   const styles = {
@@ -47,30 +55,15 @@ const PreviewChart = () => {
             </Typography>
           </div>
           <div css={styles.list}>
-            <ChartColumn
-              text="세션 1-1"
-              title="최신 기술 동향"
-              max={250}
-              current={200}
-            />
-            <ChartColumn
-              text="세션 1-2"
-              title="AI 기반 커뮤니케이션 도구의 발전"
-              max={250}
-              current={180}
-            />
-            <ChartColumn
-              text="세션 2-1"
-              title="디지털 시대의 리더십과 팀 빌딩"
-              max={250}
-              current={150}
-            />
-            <ChartColumn
-              text="세션 2-2"
-              title="원격 근무 환경에서의 생산성 향상 전략"
-              max={250}
-              current={120}
-            />
+          {data.map((item, index) => (
+              <ChartColumn
+                key={index}
+                text={`세션 ${index + 1}`}
+                title={item.title}
+                max={item.maximumAttendee}
+                current={item.currentAttendee}
+              />
+            ))}
           </div>
         </div>
       </Box>
@@ -118,6 +111,11 @@ const ChartColumn = (props: ChartColumnProps) => {
     subText: css`
       ${typo.sub.s}
     `,
+    companyText: css`
+      ${typo.body.m};
+      font-weight: bold;
+      color: ${palette.text.primary};
+    `
   };
   return (
     <Box css={styles.container}>

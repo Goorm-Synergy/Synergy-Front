@@ -13,7 +13,8 @@ import {
   useAttendeePoints,
   useAttendeeProfile,
 } from '@stores/server/attendee';
-import { useAuthStore } from '@stores/client/useAuthStore';
+import { useLogoutMutation } from '@stores/server/auth';
+import mypageBackground from '@assets/background/mypage-bg.png';
 
 type ModalType = 'point-system' | 'my-point' | 'company-list' | null;
 
@@ -24,6 +25,7 @@ const Mypage = () => {
   const { data: myData } = useAttendeeProfile();
   const { data: myPoints } = useAttendeePoints();
   const { data: myRecruiters } = useAttendeeLinkedRecruiters();
+  const { mutate } = useLogoutMutation();
 
   return (
     <Wrapper>
@@ -57,7 +59,7 @@ const Mypage = () => {
           onClick={() => navigate('/reset-password')}
           text="비밀번호 변경"
         />
-        <ActionColumn onClick={() => {}} text="로그아웃" />
+        <ActionColumn onClick={() => mutate()} text="로그아웃" />
       </BottomContainer>
 
       {/* 모달 */}
@@ -107,6 +109,10 @@ const TopContainer = styled('div')(({ theme }) => ({
   borderBottomLeftRadius: '18px',
   borderBottomRightRadius: '18px',
   zIndex: 100,
+  backgroundImage: `url(${mypageBackground})`,
+  backgroundRepeat: 'no-repeat',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
 }));
 
 const HeaderText = styled('header')(({ theme }) => ({

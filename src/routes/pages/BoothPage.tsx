@@ -18,8 +18,6 @@ const BoothPage = () => {
     data: { data },
   } = useBoothList();
 
-  console.log(data.content);
-
   return (
     <>
       <DefaultHeader backgroundColor={palette.background.primary} />

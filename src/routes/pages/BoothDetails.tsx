@@ -62,7 +62,7 @@ const BoothDetails = () => {
         >
           {data.boothLocation}
         </Typography>
-        <StyledImage src={data.image || DefaultImage} />
+        <StyledImage src={data.imageUrl.trim() || DefaultImage} />
         <p
           css={css`
             ${typo.body.m}
@@ -79,9 +79,6 @@ const BoothDetails = () => {
           onClose={() => setQrSuccess(false)}
           title="부스에 오신 것을 환영합니다!"
           earnPoint={50}
-          totalPoint={250}
-          needPoint={50}
-          rating="SILVER"
         />
       )}
     </>

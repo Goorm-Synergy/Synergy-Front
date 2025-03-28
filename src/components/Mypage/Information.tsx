@@ -2,11 +2,17 @@ import { Button, css, Typography, useTheme } from '@mui/material';
 import ImageModifier from './ImageModifier';
 import { POINT_SYSTEM } from 'src/constant/point-system';
 
+type MembershipLevel = 'DEFAULT' | 'BRONZE' | 'SILVER' | 'GOLD' | 'PLATINUM';
 interface Props {
-  membershipLevel: 'DEFAULT' | 'BRONZE' | 'SILVER' | 'GOLD' | 'PLATINUM';
+  membershipLevel: MembershipLevel;
   name: string;
   totalPoints: number;
   buttonClick: () => void;
+  nextPointResponseDto: {
+    needPoint: number;
+    nextMembershipLevel: MembershipLevel;
+  };
+  profileImg: string | null;
 }
 
 const Information = ({
@@ -14,12 +20,14 @@ const Information = ({
   name,
   totalPoints,
   buttonClick,
+  nextPointResponseDto,
+  profileImg,
 }: Props) => {
   const { palette, typo, radius } = useTheme();
 
   return (
     <>
-      <ImageModifier />
+      <ImageModifier profileImg={profileImg} />
       <div
         css={css`
           display: flex;
@@ -79,7 +87,7 @@ const Information = ({
             color: ${palette.text.primary};
           `}
         >
-          50P
+          {nextPointResponseDto.needPoint}P
           <span
             css={css`
               color: ${palette.text.secondary};
@@ -88,14 +96,14 @@ const Information = ({
           >
             더모으면
           </span>
-          SILVER
+          {nextPointResponseDto.nextMembershipLevel}
         </Typography>
       </div>
       <Button
         css={css`
           ${typo.sub.xs}
           padding: 10px 20px;
-          background-color: ${palette.opacity.opa100};
+          background: ${palette.opacity.opa100};
           border-radius: ${radius.xl};
           color: ${palette.text.primary};
           border: none;

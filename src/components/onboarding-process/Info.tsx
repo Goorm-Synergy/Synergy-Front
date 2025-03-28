@@ -159,9 +159,10 @@ const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
           id="company"
           label="직장 선택 요소"
           items={WORKPLACE_SELECTION_FACTOR}
-          value={form.company || ''}
+          value={form.company || []}
           onChange={(value) => handleChange('company', value.toString())}
           placeholder="선택"
+          multiple
         />
 
         {/* 선호하는 기업 문화 */}
@@ -169,9 +170,10 @@ const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
           id="culture"
           label="선호하는 기업 문화"
           items={PREFERRED_CORPORATE_CULTURE}
-          value={form.culture || ''}
+          value={form.culture || []}
           onChange={(value) => handleChange('culture', value.toString())}
           placeholder="선택"
+          multiple
         />
 
         {/* 컨퍼런스 참여 목적 */}
@@ -179,9 +181,10 @@ const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
           id="purpose"
           label="컨퍼런스 참여 목적"
           items={CONFERENCE_PARTICIPATION_PURPOSE}
-          value={form.purpose || ''}
+          value={form.purpose || []}
           onChange={(value) => handleChange('purpose', value.toString())}
           placeholder="선택"
+          multiple
         />
       </div>
 
@@ -199,9 +202,9 @@ const Info = ({ onSubmit }: { onSubmit: (info: Infos) => void }) => {
             cover_letter: form.cover_letter,
             profile_img: form.profile_img || null,
             others_experience: form.others_experience || '',
-            company: form.company || '',
-            culture: form.culture || '',
-            purpose: form.purpose || '',
+            company: form.company,
+            culture: form.culture,
+            purpose: form.purpose,
           })
         }
         css={css`

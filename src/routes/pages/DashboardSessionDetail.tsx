@@ -6,17 +6,17 @@ import { css, useTheme } from '@mui/material/styles';
 import { typography } from '@styles/foundation';
 import AddIcon from '@mui/icons-material/Add';
 import AddSession from '@components/AdminPage/Popup/AddSession';
-import { useDashboardSessions } from '@stores/server/dashboard';
+import { useDashboardSessionDetail } from '@stores/server/dashboard';
 
-interface SessionData {
-  id: number;
-  date: string;
-  place: string;
+export interface SessionData {
+  sessionId: number;
   title: string;
-  startTime: string;
-  endTime: string;
+  progressDate: string;
+  startDate: string;
+  endDate: string;
+  qrUrl: string;
+  dataset: any[];
   speaker: string;
-  chartData?: any[];
 }
 
 const DashboardSessionDetail = () => {
@@ -25,9 +25,11 @@ const DashboardSessionDetail = () => {
   const [openAddSession, setOpenAddSession] = useState(false);
   const [mode, setMode] = useState<'add' | 'edit'>('add');
   const [editData, setEditData] = useState<any | null>(null);
-  const { data } = useDashboardSessions();
+  const {
+    data: { data: sessions },
+  } = useDashboardSessionDetail();
 
-  console.log(data);
+  console.log(sessions);
 
   const handleRegisterClick = () => {
     setMode('add');
@@ -107,7 +109,7 @@ const DashboardSessionDetail = () => {
       </Box>
 
       {/* Session List */}
-      {data.length === 0 ? (
+      {sessions.length === 0 ? (
         <Typography
           variant="body2"
           css={css`
@@ -120,19 +122,14 @@ const DashboardSessionDetail = () => {
         </Typography>
       ) : (
         <Box css={sessionListStyle} sx={{ gap: spacing(2) }}>
-          {/* {sessions.map((session) => (
+          {sessions.map((session: SessionData) => (
             <SessionBox
-              key={session.id}
-              date={session.date}
-              place={session.place}
-              title={session.title}
-              time={`${session.startTime} ~ ${session.endTime}`}
-              speaker={session.speaker}
-              chartData={session.chartData} 
-              onDelete={() => handleDeleteSession(session.id)}
+              key={session.sessionId}
+              {...session}
+              onDelete={() => handleDeleteSession(session.sessionId)}
               onEdit={() => handleEditSession(session)}
             />
-          ))} */}
+          ))}
         </Box>
       )}
 

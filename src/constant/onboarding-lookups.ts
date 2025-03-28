@@ -1,11 +1,11 @@
 export const INTERESTS = [
   {
     'code': 101,
-    'name': '데이터 분석 / AI',
+    'name': '데이터 분석/AI',
   },
   {
     'code': 102,
-    'name': '클라우드 / DevOps',
+    'name': '클라우드/DevOps',
   },
   {
     'code': 103,

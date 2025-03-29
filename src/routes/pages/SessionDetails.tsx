@@ -17,7 +17,7 @@ const SessionDetails = () => {
   const [qnaSuccess, setQnaSuccess] = useState(false);
 
   const { isChecked } = useQrVerifyCheck({
-    isAlreadyVerifyed: false,
+    isAlreadyVerifyed: true,
     onQrSuccess: () => {
       navigate(`/session/${id}`);
       setQrSuccess(true);

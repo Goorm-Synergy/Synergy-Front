@@ -100,3 +100,27 @@ export const useSessionQna = () => {
 
   return { qnaMutation };
 };
+
+export const useBoothVerify = () => {
+  const queryClient = useQueryClient();
+  const { identifier } = useAuthStore.getState().user;
+
+  const qrMutation = useMutation({
+    mutationFn: ({
+      boothId,
+      qrCode,
+      redirectTo,
+    }: {
+      boothId: number;
+      qrCode: string;
+      redirectTo: string;
+    }) => postQrVerify(boothId, qrCode, redirectTo),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: attendeeQueries.user(identifier),
+      });
+    },
+  });
+
+  return { qrMutation };
+};

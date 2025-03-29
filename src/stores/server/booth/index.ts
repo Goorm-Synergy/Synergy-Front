@@ -1,10 +1,13 @@
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { boothQueries } from './queries';
 
 export const useBoothList = () => {
   return useSuspenseQuery(boothQueries.lists());
 };
 
-export const useBoothDetail = (boothId: number) => {
-  return useSuspenseQuery(boothQueries.details(boothId));
+export const useBoothDetail = (boothId: number, enabled: boolean) => {
+  return useQuery({
+    ...boothQueries.details(boothId),
+    enabled,
+  });
 };

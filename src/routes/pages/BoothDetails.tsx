@@ -3,7 +3,12 @@ import SuccessPopup from '@components/SuccessPopup';
 import { css, styled, Typography, useTheme } from '@mui/material';
 import { useBoothDetail } from '@stores/server/booth';
 import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom';
 import DefaultImage from '@assets/default-booth-image.png';
 import { useQrVerifyCheck } from '@hooks/useQrVerifyCheck';
 
@@ -11,18 +16,26 @@ const BoothDetails = () => {
   const { palette, typo } = useTheme();
   const navigate = useNavigate();
   const { id } = useParams();
+  const { pathname } = useLocation();
+  const [searchParams, _] = useSearchParams();
 
   const [qrSuccess, setQrSuccess] = useState(false);
 
-  const { isChecked } = useQrVerifyCheck({
-    isAlreadyVerifyed: false,
+  const {
+    data: { data },
+  } = useBoothDetail(
+    Number(id),
+    `${pathname}?qrCode=${searchParams.get('qrCode')}`,
+  );
+
+  useQrVerifyCheck({
+    isAlreadyVerifyed: data.isQRVerify,
     onQrSuccess: () => {
       navigate(`/booth/${id}`);
       setQrSuccess(true);
     },
     isBooth: true,
   });
-  const { data } = useBoothDetail(Number(id), isChecked);
 
   if (!data) {
     return <></>;
@@ -43,7 +56,7 @@ const BoothDetails = () => {
             ${typo.sub.s}
           `}
         >
-          {data.data.boothNumber}
+          {data.boothNumber}
         </Typography>
         <Typography
           variant="h1"
@@ -52,7 +65,7 @@ const BoothDetails = () => {
             ${typo.title.m}
           `}
         >
-          {data.data.companyName}
+          {data.companyName}
         </Typography>
         <Typography
           variant="body1"
@@ -62,7 +75,7 @@ const BoothDetails = () => {
             margin: 4px 0px;
           `}
         >
-          {data.data.companyType}
+          {data.companyType}
         </Typography>
         <Typography
           variant="body1"
@@ -71,16 +84,16 @@ const BoothDetails = () => {
             ${typo.body.s}
           `}
         >
-          {data.data.boothLocation}
+          {data.boothLocation}
         </Typography>
-        <StyledImage src={data.data.imageUrl.trim() || DefaultImage} />
+        <StyledImage src={data.imageUrl.trim() || DefaultImage} />
         <p
           css={css`
             ${typo.body.m}
             color: ${palette.text.primary};
           `}
         >
-          {data.data.boothDescription}
+          {data.boothDescription}
         </p>
       </Container>
 

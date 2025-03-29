@@ -77,21 +77,19 @@ export const useSessionVerify = (sessionId: number) => {
   return { qrMutation };
 };
 
-export const useSessionQna = () => {
+export const useSessionQna = (sessionId: number) => {
   const queryClient = useQueryClient();
   const { identifier } = useAuthStore.getState().user;
 
   const qnaMutation = useMutation({
-    mutationFn: ({
-      sessionId,
-      content,
-    }: {
-      sessionId: number;
-      content: string;
-    }) => postQna(sessionId, content),
+    mutationFn: ({ content }: { content: string }) =>
+      postQna(sessionId, content),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: attendeeQueries.user(identifier),
+      });
+      queryClient.invalidateQueries({
+        queryKey: sessionQueries.detail(sessionId),
       });
     },
   });

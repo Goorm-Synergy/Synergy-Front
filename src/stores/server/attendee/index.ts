@@ -10,6 +10,8 @@ import {
   patchOnboardingInfos,
 } from '@api/attendee-controller';
 import { postQna, postQrVerify } from '@api/session-verify-controller';
+import { sessionQueries } from '../session/queries';
+import { boothQueries } from '../booth/queries';
 
 export const useAttendeeProfile = () => {
   const { identifier } = useAuthStore.getState().user;
@@ -55,23 +57,19 @@ export const useOnboardingPatch = () => {
   return { basicMutation, detailMutation };
 };
 
-export const useSessionVerify = () => {
+export const useSessionVerify = (sessionId: number) => {
   const queryClient = useQueryClient();
   const { identifier } = useAuthStore.getState().user;
 
   const qrMutation = useMutation({
-    mutationFn: ({
-      sessionId,
-      qrCode,
-      redirectTo,
-    }: {
-      sessionId: number;
-      qrCode: string;
-      redirectTo: string;
-    }) => postQrVerify(sessionId, qrCode, redirectTo),
+    mutationFn: ({ qrCode }: { qrCode: string }) =>
+      postQrVerify(sessionId, qrCode),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: attendeeQueries.user(identifier),
+      });
+      queryClient.invalidateQueries({
+        queryKey: sessionQueries.detail(sessionId),
       });
     },
   });
@@ -101,23 +99,19 @@ export const useSessionQna = () => {
   return { qnaMutation };
 };
 
-export const useBoothVerify = () => {
+export const useBoothVerify = (boothId: number) => {
   const queryClient = useQueryClient();
   const { identifier } = useAuthStore.getState().user;
 
   const qrMutation = useMutation({
-    mutationFn: ({
-      boothId,
-      qrCode,
-      redirectTo,
-    }: {
-      boothId: number;
-      qrCode: string;
-      redirectTo: string;
-    }) => postQrVerify(boothId, qrCode, redirectTo),
+    mutationFn: ({ qrCode }: { qrCode: string }) =>
+      postQrVerify(boothId, qrCode),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: attendeeQueries.user(identifier),
+      });
+      queryClient.invalidateQueries({
+        queryKey: boothQueries.detail(boothId),
       });
     },
   });

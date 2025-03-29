@@ -20,11 +20,7 @@ export const postQna = async (sessionId: number, content: string) => {
 };
 
 // 세션 QR 체크인
-export const postQrVerify = async (
-  sessionId: number,
-  qrCode: string,
-  redirectTo: string,
-) => {
+export const postQrVerify = async (sessionId: number, qrCode: string) => {
   try {
     const res = await apiClient.post(
       `/api/v1/verify/session/${sessionId}?qrCode=${qrCode}`,
@@ -33,8 +29,6 @@ export const postQrVerify = async (
   } catch (err) {
     if (err instanceof AxiosError) {
       if (err.status === 403) return (window.location.href = '/');
-      if (err.status === 401)
-        return (window.location.href = `/participant-login?redirectTo=${redirectTo}`);
     }
     return Promise.reject(err);
   }

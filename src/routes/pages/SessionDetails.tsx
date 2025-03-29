@@ -6,25 +6,37 @@ import { useQrVerifyCheck } from '@hooks/useQrVerifyCheck';
 import { styled, useTheme } from '@mui/material';
 import { useSessionDetail } from '@stores/server/session';
 import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom';
 
 const SessionDetails = () => {
   const { palette } = useTheme();
-  const navigate = useNavigate();
   const { id } = useParams();
+  const { pathname } = useLocation();
+  const [searchParams, _] = useSearchParams();
+  const navigate = useNavigate();
 
   const [qrSuccess, setQrSuccess] = useState(false);
   const [qnaSuccess, setQnaSuccess] = useState(false);
 
-  const { isChecked } = useQrVerifyCheck({
-    isAlreadyVerifyed: true,
+  const {
+    data: { data },
+  } = useSessionDetail(
+    Number(id),
+    `${pathname}?qrCode=${searchParams.get('qrCode')}`,
+  );
+
+  useQrVerifyCheck({
+    isAlreadyVerifyed: data.isQRVerify,
     onQrSuccess: () => {
       navigate(`/session/${id}`);
       setQrSuccess(true);
     },
   });
-
-  const { data } = useSessionDetail(Number(id), isChecked);
 
   if (!data) {
     return <></>;
@@ -40,19 +52,20 @@ const SessionDetails = () => {
       <Container>
         {/* Session Information */}
         <Information
-          id={data.data.sessionId}
-          title={data.data.title}
-          speaker={data.data.speaker}
-          speakerPosition={data.data.speakerPosition}
-          startTime={data.data.startTime}
-          endTime={data.data.endTime}
-          image={data.data.imageUrl}
-          description={data.data.description}
+          id={data.sessionId}
+          title={data.title}
+          speaker={data.speaker}
+          speakerPosition={data.speakerPosition}
+          startTime={data.startTime}
+          endTime={data.endTime}
+          image={data.imageUrl}
+          description={data.description}
         />
 
         {/* Q&A */}
         <QnaSection
-          qnaData={data.data.questionResDto}
+          isQRVerify={data.isQRVerify}
+          qnaData={data.questionResDto}
           onSuccess={() => setQnaSuccess(true)}
         />
       </Container>

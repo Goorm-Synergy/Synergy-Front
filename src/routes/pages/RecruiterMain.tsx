@@ -1,17 +1,22 @@
-import { useTheme } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { Box, Typography, useTheme, css } from '@mui/material';
 import BackHeader from '@components/headers/BackHeader';
-import { Box, Typography, css } from '@mui/material';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import { useRecruiterAttendees } from '@stores/server/recruiter';
 
 const RecruiterMain = () => {
   const { palette, typo } = useTheme();
-  const navigate = useNavigate();
+  const { data } = useRecruiterAttendees({});
 
+  const likedAttendees = data.data.list.filter((attendee: any) => attendee.liked);
+  
+  const handleLikeUpdate = () => {
+    useRecruiterAttendees({ liked: true });
+  };
   return (
     <>
       <BackHeader
         backgroundColor={palette.background.primary}
-        onClick={() => navigate(-1)}
+        onClick={() => window.history.back()}
       />
       <Box
         css={css`
@@ -35,6 +40,97 @@ const RecruiterMain = () => {
         >
           내가 저장한 인재
         </Typography>
+
+        <Box
+          css={css`
+            display: flex;  
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: flex-start;
+            margin-top: 20px;
+          `}
+        >
+          {likedAttendees.map((attendee: any) => (
+            <Box
+              key={attendee.attendeeId}
+              css={css`
+                background-color: ${palette.background.tertiary};
+                border-radius: 18px;
+                padding: 24px;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                flex: 0 0 175px;
+                min-width: 175px;
+              `}
+            >
+              <Box
+                css={css`
+                  width: 70px;
+                  height: 98px;
+                  overflow: hidden;
+                  margin-bottom: 12px;
+                `}
+              >
+                <img
+                  src={attendee.profileImageUrl}
+                  alt={`${attendee.name} 프로필 이미지`}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+              </Box>
+
+              <Typography
+                css={css`
+                  font-size: 16px;
+                  font-weight: 700;
+                  color: ${palette.text.primary};
+                  margin-bottom: 4px;
+                `}
+              >
+                {attendee.name}
+              </Typography>
+              <Typography
+                css={css`
+                  font-size: 14px;
+                  font-weight: 500;
+                  color: ${palette.text.primary};
+                  margin-bottom: 4px;
+                `}
+              >
+                {attendee.desiredJobPosition}
+              </Typography>
+              <Typography
+                css={css`
+                  font-size: 12px;
+                  color: ${palette.text.primary};
+                  margin-bottom: 12px;
+                  line-height: 1.4;
+                `}
+              >
+                {attendee.techStacks}
+              </Typography>
+
+              <Box
+                css={css`
+                  width: 100%;
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                `}
+              >
+                <Typography
+                  css={css`
+                    font-size: 12px;
+                    color: ${palette.text.secondary};
+                  `}
+                >
+                  {attendee.experienceLevel}
+                </Typography>
+                <FavoriteIcon sx={{ color: '#EB5050', fontSize: 18 }} />
+              </Box>
+            </Box>
+          ))}
+        </Box>
       </Box>
     </>
   );

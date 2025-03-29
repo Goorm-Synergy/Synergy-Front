@@ -28,6 +28,7 @@ export const fetchSessionDetail = async (sessionId: number) => {
   } catch (err) {
     if (err instanceof AxiosError) {
       if (err.status === 403) return (window.location.href = '/');
+      if (err.status === 401) return (window.location.href = '/');
     }
     return Promise.reject(err);
   }

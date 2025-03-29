@@ -1,10 +1,13 @@
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { sessionQueries } from './queries';
 
 export const useSessionList = () => {
   return useSuspenseQuery(sessionQueries.lists());
 };
 
-export const useSessionDetail = (sessionId: number) => {
-  return useSuspenseQuery(sessionQueries.details(sessionId));
+export const useSessionDetail = (sessionId: number, enabled: boolean) => {
+  return useQuery({
+    ...sessionQueries.details(sessionId),
+    enabled,
+  });
 };

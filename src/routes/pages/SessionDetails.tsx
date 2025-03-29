@@ -12,14 +12,23 @@ const SessionDetails = () => {
   const { palette } = useTheme();
   const navigate = useNavigate();
   const { id } = useParams();
-  const {
-    data: { data },
-  } = useSessionDetail(Number(id));
 
   const [qrSuccess, setQrSuccess] = useState(false);
   const [qnaSuccess, setQnaSuccess] = useState(false);
 
-  useQrVerifyCheck({ onQrSuccess: () => setQrSuccess(true) });
+  const { isChecked } = useQrVerifyCheck({
+    isAlreadyVerifyed: false,
+    onQrSuccess: () => {
+      navigate(`/session/${id}`);
+      setQrSuccess(true);
+    },
+  });
+
+  const { data } = useSessionDetail(Number(id), isChecked);
+
+  if (!data) {
+    return <></>;
+  }
 
   return (
     <>
@@ -31,19 +40,19 @@ const SessionDetails = () => {
       <Container>
         {/* Session Information */}
         <Information
-          id={data.sessionId}
-          title={data.title}
-          speaker={data.speaker}
-          speakerPosition={data.speakerPosition}
-          startTime={data.startTime}
-          endTime={data.endTime}
-          image={data.imageUrl}
-          description={data.description}
+          id={data.data.sessionId}
+          title={data.data.title}
+          speaker={data.data.speaker}
+          speakerPosition={data.data.speakerPosition}
+          startTime={data.data.startTime}
+          endTime={data.data.endTime}
+          image={data.data.imageUrl}
+          description={data.data.description}
         />
 
         {/* Q&A */}
         <QnaSection
-          qnaData={data.questionResDto}
+          qnaData={data.data.questionResDto}
           onSuccess={() => setQnaSuccess(true)}
         />
       </Container>

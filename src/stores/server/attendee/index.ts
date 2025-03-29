@@ -63,10 +63,12 @@ export const useSessionVerify = () => {
     mutationFn: ({
       sessionId,
       qrCode,
+      redirectTo,
     }: {
       sessionId: number;
       qrCode: string;
-    }) => postQrVerify(sessionId, qrCode),
+      redirectTo: string;
+    }) => postQrVerify(sessionId, qrCode, redirectTo),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: attendeeQueries.user(identifier),

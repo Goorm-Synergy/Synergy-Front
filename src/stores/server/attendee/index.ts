@@ -10,6 +10,8 @@ import {
   patchOnboardingInfos,
 } from '@api/attendee-controller';
 import { postQna, postQrVerify } from '@api/session-verify-controller';
+import { sessionQueries } from '../session/queries';
+import { boothQueries } from '../booth/queries';
 
 export const useAttendeeProfile = () => {
   const { identifier } = useAuthStore.getState().user;
@@ -55,21 +57,19 @@ export const useOnboardingPatch = () => {
   return { basicMutation, detailMutation };
 };
 
-export const useSessionVerify = () => {
+export const useSessionVerify = (sessionId: number) => {
   const queryClient = useQueryClient();
   const { identifier } = useAuthStore.getState().user;
 
   const qrMutation = useMutation({
-    mutationFn: ({
-      sessionId,
-      qrCode,
-    }: {
-      sessionId: number;
-      qrCode: string;
-    }) => postQrVerify(sessionId, qrCode),
+    mutationFn: ({ qrCode }: { qrCode: string }) =>
+      postQrVerify(sessionId, qrCode),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: attendeeQueries.user(identifier),
+      });
+      queryClient.invalidateQueries({
+        queryKey: sessionQueries.detail(sessionId),
       });
     },
   });
@@ -77,24 +77,42 @@ export const useSessionVerify = () => {
   return { qrMutation };
 };
 
-export const useSessionQna = () => {
+export const useSessionQna = (sessionId: number) => {
   const queryClient = useQueryClient();
   const { identifier } = useAuthStore.getState().user;
 
   const qnaMutation = useMutation({
-    mutationFn: ({
-      sessionId,
-      content,
-    }: {
-      sessionId: number;
-      content: string;
-    }) => postQna(sessionId, content),
+    mutationFn: ({ content }: { content: string }) =>
+      postQna(sessionId, content),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: attendeeQueries.user(identifier),
+      });
+      queryClient.invalidateQueries({
+        queryKey: sessionQueries.detail(sessionId),
       });
     },
   });
 
   return { qnaMutation };
+};
+
+export const useBoothVerify = (boothId: number) => {
+  const queryClient = useQueryClient();
+  const { identifier } = useAuthStore.getState().user;
+
+  const qrMutation = useMutation({
+    mutationFn: ({ qrCode }: { qrCode: string }) =>
+      postQrVerify(boothId, qrCode),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: attendeeQueries.user(identifier),
+      });
+      queryClient.invalidateQueries({
+        queryKey: boothQueries.detail(boothId),
+      });
+    },
+  });
+
+  return { qrMutation };
 };

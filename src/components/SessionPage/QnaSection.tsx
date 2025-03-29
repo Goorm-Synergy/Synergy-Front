@@ -9,9 +9,11 @@ type QnaData = {
 };
 
 const QnaSection = ({
+  isQRVerify,
   qnaData,
   onSuccess,
 }: {
+  isQRVerify: boolean;
   qnaData: QnaData[];
   onSuccess: () => void;
 }) => {
@@ -71,20 +73,22 @@ const QnaSection = ({
           )}
         </Box>
       </Box>
-      <Button
-        css={css`
-          width: 100%;
-          margin-top: 6px;
-          background-color: ${palette.background.quinary};
-          border: none;
-          padding: 18px 0px;
-          ${typo.sub.s}
-          color: ${palette.text.primary};
-        `}
-        onClick={() => setOpen(true)}
-      >
-        질문 작성하기
-      </Button>
+      {isQRVerify && (
+        <Button
+          css={css`
+            width: 100%;
+            margin-top: 6px;
+            background-color: ${palette.background.quinary};
+            border: none;
+            padding: 18px 0px;
+            ${typo.sub.s}
+            color: ${palette.text.primary};
+          `}
+          onClick={() => setOpen(true)}
+        >
+          질문 작성하기
+        </Button>
+      )}
 
       <QnaDialog
         open={open}

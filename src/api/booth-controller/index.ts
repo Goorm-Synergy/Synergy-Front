@@ -19,7 +19,10 @@ export const fetchBoothList = async () => {
 };
 
 // 부스 상세 조회
-export const fetchBoothDetail = async (boothId: number) => {
+export const fetchBoothDetail = async (
+  boothId: number,
+  redirectTo?: string,
+) => {
   try {
     const res = await apiClient.get(
       `/api/v1/conference/${CONFERENCE_ID}/booths/${boothId}`,
@@ -28,6 +31,10 @@ export const fetchBoothDetail = async (boothId: number) => {
   } catch (err) {
     if (err instanceof AxiosError) {
       if (err.status === 403) return (window.location.href = '/');
+      if (err.status === 401)
+        return redirectTo
+          ? (window.location.href = `/participant-login?redirectTo=${redirectTo}`)
+          : (window.location.href = '/');
     }
     return Promise.reject(err);
   }

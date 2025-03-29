@@ -3,9 +3,10 @@ import { TodaySessionItem } from './SessionParticipation';
 import dayjs from 'dayjs';
 interface PreviewChartProps {
   data: TodaySessionItem[];
+  isBooth?: boolean;
 }
 
-const PreviewChart = ({ data }: PreviewChartProps) => {
+const PreviewChart = ({ data, isBooth }: PreviewChartProps) => {
   const { palette, typo, radius } = useTheme();
 
   const styles = {
@@ -55,10 +56,11 @@ const PreviewChart = ({ data }: PreviewChartProps) => {
             {data.map((item, index) => (
               <ChartColumn
                 key={index}
-                text={`세션 ${index + 1}`}
+                text={isBooth ? `상위 부스 ${index + 1}` : `세션 ${index + 1}`}
                 title={item.title}
                 max={item.maximumAttendee}
                 current={item.currentAttendee}
+                isBooth={isBooth}
               />
             ))}
           </div>
@@ -75,14 +77,17 @@ interface ChartColumnProps {
   current: number;
   text: string;
   title: string;
+  isBooth?: boolean;
 }
 const ChartColumn = (props: ChartColumnProps) => {
   const { palette, typo } = useTheme();
   const percentage = Math.ceil((props.current / props.max) * 100);
-  const widthPercentage = Math.ceil((props.current / props.max) * 10) * 5;
+  const widthPercentage =
+    Math.ceil(((props.current / props.max) * 100) / 5) * 5 + '%';
 
   const styles = {
     container: css`
+      width: 100%;
       display: flex;
       flex-direction: column;
       gap: 4px;
@@ -90,7 +95,7 @@ const ChartColumn = (props: ChartColumnProps) => {
     graph: css`
       display: flex;
       justify-content: end;
-      width: ${widthPercentage}%;
+      width: ${widthPercentage};
       background-color: ${palette.graph.default};
       ${typo.sub.s}
       color: ${palette.text.primary};
@@ -131,7 +136,11 @@ const ChartColumn = (props: ChartColumnProps) => {
       <div css={styles.textlist}>
         <span css={styles.bodyText}>{props.text}</span>
         <span css={styles.subText}>{props.title}</span>
-        <span css={styles.bodyText}>{`${props.current}/${props.max}`}</span>
+        {props.isBooth ? (
+          <></>
+        ) : (
+          <span css={styles.bodyText}>{`${props.current}/${props.max}`}</span>
+        )}
       </div>
     </Box>
   );

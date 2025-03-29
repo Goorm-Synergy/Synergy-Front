@@ -10,6 +10,7 @@ import {
   resetPasswordRequestQuery,
   resetPasswordQuery,
 } from './queries';
+import { logoutRequest } from '@api/auth';
 
 // 참가자 로그인
 export const useLoginMutation = () => {
@@ -141,9 +142,7 @@ export const useLogoutMutation = () => {
   const navigate = useNavigate();
 
   return useMutation({
-    mutationFn: async () => {
-      console.log(document.cookie);
-    },
+    mutationFn: logoutRequest,
     onSuccess: () => {
       alert('로그아웃 되었습니다.');
       useAuthStore.getState().clearAuth();

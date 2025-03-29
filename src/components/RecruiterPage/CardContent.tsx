@@ -2,180 +2,184 @@ import { useState } from 'react';
 import { css, Box, Typography, useTheme, IconButton } from '@mui/material';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import defaultProfileImg from 'src/assets/default-profile-img.png';
+import { useRecruiterAttendees, useLikeAttendee, useUnlikeAttendee } from '@stores/server/recruiter';
+import { useNavigate } from 'react-router-dom';
 
-const talentList = [
-    {
-        imageUrl: defaultProfileImg,
-        name: '최영호',
-        position: '프로덕트 디자이너',
-        skills: 'Figma, Sketch, ...',
-        experience: '5년 이상',
-    },
-    {
-        imageUrl: '/images/profile2.png',
-        name: '김지원',
-        position: '백엔드 개발자',
-        skills: 'Java, Spring Boot ...',
-        experience: '2년 이하',
-    },
-    {
-        imageUrl: '/images/profile3.png',
-        name: '정서연',
-        position: '프로덕트 디자이너',
-        skills: 'Figma, Framer ...',
-        experience: '2년 이하',
-    },
-    {
-        imageUrl: '/images/profile4.png',
-        name: '박시형',
-        position: '프론트엔드 개발자',
-        skills: 'JavaScript, TypeS ...',
-        experience: '3~4년 이하',
-    },
-    {
-        imageUrl: '/images/profile5.png',
-        name: '이다영',
-        position: '프론트엔드 개발자',
-        skills: 'JavaScript, TypeS ...',
-        experience: '3~4년 이하',
-    },
-    {
-        imageUrl: '/images/profile6.png',
-        name: '김다혜',
-        position: '프론트엔드 개발자',
-        skills: 'JavaScript, TypeS ...',
-        experience: '5년 이상',
-    },
-];
-
-interface CardContentItemProps {
-    imageUrl: string;
-    name: string;
-    position: string;
-    skills: string;
-    experience: string;
-    onBookmarkClick?: () => void;
-    isBookmarked?: boolean;
+interface CardContentProps {
+  filters?: {
+    page?: number;
+    size?: number;
+    sort?: string[];
+    occupations?: string;
+    educationLevel?: string;
+    ageGroup?: string;
+    experienceLevel?: string;
+    regions?: string;
+    liked?: boolean;
+    [key: string]: any;
+  };
+      onLikeUpdate?: () => void;
 }
 
-const CardContentItem = ({
-    imageUrl,
-    name,
-    position,
-    skills,
-    experience,
-}: CardContentItemProps) => {
-    const { palette } = useTheme();
-    const [isBookmarked, setIsBookmarked] = useState(false);
+const CardContent = ({ filters }: CardContentProps) => {
+  const { data } = useRecruiterAttendees(filters);
+  const { palette } = useTheme();
+  const likeMutation = useLikeAttendee();
+  const unlikeMutation = useUnlikeAttendee();
+  const navigate = useNavigate();
 
-    const handleBookmarkClick = () => {
-        setIsBookmarked(!isBookmarked);
-    };
-    
-    return (
+  const [likedItems, setLikedItems] = useState<Record<number, boolean>>({});
+
+  const truncateText = (text: string, length: number) => {
+    if (text.length > length) {
+      return text.substring(0, length) + '...';
+    }
+    return text;
+  };
+
+  const handleLikeClick = (attendeeId: number) => {
+    setLikedItems((prev) => ({ ...prev, [attendeeId]: true }));
+  
+    likeMutation.mutate(attendeeId, {
+      onError: () => {
+        setLikedItems((prev) => ({ ...prev, [attendeeId]: false }));
+      },
+    });
+  };
+  
+  const handleUnlikeClick = (attendeeId: number) => {
+    setLikedItems((prev) => ({ ...prev, [attendeeId]: false }));
+  
+    unlikeMutation.mutate(attendeeId, {
+      onError: () => {
+        setLikedItems((prev) => ({ ...prev, [attendeeId]: true }));
+      },
+    });
+  };
+  
+
+  const handleCardClick = (attendeeId: number) => {
+    navigate(`/my-info/${attendeeId}`);
+  };
+
+  return (
+    <Box
+      css={css`
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        justify-content: flex-start;
+      `}
+    >
+      {data.data.list
+        .filter((attendee: any) => {
+          if (filters && filters.liked !== undefined) {
+            return attendee.liked === filters.liked;
+          }
+          return true;
+        })
+        .map((attendee: any) => (
         <Box
-        css={css`
+          key={attendee.attendeeId}
+          css={css`
             background-color: ${palette.background.tertiary};
+            display: flex;
+            min-width: 166px;
+            max-width: 280px;
             border-radius: 18px;
             padding: 24px;
-            display: flex;
             flex-direction: column;
             align-items: flex-start;
             flex: 1 0 0;
-            min-width: 166px;
-            max-width: 280px;
-        `}
+          `}
+          onClick={() => handleCardClick(attendee.attendeeId)}
         >
-        <Box
+          <Box
             css={css`
-                width: 70px;
-                height: 98px;
-                overflow: hidden;
-                margin-bottom: 12px;
+              display: flex;
+              width: 70px;
+              height: 98px;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+              aspect-ratio: 5/7
+              overflow: hidden;
+              margin-bottom: 10px;
             `}
-        >
+          >
             <img
-            src={imageUrl}
-            alt={`${name} 프로필 이미지`}
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              src={attendee.profileImageUrl}
+              alt={`${attendee.name} 프로필 이미지`}
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />
-        </Box>
+          </Box>
 
-        <Typography
+          <Typography
             css={css`
-                font-size: 16px;
-                font-weight: 700;
-                color: ${palette.text.primary};
-                margin-bottom: 4px;
+              font-size: 16px;
+              font-weight: 700;
+              color: ${palette.text.primary};
+              margin-bottom: 4px;
             `}
-        >
-            {name}
-        </Typography>
-        <Typography
+          >
+            {attendee.name}
+          </Typography>
+          <Typography
             css={css`
-                font-size: 14px;
-                font-weight: 500;
-                color: ${palette.text.primary};
-                margin-bottom: 4px;
+              font-size: 14px;
+              font-weight: 500;
+              color: ${palette.text.primary};
+              margin-bottom: 4px;
             `}
-        >
-            {position}
-        </Typography>
-        <Typography
+          >
+            {attendee.desiredJobPosition}
+          </Typography>
+          <Typography
             css={css`
-                font-size: 12px;
-                color: ${palette.text.primary};
-                margin-bottom: 12px;
-                line-height: 1.4;
+              font-size: 12px;
+              color: ${palette.text.primary};
+              margin-bottom: 12px;
+              line-height: 1.4;
             `}
-        >
-            {skills}
-        </Typography>
+          >
+            {truncateText(attendee.techStacks, 15)}
+          </Typography>
 
-        <Box
+          <Box
             css={css`
-                width: 100%;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
+              width: 100%;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
             `}
-        >
+          >
             <Typography
-            css={css`
+              css={css`
                 font-size: 12px;
                 color: ${palette.text.secondary};
-            `}
+              `}
             >
-            {experience}
+              {attendee.experienceLevel}
             </Typography>
-            <IconButton onClick={handleBookmarkClick}>
-            {isBookmarked ? (
-                <FavoriteIcon sx={{ color: '#EB5050', fontSize: 20 }} />
-            ) : (
-                <FavoriteBorderIcon sx={{ color: palette.text.secondary, fontSize: 20 }} />
-            )}
+            <IconButton onClick={(e) => {
+              e.stopPropagation();
+              if (likedItems[attendee.attendeeId] || attendee.liked) {
+                handleUnlikeClick(attendee.attendeeId);
+              } else {
+                handleLikeClick(attendee.attendeeId);
+              }
+            }}>
+              {likedItems[attendee.attendeeId] || attendee.liked ? (
+                <FavoriteIcon sx={{ color: '#EB5050', fontSize: 18 }} />
+              ) : (
+                <FavoriteBorderIcon sx={{ color: palette.text.secondary, fontSize: 18 }} />
+              )}
             </IconButton>
+          </Box>
         </Box>
-        </Box>
-    );
-};
-
-const CardContent = () => {
-    return (
-        <Box
-            css={css`
-                display: flex;
-                flex-wrap: wrap;
-                gap: 16px;
-                justify-content: space-between;
-            `}
-        >
-        {talentList.map((talent, index) => (
-            <CardContentItem key={index} {...talent} />
-        ))}
-        </Box>
-    );
+      ))}
+    </Box>
+  );
 };
 
 export default CardContent;

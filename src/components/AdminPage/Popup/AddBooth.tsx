@@ -45,9 +45,9 @@ const AddBooth = ({
   const { mutate: modifyMutate } = useModifyBooth();
 
   const locationOptions = [
-    { code: 'hallA', name: 'Hall A' },
-    { code: 'hallB', name: 'Hall B' },
-    { code: 'hallC', name: 'Hall C' },
+    { code: 'A HALL', name: 'A HALL' },
+    { code: 'B HALL', name: 'B HALL' },
+    { code: 'C HALL', name: 'C HALL' },
   ];
 
   useEffect(() => {

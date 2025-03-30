@@ -7,6 +7,7 @@ import { typography } from '@styles/foundation';
 import AddIcon from '@mui/icons-material/Add';
 import AddBooth from '@components/AdminPage/Popup/AddBooth';
 import { useDashboardBoothDetail } from '@stores/server/dashboard';
+import { useDeleteBooth } from '@stores/server/booth';
 
 export interface BoothData {
   boothId: number;
@@ -29,6 +30,8 @@ const DashboardBoothDetail = () => {
   const {
     data: { data: booths },
   } = useDashboardBoothDetail();
+
+  const { mutate: deleteMutate } = useDeleteBooth();
 
   const handleRegisterClick = () => {
     setEditMode('add');
@@ -121,7 +124,7 @@ const DashboardBoothDetail = () => {
           {booths.map((booth: BoothData) => (
             <BoothBox
               key={booth.boothId}
-              onDelete={() => handleDeleteBooth(booth.boothId)}
+              onDelete={() => deleteMutate(booth.boothId)}
               onEdit={() => handleEditBooth(booth)}
               {...booth}
             />

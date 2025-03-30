@@ -121,12 +121,13 @@ const RecruiterMypage = () => {
         css={css`
           background-color: ${palette.background.primary};
           padding: 20px;
-          flex: 1;
+          
         `}
       >
         <Box
           css={css`
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 16px;
@@ -150,6 +151,7 @@ const RecruiterMypage = () => {
             onClick={() => navigate('/recruiter/main')}
           />
         </Box>
+
 
         <CardContent filters={{ liked: true }} onLikeUpdate={handleLikeUpdate} />
       </Box>

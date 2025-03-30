@@ -9,9 +9,6 @@ const RecruiterMain = () => {
 
   const likedAttendees = data.data.list.filter((attendee: any) => attendee.liked);
   
-  const handleLikeUpdate = () => {
-    useRecruiterAttendees({ liked: true });
-  };
   return (
     <>
       <BackHeader
@@ -20,12 +17,8 @@ const RecruiterMain = () => {
       />
       <Box
         css={css`
-          max-width: 600px;
-          margin: 0 auto;
-          padding: 20px 16px 0;
+          padding: 0 10px;
           background-color: ${palette.background.primary};
-          height: 100%;
-          overflow-y: auto;
         `}
       >
         <Typography
@@ -43,11 +36,11 @@ const RecruiterMain = () => {
 
         <Box
           css={css`
-            display: flex;  
+            display: flex;
             flex-wrap: wrap;
             gap: 16px;
-            justify-content: flex-start;
             margin-top: 20px;
+            overflow-y: auto;
           `}
         >
           {likedAttendees.map((attendee: any) => (
@@ -55,21 +48,25 @@ const RecruiterMain = () => {
               key={attendee.attendeeId}
               css={css`
                 background-color: ${palette.background.tertiary};
+                display: flex;
                 border-radius: 18px;
                 padding: 24px;
-                display: flex;
                 flex-direction: column;
                 align-items: flex-start;
-                flex: 0 0 175px;
-                min-width: 175px;
+                flex: 1 0 0;
               `}
             >
               <Box
                 css={css`
+                  display: flex;
                   width: 70px;
                   height: 98px;
+                  flex-direction: column;
+                  justify-content: center;
+                  align-items: center;
+                  aspect-ratio: 5/7
                   overflow: hidden;
-                  margin-bottom: 12px;
+                  margin-bottom: 10px;
                 `}
               >
                 <img

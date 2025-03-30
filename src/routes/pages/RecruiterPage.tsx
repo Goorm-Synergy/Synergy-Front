@@ -40,12 +40,12 @@ const RecruiterPage = () => {
         background-color: ${palette.background.primary};
         flex-direction: column;
         align-items: flex-start;
-        gap: 26px;
+        gap: 10px;
       `}
     >
       <Box
         css={css`
-          padding: 24px 16px 0;
+          padding: 16px 16px 0px;
           flex-shrink: 0;
         `}
       >
@@ -122,9 +122,8 @@ const RecruiterPage = () => {
           display: flex;
           flex-wrap: wrap;
           gap: 16px;
-          justify-content: flex-start;
+          padding: 0 10px;
           overflow-y: auto;
-          
         }
         `}
       >

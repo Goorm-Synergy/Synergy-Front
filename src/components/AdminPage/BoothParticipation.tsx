@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Box, Typography, Paper } from '@mui/material';
 import { css, useTheme } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
@@ -6,20 +6,27 @@ import AddBooth from './Popup/AddBooth';
 import { useConferenceStore } from '@stores/client/useConferenceStore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { useNavigate } from 'react-router-dom';
-import { useBoothStore } from '@stores/client/useBoothStore';
 import ConferenceForm from './Popup/ConferenceForm';
 import PreviewChart from './PreviewChart';
-import { fetchBoothList } from '@api/booth-controller';
+import { useDashboardBooths } from '@stores/server/dashboard';
+import { useBoothList } from '@stores/server/booth';
 
 const BoothParticipation = () => {
   const { palette, typo, radius } = useTheme();
+  const navigate = useNavigate();
+
   const isConferenceRegistered = useConferenceStore(
     (state) => state.isConferenceRegistered,
   );
-  const { isBoothRegistered, hasAggregationData } = useBoothStore();
+  const {
+    data: { data: boothList },
+  } = useBoothList();
+  const {
+    data: { data: boothDashboard },
+  } = useDashboardBooths();
+
   const [showAddBooth, setShowAddBooth] = useState(false);
   const [showAddConference, setShowAddConference] = useState(false);
-  const navigate = useNavigate();
 
   const handleAddIconClick = () => {
     if (isConferenceRegistered) {
@@ -95,7 +102,7 @@ const BoothParticipation = () => {
             컨퍼런스 등록 후 확인 가능합니다.
           </Typography>
         </Paper>
-      ) : !isBoothRegistered ? (
+      ) : !boothList.content.length ? (
         <Paper
           css={css`
             text-align: center;
@@ -118,7 +125,7 @@ const BoothParticipation = () => {
           <Typography variant="body2">등록된 부스가 없습니다.</Typography>
           <Typography variant="body2">부스 등록 후 확인 가능합니다.</Typography>
         </Paper>
-      ) : !hasAggregationData ? (
+      ) : !boothDashboard.boothParticipateDetailDtoList.length ? (
         <Paper
           css={css`
             text-align: center;
@@ -134,7 +141,17 @@ const BoothParticipation = () => {
           </Typography>
         </Paper>
       ) : (
-        <PreviewChart data={[]} />
+        <PreviewChart
+          data={boothDashboard.boothParticipateDetailDtoList.map(
+            (item: any) => ({
+              title: item.companyName,
+              currentDate: boothDashboard.currentDate,
+              currentAttendee: item.attendeeCount,
+              maximumAttendee: item.totalCount,
+            }),
+          )}
+          isBooth
+        />
       )}
 
       {showAddBooth && (

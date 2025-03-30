@@ -1,5 +1,6 @@
-import { fetchMyProfile } from '@api/attendee-controller';
 import {
+  fetchBoothDashboard,
+  fetchBoothDashboardDetails,
   fetchSessionDashboard,
   fetchSessionDashboardDetails,
 } from '@api/dashboard-controller';
@@ -17,5 +18,16 @@ export const dashboardQueries = {
     queryOptions({
       queryKey: [...dashboardQueries.session(), 'detail'],
       queryFn: () => fetchSessionDashboardDetails(),
+    }),
+  booth: () => [...dashboardQueries.all(), 'booth'],
+  booths: () =>
+    queryOptions({
+      queryKey: [...dashboardQueries.booth()],
+      queryFn: () => fetchBoothDashboard(),
+    }),
+  boothDetail: () =>
+    queryOptions({
+      queryKey: [...dashboardQueries.booth(), 'detail'],
+      queryFn: () => fetchBoothDashboardDetails(),
     }),
 };

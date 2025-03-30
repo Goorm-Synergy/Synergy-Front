@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Typography, Box, Button } from '@mui/material';
 import Header from '@components/headers/AdminHeader';
 import BoothBox from '@components/AdminPage/BoothBox';
@@ -6,15 +6,17 @@ import { css, useTheme } from '@mui/material/styles';
 import { typography } from '@styles/foundation';
 import AddIcon from '@mui/icons-material/Add';
 import AddBooth from '@components/AdminPage/Popup/AddBooth';
-import { fetchBoothList } from '@api/booth-controller';
+import { useDashboardBoothDetail } from '@stores/server/dashboard';
 
-interface BoothData {
-  id: number;
-  date: string;
-  place: string;
+export interface BoothData {
+  boothId: number;
+  boothLocation: string;
+  boothNumber: string;
   companyName: string;
   companyType: string;
-  chartData?: any[];
+  dataset: any[];
+  progressDate: string;
+  qrCode: string;
 }
 
 const DashboardBoothDetail = () => {
@@ -23,20 +25,10 @@ const DashboardBoothDetail = () => {
   const [isAddBoothOpen, setIsAddBoothOpen] = useState(false);
   const [editMode, setEditMode] = useState<'add' | 'edit'>('add');
   const [editData, setEditData] = useState<any | null>(null);
-  const [booths, setBooths] = useState<BoothData[]>([]);
 
-  const loadBooths = async () => {
-    try {
-      const response = await fetchBoothList(); //TODO: 부스별 상세 참여율 조회로 수정 필요
-      setBooths(response.data);
-    } catch (error) {
-      console.error('부스 데이터를 가져오는 중 오류 발생:', error);
-    }
-  };
-
-  useEffect(() => {
-    loadBooths();
-  }, []);
+  const {
+    data: { data: booths },
+  } = useDashboardBoothDetail();
 
   const handleRegisterClick = () => {
     setEditMode('add');
@@ -54,8 +46,8 @@ const DashboardBoothDetail = () => {
     setIsAddBoothOpen(true);
   };
 
-  const handleDeleteSession = (boothId: number) => {
-    console.log('세션 삭제');
+  const handleDeleteBooth = (boothId: number) => {
+    console.log('부스 삭제');
   };
 
   const pageStyle = css`
@@ -122,16 +114,12 @@ const DashboardBoothDetail = () => {
         </Typography>
       ) : (
         <Box css={BoothListStyle} sx={{ gap: spacing(2) }}>
-          {booths.map((booth) => (
+          {booths.map((booth: BoothData) => (
             <BoothBox
-              key={booth.id}
-              date={booth.date}
-              place={booth.place}
-              companyName={booth.companyName}
-              companyType={booth.companyType}
-              chartData={booth.chartData}
-              onDelete={() => handleDeleteSession(booth.id)}
+              key={booth.boothId}
+              onDelete={() => handleDeleteBooth(booth.boothId)}
               onEdit={() => handleEditBooth(booth)}
+              {...booth}
             />
           ))}
         </Box>

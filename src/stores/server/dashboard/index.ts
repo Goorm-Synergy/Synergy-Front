@@ -8,3 +8,11 @@ export const useDashboardSessions = () => {
 export const useDashboardSessionDetail = () => {
   return useSuspenseQuery(dashboardQueries.sessionDetail());
 };
+
+export const useDashboardBooths = () => {
+  return useSuspenseQuery(dashboardQueries.booths());
+};
+
+export const useDashboardBoothDetail = () => {
+  return useSuspenseQuery(dashboardQueries.boothDetail());
+};

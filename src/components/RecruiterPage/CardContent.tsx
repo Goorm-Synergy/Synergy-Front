@@ -1,11 +1,11 @@
-import { useState } from 'react';
 import { css, Box, Typography, useTheme, IconButton } from '@mui/material';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useRecruiterAttendees, useLikeAttendee, useUnlikeAttendee } from '@stores/server/recruiter';
 import { useNavigate } from 'react-router-dom';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { recruiterQueries } from '@stores/server/recruiter/queries';
+import { useLocation } from 'react-router-dom';
 
 interface CardContentProps {
   filters?: {
@@ -24,7 +24,12 @@ interface CardContentProps {
 }
 
 const CardContent = ({ filters }: CardContentProps) => {
-  const { data } = useRecruiterAttendees(filters);
+  const { data } = useRecruiterAttendees({
+    ...filters,
+    liked: filters?.liked ?? undefined,
+  });
+
+  const location = useLocation();
   const { palette } = useTheme();
   const likeMutation = useLikeAttendee();
   const unlikeMutation = useUnlikeAttendee();
@@ -41,58 +46,24 @@ const CardContent = ({ filters }: CardContentProps) => {
   const handleLikeClick = (attendeeId: number) => {
     likeMutation.mutate(attendeeId, {
       onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: recruiterQueries.likedStatus().queryKey,
-        });
-        queryClient.setQueryData(
-          recruiterQueries.likedStatus().queryKey,
-          (oldData: any) => {
-            if (oldData) {
-              return [...oldData, attendeeId];
-            } else {
-              return [attendeeId];
-            }
-          }
-        );
+        queryClient.invalidateQueries();
       },
     });
   };
-  
+
   const handleUnlikeClick = (attendeeId: number) => {
     unlikeMutation.mutate(attendeeId, {
       onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: recruiterQueries.likedStatus().queryKey,
-        });
-        queryClient.setQueryData(
-          recruiterQueries.likedStatus().queryKey,
-          (oldData: any) => {
-            if (oldData) {
-              return oldData.filter((id: number) => id !== attendeeId);
-            } else {
-              return [];
-            }
-          }
-        );
+        queryClient.invalidateQueries();
       },
     });
   };
-  
 
   const handleCardClick = (attendeeId: number) => {
     navigate(`/my-info/${attendeeId}`);
   };
 
-  const { data: likedAttendeeIds } = useQuery(
-    {
-      queryKey: recruiterQueries.likedStatus().queryKey,
-      queryFn: recruiterQueries.likedStatus().queryFn,
-      refetchOnWindowFocus: true,
-    }
-  );
-  
-
-  const likedAttendeeIdsArray = likedAttendeeIds as number[] | undefined;
+  const isMypage = location.pathname === '/recruiter/mypage';
 
   return (
     <Box
@@ -103,13 +74,8 @@ const CardContent = ({ filters }: CardContentProps) => {
         justify-content: flex-start;
       `}
     >
-      {data.data.list
-        .filter((attendee: any) => {
-          if (filters && filters.liked !== undefined) {
-            return attendee.liked === filters.liked;
-          }
-          return true;
-        })
+      {data?.data?.list
+        ?.filter((attendee: any) => !isMypage || attendee.liked)
         .map((attendee: any) => (
           <Box
             key={attendee.attendeeId}
@@ -132,7 +98,7 @@ const CardContent = ({ filters }: CardContentProps) => {
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
-                aspect-ratio: 5/7
+                aspect-ratio: 5/7;
                 overflow: hidden;
                 margin-bottom: 10px;
               `}
@@ -150,7 +116,7 @@ const CardContent = ({ filters }: CardContentProps) => {
                 font-weight: 700;
                 color: ${palette.text.primary};
                 margin-bottom: 4px;
-            `}
+              `}
             >
               {attendee.name}
             </Typography>
@@ -191,15 +157,17 @@ const CardContent = ({ filters }: CardContentProps) => {
               >
                 {attendee.experienceLevel}
               </Typography>
-              <IconButton onClick={(e) => {
-                e.stopPropagation();
-                if (likedAttendeeIdsArray?.includes(attendee.attendeeId) || attendee.liked) {
-                  handleUnlikeClick(attendee.attendeeId);
-                } else {
-                  handleLikeClick(attendee.attendeeId);
-                }
-              }}>
-                {(likedAttendeeIdsArray?.includes(attendee.attendeeId) || attendee.liked) ? (
+              <IconButton
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (attendee.liked) {
+                    handleUnlikeClick(attendee.attendeeId);
+                  } else {
+                    handleLikeClick(attendee.attendeeId);
+                  }
+                }}
+              >
+                {attendee.liked ? (
                   <FavoriteIcon sx={{ color: '#EB5050', fontSize: 18 }} />
                 ) : (
                   <FavoriteBorderIcon sx={{ color: palette.text.secondary, fontSize: 18 }} />

@@ -151,8 +151,6 @@ const RecruiterMypage = () => {
             onClick={() => navigate('/recruiter/main')}
           />
         </Box>
-
-
         <CardContent filters={{ liked: true }} onLikeUpdate={handleLikeUpdate} />
       </Box>
     </Box>

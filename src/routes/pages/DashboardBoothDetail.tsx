@@ -55,6 +55,10 @@ const DashboardBoothDetail = () => {
     flex-direction: column;
     padding: ${spacing(2)};
     padding-top: 80px;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      display: none;
+    }
   `;
 
   const titleStyle = css`

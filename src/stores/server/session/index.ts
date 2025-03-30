@@ -1,6 +1,15 @@
-import { useSuspenseQuery, useMutation } from '@tanstack/react-query';
+import {
+  useSuspenseQuery,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { sessionQueries } from './queries';
-import { createSession } from '@api/session-controller';
+import {
+  createSession,
+  deleteSession,
+  modifySession,
+} from '@api/session-controller';
+import { dashboardQueries } from '../dashboard/queries';
 
 export const useSessionList = () => {
   return useSuspenseQuery(sessionQueries.lists());
@@ -11,7 +20,43 @@ export const useSessionDetail = (sessionId: number) => {
 };
 
 export const useCreateSession = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: (formData: FormData) => createSession(formData),
+    onSuccess: () => {
+      queryClient.invalidateQueries(dashboardQueries.sessions());
+      alert('세션이 생성되었습니다.');
+    },
+  });
+};
+
+export const useDeleteSession = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (sessionId: number) => deleteSession(sessionId),
+    onSuccess: () => {
+      queryClient.invalidateQueries(dashboardQueries.sessionDetail());
+      alert('세션이 삭제되었습니다.');
+    },
+  });
+};
+
+export const useModifySession = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      sessionId,
+      formData,
+    }: {
+      sessionId: number;
+      formData: FormData;
+    }) => modifySession(sessionId, formData),
+    onSuccess: () => {
+      queryClient.invalidateQueries(dashboardQueries.sessionDetail());
+      alert('세션이 수정되었습니다.');
+    },
   });
 };

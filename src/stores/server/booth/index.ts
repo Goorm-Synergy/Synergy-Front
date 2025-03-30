@@ -6,8 +6,8 @@ export const useBoothList = () => {
   return useSuspenseQuery(boothQueries.lists());
 };
 
-export const useBoothDetail = (boothId: number) => {
-  return useSuspenseQuery(boothQueries.details(boothId));
+export const useBoothDetail = (boothId: number, redirectTo?: string) => {
+  return useSuspenseQuery(boothQueries.details(boothId, redirectTo));
 };
 
 export const useCreateBooth = () => {

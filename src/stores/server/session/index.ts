@@ -6,8 +6,8 @@ export const useSessionList = () => {
   return useSuspenseQuery(sessionQueries.lists());
 };
 
-export const useSessionDetail = (sessionId: number) => {
-  return useSuspenseQuery(sessionQueries.details(sessionId));
+export const useSessionDetail = (sessionId: number, redirectTo?: string) => {
+  return useSuspenseQuery(sessionQueries.details(sessionId, redirectTo));
 };
 
 export const useCreateSession = () => {

@@ -19,7 +19,10 @@ export const fetchSessionList = async () => {
 };
 
 // 세션 상세 조회
-export const fetchSessionDetail = async (sessionId: number) => {
+export const fetchSessionDetail = async (
+  sessionId: number,
+  redirectTo?: string,
+) => {
   try {
     const res = await apiClient.get(
       `/api/v1/conference/${CONFERENCE_ID}/session/${sessionId}`,
@@ -28,6 +31,10 @@ export const fetchSessionDetail = async (sessionId: number) => {
   } catch (err) {
     if (err instanceof AxiosError) {
       if (err.status === 403) return (window.location.href = '/');
+      if (err.status === 401)
+        return redirectTo
+          ? (window.location.href = `/participant-login?redirectTo=${redirectTo}`)
+          : (window.location.href = '/');
     }
     return Promise.reject(err);
   }

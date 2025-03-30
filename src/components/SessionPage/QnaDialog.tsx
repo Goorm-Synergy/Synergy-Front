@@ -19,7 +19,7 @@ const QnaDialog = (props: SimpleDialogProps) => {
   const { id: sessionId } = useParams();
   const { typo, palette, radius } = useTheme();
 
-  const { qnaMutation } = useSessionQna();
+  const { qnaMutation } = useSessionQna(Number(sessionId));
   const [content, setContent] = useState('');
 
   return (
@@ -89,7 +89,7 @@ const QnaDialog = (props: SimpleDialogProps) => {
           if (content.length < 10) {
             alert('질문은 10자 이상 입력해야 합니다.');
           } else {
-            qnaMutation.mutate({ sessionId: Number(sessionId), content });
+            qnaMutation.mutate({ content });
             onClose();
             onSuccess();
           }

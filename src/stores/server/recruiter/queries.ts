@@ -32,4 +32,10 @@ export const recruiterQueries = {
       queryKey: [...recruiterQueries.all(), 'liked', recruiterId],
       queryFn: () => fetchLikedAttendees(),
     }),
+  likedStatus: () =>
+    queryOptions({
+      queryKey: [...recruiterQueries.all(), 'likedStatus'],
+      queryFn: () => fetchLikedAttendees().then((data) =>
+      data.data.list.map((item: { attendeeId: number })  => item.attendeeId)),
+    }),
 };

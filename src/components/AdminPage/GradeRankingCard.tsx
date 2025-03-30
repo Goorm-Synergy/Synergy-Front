@@ -5,6 +5,7 @@ import { useMembershipRanking } from '@stores/server/ranking';
 import LevelRankingList from './Popup/LevelRankingList';
 import { useState } from 'react';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import RankingModalOpenBtn from './RankingModalOpenBtn';
 
 export type UserRankDataType = {
   userId: number;
@@ -20,6 +21,7 @@ const GradeRankingCard = () => {
   } = useMembershipRanking();
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [isHovered, setIsHovered] = useState<boolean>(false);
 
   return (
     <Box
@@ -40,6 +42,8 @@ const GradeRankingCard = () => {
         등급별 참가자 랭킹
       </Typography>
       <Paper
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
         css={css`
           position: relative;
           background-color: ${palette.background.secondary};
@@ -54,73 +58,70 @@ const GradeRankingCard = () => {
           align-items: center;
         `}
       >
-        {/* <AddIcon
-          css={css`
-            font-size: 40px;
-            color: ${palette.text.secondary};
-            margin-bottom: 16px;
-          `}
-        />
-        <Typography
-          variant="body2"
-          css={css`
-            color: ${palette.text.secondary};
-            font-family: ${typo.fontFamily.Pretendard};
-            font-size: 14px;
-            font-weight: 400;
-          `}
-        >
-          컨퍼런스 등록 후 확인 가능합니다.
-        </Typography> */}
-        <>
-          <Box
+        {data.content.length ? (
+          <>
+            <Box
+              css={css`
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                color: ${palette.text.primary};
+                width: 100%;
+                height: 100%;
+              `}
+            >
+              {data.content.slice(0, 8).map((item: UserRankDataType) => {
+                return (
+                  <div
+                    key={item.userId}
+                    css={css`
+                      display: flex;
+                      align-items: center;
+                      height: 20px;
+                    `}
+                  >
+                    <span css={{ marginRight: '50px' }}>
+                      {translateLevel(item.membershipLevel)}
+                    </span>
+                    <span>{item.attendeeName}</span>
+                    <span css={{ width: '100%', textAlign: 'end' }}>
+                      {item.totalPoints}P
+                    </span>
+                    <button
+                      css={css`
+                        position: relative;
+                        top: -2px;
+                        left: 10px;
+                      `}
+                      onClick={() => {}}
+                    >
+                      <ChevronRightIcon
+                        fontSize="small"
+                        sx={{
+                          color: palette.icon.primary,
+                        }}
+                      />
+                    </button>
+                  </div>
+                );
+              })}
+            </Box>
+            <RankingModalOpenBtn
+              visible={isHovered}
+              setModalOpen={() => setModalOpen(true)}
+            />
+          </>
+        ) : (
+          <Typography
+            variant="body2"
             css={css`
-              display: flex;
-              flex-direction: column;
-              gap: 10px;
-              color: ${palette.text.primary};
-              width: 100%;
-              height: 100%;
+              ${typo.body.l}
+              color: ${palette.text.secondary};
             `}
           >
-            {data.content.slice(0, 8).map((item: UserRankDataType) => {
-              return (
-                <div
-                  key={item.userId}
-                  css={css`
-                    display: flex;
-                    align-items: center;
-                    height: 20px;
-                  `}
-                >
-                  <span css={{ marginRight: '50px' }}>
-                    {translateLevel(item.membershipLevel)}
-                  </span>
-                  <span>{item.attendeeName}</span>
-                  <span css={{ width: '100%', textAlign: 'end' }}>
-                    {item.totalPoints}P
-                  </span>
-                  <button
-                    css={css`
-                      position: relative;
-                      top: -2px;
-                      left: 10px;
-                    `}
-                    onClick={() => {}}
-                  >
-                    <ChevronRightIcon
-                      fontSize="small"
-                      sx={{
-                        color: palette.icon.primary,
-                      }}
-                    />
-                  </button>
-                </div>
-              );
-            })}
-          </Box>
-          <ModalOpenBtn setModalOpen={() => setModalOpen(true)} />
-        </>
+            집계된 사용자가 없습니다.
+          </Typography>
+        )}
       </Paper>
 
       <LevelRankingList
@@ -133,29 +134,6 @@ const GradeRankingCard = () => {
 };
 
 export default GradeRankingCard;
-
-const ModalOpenBtn = ({ setModalOpen }: { setModalOpen: () => void }) => {
-  const { palette, typo } = useTheme();
-  return (
-    <Button
-      css={css`
-        position: absolute;
-        transform: translateX(-50%);
-        left: 50%;
-        ${typo.sub.s}
-        background-color: ${palette.background.quaternary};
-        color: ${palette.text.secondary};
-        border: none;
-        padding: 8px 16px;
-        border-radius: 18px;
-        bottom: 10px;
-      `}
-      onClick={setModalOpen}
-    >
-      더 보기
-    </Button>
-  );
-};
 
 const translateLevel = (membership: string) => {
   if (membership === 'PLATINUM') return 'PL';

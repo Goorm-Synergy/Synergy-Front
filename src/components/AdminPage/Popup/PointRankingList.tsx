@@ -86,7 +86,7 @@ const PointRankingList = ({ open, onClose, data }: PointRankingProps) => {
             alignItems="center"
             py="6px"
           >
-            <Typography fontSize="13px">{idx}</Typography>
+            <Typography fontSize="13px">{idx + 1}</Typography>
             <Typography fontSize="13px">{item.attendeeName}</Typography>
             <Typography fontSize="13px">{item.totalPoints}P</Typography>
           </Box>

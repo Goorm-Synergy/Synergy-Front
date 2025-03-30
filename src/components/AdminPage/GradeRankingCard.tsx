@@ -4,6 +4,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { useMembershipRanking } from '@stores/server/ranking';
 import LevelRankingList from './Popup/LevelRankingList';
 import { useState } from 'react';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 export type UserRankDataType = {
   userId: number;
@@ -82,12 +83,14 @@ const GradeRankingCard = () => {
               height: 100%;
             `}
           >
-            {data.content.slice(0, 9).map((item: UserRankDataType) => {
+            {data.content.slice(0, 8).map((item: UserRankDataType) => {
               return (
                 <div
                   key={item.userId}
                   css={css`
                     display: flex;
+                    align-items: center;
+                    height: 20px;
                   `}
                 >
                   <span css={{ marginRight: '50px' }}>
@@ -97,6 +100,21 @@ const GradeRankingCard = () => {
                   <span css={{ width: '100%', textAlign: 'end' }}>
                     {item.totalPoints}P
                   </span>
+                  <button
+                    css={css`
+                      position: relative;
+                      top: -2px;
+                      left: 10px;
+                    `}
+                    onClick={() => {}}
+                  >
+                    <ChevronRightIcon
+                      fontSize="small"
+                      sx={{
+                        color: palette.icon.primary,
+                      }}
+                    />
+                  </button>
                 </div>
               );
             })}

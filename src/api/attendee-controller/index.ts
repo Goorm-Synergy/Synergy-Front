@@ -98,3 +98,27 @@ export const patchOnboardingDetails = async ({ form }: any) => {
     return Promise.reject(err);
   }
 };
+
+export const patchProfileImage = async (profileImgFile: File) => {
+  try {
+    const formData = new FormData();
+
+    if (profileImgFile) {
+      formData.append('profileImage', profileImgFile);
+    }
+
+    const res = await apiClient.patch(
+      '/api/v1/attendee/profile-image',
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
+    );
+    return res.data;
+  } catch (err) {
+    console.log(err);
+    return Promise.reject(err);
+  }
+};

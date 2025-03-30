@@ -28,6 +28,9 @@ export const useCreateSession = () => {
       queryClient.invalidateQueries(dashboardQueries.sessions());
       alert('세션이 생성되었습니다.');
     },
+    onError: () => {
+      alert('세션 생성에 실패하였습니다.');
+    },
   });
 };
 
@@ -39,6 +42,9 @@ export const useDeleteSession = () => {
     onSuccess: () => {
       queryClient.invalidateQueries(dashboardQueries.sessionDetail());
       alert('세션이 삭제되었습니다.');
+    },
+    onError: () => {
+      alert('세션 삭제에 실패하였습니다.');
     },
   });
 };
@@ -57,6 +63,9 @@ export const useModifySession = () => {
     onSuccess: () => {
       queryClient.invalidateQueries(dashboardQueries.sessionDetail());
       alert('세션이 수정되었습니다.');
+    },
+    onError: () => {
+      alert('세션 수정에 실패하였습니다.');
     },
   });
 };

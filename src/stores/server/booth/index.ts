@@ -25,6 +25,9 @@ export const useCreateBooth = () => {
       queryClient.invalidateQueries(dashboardQueries.booths());
       alert('부스가 생성되었습니다.');
     },
+    onError: () => {
+      alert('부스 생성에 실패하였습니다.');
+    },
   });
 };
 
@@ -36,6 +39,9 @@ export const useDeleteBooth = () => {
     onSuccess: () => {
       queryClient.invalidateQueries(dashboardQueries.boothDetail());
       alert('부스가 삭제되었습니다.');
+    },
+    onError: () => {
+      alert('부스 삭제에 실패하였습니다.');
     },
   });
 };
@@ -54,6 +60,9 @@ export const useModifyBooth = () => {
     onSuccess: () => {
       queryClient.invalidateQueries(dashboardQueries.boothDetail());
       alert('부스가 수정되었습니다.');
+    },
+    onError: () => {
+      alert('부스 수정에 실패하였습니다.');
     },
   });
 };

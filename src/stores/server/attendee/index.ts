@@ -12,6 +12,7 @@ import {
 import { postQna, postQrVerify } from '@api/session-verify-controller';
 import { sessionQueries } from '../session/queries';
 import { boothQueries } from '../booth/queries';
+import { postQrBoothVerify } from '@api/booth-verify-controller';
 
 export const useAttendeeProfile = () => {
   const { identifier } = useAuthStore.getState().user;
@@ -103,7 +104,7 @@ export const useBoothVerify = (boothId: number) => {
 
   const qrMutation = useMutation({
     mutationFn: ({ qrCode }: { qrCode: string }) =>
-      postQrVerify(boothId, qrCode),
+      postQrBoothVerify(boothId, qrCode),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: attendeeQueries.user(identifier),

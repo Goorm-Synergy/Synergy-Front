@@ -26,11 +26,9 @@ export const useQrVerifyCheck = ({
       if (isAlreadyVerifyed) return;
       if (qrCode && isBooth) {
         try {
-          alert('booth QR 체크인 mutate!!');
-          // await boothQrMutation.mutateAsync({
-          //   qrCode,
-          //   redirectTo: `/booth/${id}?qrCode=${qrCode}`,
-          // });
+          await boothQrMutation.mutateAsync({
+            qrCode,
+          });
           onQrSuccess();
         } catch (err) {
           alert('잘못된 QR 요청입니다.');

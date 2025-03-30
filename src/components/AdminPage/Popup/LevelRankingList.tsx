@@ -13,39 +13,26 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 import UserInfo from './UserInfo';
-import { useMembershipRanking } from '@stores/server/ranking';
+import { UserRankDataType } from '../GradeRankingCard';
 
 interface LevelRankingProps {
   open: boolean;
   onClose: () => void;
+  data: UserRankDataType[];
 }
 
-const dummyData = [
-  { rank: 'PT', name: '김구름', points: '000', level: '플래티넘' },
-  { rank: 'PT', name: '박푸디', points: '000', level: '플래티넘' },
-  { rank: 'GD', name: '이사과', points: '000', level: '골드' },
-  { rank: 'GD', name: '최딸기', points: '000', level: '골드' },
-  { rank: 'SV', name: '홍수박', points: '000', level: '실버' },
-  { rank: 'BZ', name: '강블루', points: '000', level: '브론즈' },
-];
-
-const LevelRankingList = ({ open, onClose }: LevelRankingProps) => {
+const LevelRankingList = ({ open, onClose, data }: LevelRankingProps) => {
   const { palette, typo } = useTheme();
   const [selectedLevel, setSelectedLevel] = useState<string | null>(null);
   const [userInfoOpen, setUserInfoOpen] = useState(false);
-
-  const {
-    data: { data },
-  } = useMembershipRanking();
-  console.log(data);
 
   const handleFilterClick = (level: string) => {
     setSelectedLevel((prev) => (prev === level ? null : level));
   };
 
   const filteredData = selectedLevel
-    ? dummyData.filter((item) => item.level === selectedLevel)
-    : dummyData;
+    ? data.filter((item) => item.membershipLevel === selectedLevel)
+    : data;
 
   const filterButtons = ['플래티넘', '골드', '실버', '브론즈'];
 
@@ -159,9 +146,9 @@ const LevelRankingList = ({ open, onClose }: LevelRankingProps) => {
               alignItems="center"
               py="6px"
             >
-              <Typography fontSize="13px">{item.rank}</Typography>
-              <Typography fontSize="13px">{item.name}</Typography>
-              <Typography fontSize="13px">{item.points}</Typography>
+              <Typography fontSize="13px">{item.membershipLevel}</Typography>
+              <Typography fontSize="13px">{item.attendeeName}</Typography>
+              <Typography fontSize="13px">{item.totalPoints}</Typography>
               <Button
                 variant="outlined"
                 size="small"

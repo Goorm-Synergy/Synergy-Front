@@ -12,8 +12,11 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import UserInfo from './UserInfo';
 import { UserRankDataType } from '../GradeRankingCard';
+import { translateLevel } from '@utils/ranking';
+import { useNavigate } from 'react-router-dom';
 
 interface LevelRankingProps {
   open: boolean;
@@ -23,6 +26,7 @@ interface LevelRankingProps {
 
 const LevelRankingList = ({ open, onClose, data }: LevelRankingProps) => {
   const { palette, typo } = useTheme();
+  const navigate = useNavigate();
   const [selectedLevel, setSelectedLevel] = useState<string | null>(null);
   const [userInfoOpen, setUserInfoOpen] = useState(false);
 
@@ -34,7 +38,14 @@ const LevelRankingList = ({ open, onClose, data }: LevelRankingProps) => {
     ? data.filter((item) => item.membershipLevel === selectedLevel)
     : data;
 
-  const filterButtons = ['플래티넘', '골드', '실버', '브론즈'];
+  console.log(filteredData);
+
+  const filterButtons = [
+    { id: 'PLATINUM', label: '플래티넘' },
+    { id: 'GOLD', label: '골드' },
+    { id: 'SILVER', label: '실버' },
+    { id: 'BRONZE', label: '브론즈' },
+  ];
 
   return (
     <>
@@ -76,15 +87,14 @@ const LevelRankingList = ({ open, onClose, data }: LevelRankingProps) => {
             flex-shrink: 0;
           `}
         >
-          <Box display="flex" gap="24px" mb="12px" flexWrap="wrap">
-            {filterButtons.map((level) => {
-              const isSelected = selectedLevel === level;
+          <Box display="flex" gap="20px" mb="14px" flexWrap="wrap">
+            {filterButtons.map((button) => {
+              const isSelected = selectedLevel === button.id;
               return (
                 <Button
-                  key={level}
-                  variant={isSelected ? 'contained' : 'outlined'}
+                  key={button.id}
                   size="small"
-                  onClick={() => handleFilterClick(level)}
+                  onClick={() => handleFilterClick(button.id)}
                   css={css`
                     border-radius: 18px;
                     background-color: ${palette.background.quaternary};
@@ -95,17 +105,23 @@ const LevelRankingList = ({ open, onClose, data }: LevelRankingProps) => {
                     justify-content: space-between;
                     align-self: stretch;
                     gap: 4px;
+                    padding: 4px 10px;
                   `}
                 >
-                  {level}
-                  <CheckCircleOutlinedIcon
-                    sx={{
-                      fontSize: '14px',
-                      color: isSelected
-                        ? palette.icon.tertiary
-                        : palette.icon.primary,
-                    }}
-                  />
+                  {button.label}
+                  {isSelected ? (
+                    <CheckCircleIcon
+                      sx={{
+                        fontSize: '14px',
+                      }}
+                    />
+                  ) : (
+                    <CheckCircleOutlinedIcon
+                      sx={{
+                        fontSize: '14px',
+                      }}
+                    />
+                  )}
                 </Button>
               );
             })}
@@ -146,13 +162,15 @@ const LevelRankingList = ({ open, onClose, data }: LevelRankingProps) => {
               alignItems="center"
               py="6px"
             >
-              <Typography fontSize="13px">{item.membershipLevel}</Typography>
+              <Typography fontSize="13px">
+                {translateLevel(item.membershipLevel)}
+              </Typography>
               <Typography fontSize="13px">{item.attendeeName}</Typography>
               <Typography fontSize="13px">{item.totalPoints}</Typography>
               <Button
                 variant="outlined"
                 size="small"
-                onClick={() => setUserInfoOpen(true)}
+                onClick={() => navigate(`/my-info/${item.userId}`)}
                 css={css`
                   border-radius: 18px;
                   font-size: 12px;

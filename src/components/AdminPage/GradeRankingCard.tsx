@@ -1,11 +1,12 @@
-import { Box, Typography, Paper, Button } from '@mui/material';
+import { Box, Typography, Paper } from '@mui/material';
 import { css, useTheme } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
 import { useMembershipRanking } from '@stores/server/ranking';
 import LevelRankingList from './Popup/LevelRankingList';
 import { useState } from 'react';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import RankingModalOpenBtn from './RankingModalOpenBtn';
+import { useNavigate } from 'react-router-dom';
+import { translateLevel } from '@utils/ranking';
 
 export type UserRankDataType = {
   userId: number;
@@ -16,6 +17,7 @@ export type UserRankDataType = {
 
 const GradeRankingCard = () => {
   const { palette, typo, radius } = useTheme();
+  const navigate = useNavigate();
   const {
     data: { data },
   } = useMembershipRanking();
@@ -93,7 +95,9 @@ const GradeRankingCard = () => {
                         top: -2px;
                         left: 10px;
                       `}
-                      onClick={() => {}}
+                      onClick={() => {
+                        navigate(`/my-info/${item.userId}`);
+                      }}
                     >
                       <ChevronRightIcon
                         fontSize="small"
@@ -134,11 +138,3 @@ const GradeRankingCard = () => {
 };
 
 export default GradeRankingCard;
-
-const translateLevel = (membership: string) => {
-  if (membership === 'PLATINUM') return 'PL';
-  if (membership === 'GOLD') return 'GD';
-  if (membership === 'SILVER') return 'SV';
-  if (membership === 'BRONZE') return 'BZ';
-  return 'DF';
-};

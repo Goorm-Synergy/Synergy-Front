@@ -5,14 +5,17 @@ import { useState } from 'react';
 import { usePointRanking } from '@stores/server/ranking';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import RankingModalOpenBtn from './RankingModalOpenBtn';
+import { useNavigate } from 'react-router-dom';
 
 export type UserPointDataType = {
+  attendeeId: number;
   attendeeName: string;
   totalPoints: number;
 };
 
 const GradeRankingCard = () => {
   const { palette, typo, radius } = useTheme();
+  const navigate = useNavigate();
   const {
     data: { data },
   } = usePointRanking();
@@ -91,7 +94,7 @@ const GradeRankingCard = () => {
                           top: -2px;
                           left: 10px;
                         `}
-                        onClick={() => {}}
+                        onClick={() => navigate(`/my-info/${item.attendeeId}`)}
                       >
                         <ChevronRightIcon
                           fontSize="small"

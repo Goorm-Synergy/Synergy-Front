@@ -87,6 +87,7 @@ const GradeRankingCard = () => {
               .map((item: UserPointDataType, idx: number) => {
                 return (
                   <div
+                    key={idx}
                     css={css`
                       display: flex;
                     `}

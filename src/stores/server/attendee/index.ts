@@ -8,6 +8,7 @@ import { useAuthStore } from '@stores/client/useAuthStore';
 import {
   patchOnboardingDetails,
   patchOnboardingInfos,
+  patchProfileImage,
 } from '@api/attendee-controller';
 import { postQna, postQrVerify } from '@api/session-verify-controller';
 import { sessionQueries } from '../session/queries';
@@ -116,4 +117,23 @@ export const useBoothVerify = (boothId: number) => {
   });
 
   return { qrMutation };
+};
+
+export const useModifyProfileImage = () => {
+  const queryClient = useQueryClient();
+  const { identifier } = useAuthStore.getState().user;
+
+  return useMutation({
+    mutationFn: ({ profileImgFile }: { profileImgFile: File }) =>
+      patchProfileImage(profileImgFile),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: attendeeQueries.user(identifier),
+      });
+      alert('프로필 이미지가 정상적으로 변경되었습니다.');
+    },
+    onError: () => {
+      alert('프로필 이미지 변경에 실패하였습니다.');
+    },
+  });
 };

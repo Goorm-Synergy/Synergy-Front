@@ -1,9 +1,15 @@
 import { Box, Typography, Paper } from '@mui/material';
 import { css, useTheme } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import { useMembershipRanking } from '@stores/server/ranking';
 
 const GradeRankingCard = () => {
   const { palette, typo, radius } = useTheme();
+  const {
+    data: { data },
+  } = useMembershipRanking();
+  console.log(data);
+
   return (
     <Box
       css={css`

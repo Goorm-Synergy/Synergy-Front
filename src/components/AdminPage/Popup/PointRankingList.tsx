@@ -9,6 +9,7 @@ import {
   css,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import { usePointRanking } from '@stores/server/ranking';
 
 interface PointRankingProps {
   open: boolean;
@@ -32,8 +33,12 @@ const dummyPointData = [
   { rank: 1, name: '주프디', points: '000' },
 ];
 
-const PointRanking = ({ open, onClose }: PointRankingProps) => {
+const PointRankingList = ({ open, onClose }: PointRankingProps) => {
   const { palette, typo } = useTheme();
+  const {
+    data: { data },
+  } = usePointRanking();
+  console.log(data);
 
   return (
     <Dialog
@@ -87,7 +92,12 @@ const PointRanking = ({ open, onClose }: PointRankingProps) => {
           <span>참가자 이름</span>
           <span>누적 포인트</span>
         </Box>
-        <Box height="1px" width="100%" bgcolor={palette.border.secondary} mb="8px" />
+        <Box
+          height="1px"
+          width="100%"
+          bgcolor={palette.border.secondary}
+          mb="8px"
+        />
         {dummyPointData.map((item, idx) => (
           <Box
             key={idx}
@@ -106,4 +116,4 @@ const PointRanking = ({ open, onClose }: PointRankingProps) => {
   );
 };
 
-export default PointRanking;
+export default PointRankingList;

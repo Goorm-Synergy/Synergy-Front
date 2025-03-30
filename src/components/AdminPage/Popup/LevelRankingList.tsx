@@ -13,6 +13,7 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 import UserInfo from './UserInfo';
+import { useMembershipRanking } from '@stores/server/ranking';
 
 interface LevelRankingProps {
   open: boolean;
@@ -28,10 +29,15 @@ const dummyData = [
   { rank: 'BZ', name: '강블루', points: '000', level: '브론즈' },
 ];
 
-const LevelRanking = ({ open, onClose }: LevelRankingProps) => {
+const LevelRankingList = ({ open, onClose }: LevelRankingProps) => {
   const { palette, typo } = useTheme();
   const [selectedLevel, setSelectedLevel] = useState<string | null>(null);
   const [userInfoOpen, setUserInfoOpen] = useState(false);
+
+  const {
+    data: { data },
+  } = useMembershipRanking();
+  console.log(data);
 
   const handleFilterClick = (level: string) => {
     setSelectedLevel((prev) => (prev === level ? null : level));
@@ -183,4 +189,4 @@ const LevelRanking = ({ open, onClose }: LevelRankingProps) => {
   );
 };
 
-export default LevelRanking;
+export default LevelRankingList;

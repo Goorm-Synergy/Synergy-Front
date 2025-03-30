@@ -32,3 +32,24 @@ export const fetchSessionDetail = async (sessionId: number) => {
     return Promise.reject(err);
   }
 };
+
+//세션 생성
+export const createSession = async (formData: FormData) => {
+  try {
+    const res = await apiClient.post(
+      `/api/v1/conference/${CONFERENCE_ID}/session`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
+    );
+    return res.data;
+  } catch (err) {
+    if (err instanceof AxiosError) {
+      if (err.status === 403) return (window.location.href = '/');
+    }
+    return Promise.reject(err);
+  }
+};

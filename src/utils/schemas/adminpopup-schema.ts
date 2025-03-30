@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 // 정규식 패턴
-const dateRegex = /^\d{4}\.\d{2}\.\d{2}$/; // YYYY.MM.DD
+const dateRegex = /^\d{4}\-\d{2}\-\d{2}$/; // YYYY-MM-DD
 const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/; // 24시간제 00:00 ~ 23:59
 
 const isFutureDate = (dateString: string) => {
@@ -16,14 +16,15 @@ export const sessionSchema = z.object({
     presenter: z.string().min(1, '발표자 성함을 입력해 주세요.'),
     presenterRole: z.string().min(1, '발표자의 직책을 입력해 주세요.').max(15, '직책은 15자 이내로 입력해 주세요.'),
     date: z.string()
-      .regex(dateRegex, '진행일은 YYYY.MM.DD 형식으로 입력해 주세요.')
+      .regex(dateRegex, '진행일은 YYYY-MM-DD 형식으로 입력해 주세요.')
       .refine(isFutureDate, '진행일은 미래 날짜여야 합니다.'),
     startTime: z.string().regex(timeRegex, '시작 시간은 24시간제 HH:MM 형식으로 입력해 주세요.'),
     endTime: z.string().regex(timeRegex, '종료 시간은 24시간제 HH:MM 형식으로 입력해 주세요.'),
     sessionDescription: z.string().min(1, '세션 설명을 입력해 주세요.').max(150, '세션 설명은 150자 이내로 입력해 주세요.'),
     imageFile: z.any().optional(),
     maxCapacity: z.enum(['150', '200', '250'], { required_error: '최대 인원 수용을 선택해 주세요.' }),
-  });
+});
+
 
 //  부스 등록 스키마
 export const boothSchema = z.object({
@@ -39,19 +40,26 @@ export const boothSchema = z.object({
     name: z.string().max(30, { message: '컨퍼런스 명은 최대 30자까지 입력 가능합니다.' }),
     host: z.string().max(10, { message: '컨퍼런스 주최자는 최대 10자까지 입력 가능합니다.' }),
     startDate: z.string()
-      .regex(dateRegex, { message: '시작일은 YYYY.MM.DD 형식으로 입력해 주세요.' })
+      .regex(dateRegex, { message: '시작일은 YYYY-MM-DD 형식으로 입력해 주세요.' })
       .refine(isFutureDate, { message: '시작일은 오늘 이후의 날짜만 입력 가능합니다.' }),
     startTime: z.string()
       .regex(timeRegex, { message: '시작 시간은 24시간제로 00:00 형식으로 입력해 주세요.' }),
     endDate: z.string()
-      .regex(dateRegex, { message: '종료일은 YYYY.MM.DD 형식으로 입력해 주세요.' })
+      .regex(dateRegex, { message: '종료일은 YYYY-MM-DD 형식으로 입력해 주세요.' })
       .refine(isFutureDate, { message: '종료일은 오늘 이후의 날짜만 입력 가능합니다.' }),
     endTime: z.string()
       .regex(timeRegex, { message: '종료 시간은 24시간제로 00:00 형식으로 입력해 주세요.' }),
+    place: z.string().max(30, { message: '컨퍼런스 장소는 최대 30자까지 입력 가능합니다.' }),
     location: z.enum(['그랜드볼룸', '아셈볼룸', 'THE PLATZ', '오리토리움'], {
       errorMap: () => ({ message: '컨퍼런스 위치를 선택해 주세요.' }),
     }),
     conferenceType: z.enum(['IT', '무역', '산업'], {
       errorMap: () => ({ message: '컨퍼런스 유형을 선택해 주세요.' }),
     }),
+  }).refine((data) => {
+    const startDateTime = new Date(`${data.startDate}T${data.startTime}`);
+    const endDateTime = new Date(`${data.endDate}T${data.endTime}`);
+    return startDateTime < endDateTime;
+  }, {
+    message: '종료일과 종료 시간은 시작일과 시작 시간 이후여야 합니다.',
   });

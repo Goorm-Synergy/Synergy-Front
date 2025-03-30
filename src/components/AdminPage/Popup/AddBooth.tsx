@@ -14,37 +14,34 @@ import FileInputBox from '@components/FileInputBox';
 import { boothSchema } from '@utils/schemas/adminpopup-schema';
 import ErrorPopover from '@components/ErrorPopover';
 import { useBoothStore } from '@stores/client/useBoothStore';
+import { useCreateBooth } from '@stores/server/booth';
 
-export type BoothData = {
-  companyName: string;
-  companyType: string;
-  boothLocation: string;
-  boothNumber: string;
-  boothDescription: string;
-  imageFile: File | null;
-};
+interface AddBoothProps{
+  open: boolean;
+  onClose: () => void;
+  mode? : 'add' | 'edit';
+  initialData?: any;
+}
 
 const AddBooth = ({
   open,
   onClose,
   mode = 'add',
   initialData,
-}: {
-  open: boolean;
-  onClose: () => void;
-  mode?: 'add' | 'edit';
-  initialData?: BoothData;
-}) => {
+}: AddBoothProps) => {
   const theme = useTheme();
   const { palette, typo } = theme;
 
   const [companyName, setCompanyName] = useState('');
   const [companyType, setCompanyType] = useState('');
+  const [progressDate, setProgressDate] = useState('');
   const [boothLocation, setBoothLocation] = useState('');
   const [boothNumber, setBoothNumber] = useState('');
   const [boothDescription, setBoothDescription] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
+
+  const createBoothMutation = useCreateBooth();
 
   const setIsBoothRegistered = useBoothStore(
     (state) => state.setIsBoothRegistered,
@@ -60,27 +57,30 @@ const AddBooth = ({
   ];
 
   useEffect(() => {
-    if (initialData) {
-      setCompanyName(initialData.companyName);
-      setCompanyType(initialData.companyType);
-      setBoothLocation(initialData.boothLocation);
-      setBoothNumber(initialData.boothNumber);
-      setBoothDescription(initialData.boothDescription);
-      setImageFile(initialData.imageFile);
+    if (mode === 'edit' && initialData) {
+      setCompanyName(initialData.companyName || '');
+      setCompanyType(initialData.companyType || '');
+      setProgressDate(initialData.progressDate || '');
+      setBoothLocation(initialData.boothLocation || '');
+      setBoothNumber(initialData.boothNumber || '');
+      setBoothDescription(initialData.boothDescription || '');
+      setImageFile(initialData.imageFile || '');
     } else {
       setCompanyName('');
       setCompanyType('');
+      setProgressDate('');
       setBoothLocation('');
       setBoothNumber('');
       setBoothDescription('');
       setImageFile(null);
     }
-  }, [initialData, open]);
+  }, [open, mode, initialData]);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const result = boothSchema.safeParse({
       companyName,
       companyType,
+      progressDate,
       boothLocation,
       boothNumber,
       boothDescription,
@@ -94,15 +94,35 @@ const AddBooth = ({
       return;
     }
 
-    if (mode === 'add') {
-      console.log('등록 요청', result.data);
-      setIsBoothRegistered(true);
-      setHasAggregationData(false);
-    } else {
-      console.log('수정 요청', result.data);
-    }
+    const boothReqDtoBlob = new Blob(
+      [JSON.stringify({
+        companyName,
+        companyType,
+        progressDate,
+        boothLocation,
+        boothNumber,
+        boothDescription,
+      })],
+      { type: 'application/json'}
+    );
 
-    onClose();
+    const formData = new FormData();
+    formData.append('request', boothReqDtoBlob);
+    if (imageFile) formData.append('imageFile', imageFile);
+
+    try{
+      if (mode === 'add') {
+        console.log('등록 요청', result.data);
+        await createBoothMutation.mutateAsync(formData);
+        setIsBoothRegistered(true);
+        setHasAggregationData(false);
+      } else {
+      console.log('수정 요청', result.data);
+      }
+      onClose();
+    } catch (error){
+      setFormError('부스 등록 중 문제가 발생했습니다.');
+    }
   };
 
   return (
@@ -157,6 +177,15 @@ const AddBooth = ({
           placeholder="기업 유형을 입력해 주세요."
           value={companyType}
           onChange={setCompanyType}
+        />
+
+        <InputBox
+          label="진행일"
+          id="date"
+          isRequired
+          value={progressDate}
+          onChange={setProgressDate}
+          placeholder="진행 날짜를 입력해 주세요."
         />
 
         <SelectBox

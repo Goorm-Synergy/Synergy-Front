@@ -32,3 +32,23 @@ export const fetchBoothDetail = async (boothId: number) => {
     return Promise.reject(err);
   }
 };
+
+//부스 생성
+export const createBooth = async (formData: FormData) => {
+  try{
+    const res = await apiClient.post(
+      `/api/v1/conference/${CONFERENCE_ID}/booths`,
+      formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
+    return res.data;
+  } catch (err) {
+    if (err instanceof AxiosError) {
+      if (err.status === 403) return (window.location.href = '/');
+    }
+    return Promise.reject(err);
+  }
+};

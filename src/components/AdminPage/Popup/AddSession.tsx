@@ -14,6 +14,8 @@ import FileInputBox from '@components/FileInputBox';
 import { sessionSchema } from '@utils/schemas/adminpopup-schema';
 import ErrorPopover from '@components/ErrorPopover';
 import { useSessionStore } from '@stores/client/useSessionStore';
+import { useCreateSession } from '@stores/server/session';
+import dayjs from 'dayjs';
 
 interface AddSessionProps {
   open: boolean;
@@ -42,6 +44,8 @@ const AddSession = ({
   const [maxCapacity, setMaxCapacity] = useState('');
   const [formError, setFormError] = useState<string | null>(null);
 
+  const createSessionMutation = useCreateSession();
+  
   const setSessionRegistered = useSessionStore(
     (state) => state.setSessionRegistered,
   );
@@ -77,7 +81,7 @@ const AddSession = ({
     { code: '250', name: '250명' },
   ];
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const result = sessionSchema.safeParse({
       title,
       presenter,
@@ -97,14 +101,39 @@ const AddSession = ({
       return;
     }
 
-    if (mode === 'edit') {
-      console.log('수정 완료', result.data);
-    } else {
-      console.log('등록 완료', result.data);
-      setSessionRegistered(true);
-    }
+    const startDateTime = dayjs(`${date} ${startTime}`).format('YYYY-MM-DDTHH:mm');
+    const endDateTime = dayjs(`${date} ${endTime}`).format('YYYY-MM-DDTHH:mm');
 
-    onClose();
+    const sessionReqDtoBlob = new Blob(
+      [JSON.stringify({
+        title,
+        speaker: presenter,
+        speakerPosition: presenterRole,
+        progressDate: date,
+        startTime: startDateTime,
+        endTime: endDateTime,
+        description: sessionDescription,
+        maximum: Number(maxCapacity),
+        domainAddress: 'https://www.naver.com',
+      })],
+      { type: 'application/json' }
+    );
+
+    const formData = new FormData();
+    formData.append('sessionReqDto', sessionReqDtoBlob);
+    if (imageFile) formData.append('multipartFile', imageFile);
+
+    try {
+      if (mode === 'edit') {
+        console.log('수정 완료', result.data);
+      } else {
+        await createSessionMutation.mutateAsync(formData);
+        setSessionRegistered(true);
+      }
+      onClose();
+    } catch (error) {
+      setFormError('세션 등록 중 문제가 발생했습니다.');
+    }
   };
 
   return (

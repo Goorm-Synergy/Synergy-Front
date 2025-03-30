@@ -24,7 +24,7 @@ export const sessionSchema = z
     presenterRole: z
       .string()
       .min(1, '발표자의 직책을 입력해 주세요.')
-      .max(15, '직책은 15자 이내로 입력해 주세요.'),
+      .max(30, '직책은 30자 이내로 입력해 주세요.'),
     date: z
       .string()
       .regex(dateRegex, '진행일은 YYYY-MM-DD 형식으로 입력해 주세요.'),
@@ -37,7 +37,7 @@ export const sessionSchema = z
     sessionDescription: z
       .string()
       .min(1, '세션 설명을 입력해 주세요.')
-      .max(150, '세션 설명은 150자 이내로 입력해 주세요.'),
+      .max(200, '세션 설명은 200자 이내로 입력해 주세요.'),
     imageFile: z.any().optional(),
     maxCapacity: z.enum(['150', '200', '250'], {
       required_error: '최대 인원 수용을 선택해 주세요.',
@@ -72,17 +72,17 @@ export const boothSchema = z.object({
   companyName: z
     .string()
     .min(1, '기업 이름을 입력해 주세요.')
-    .max(10, '기업 이름은 10자 이내로 입력해 주세요.'),
+    .max(20, '기업 이름은 20자 이내로 입력해 주세요.'),
   companyType: z
     .string()
     .min(1, '기업 유형을 입력해 주세요.')
-    .max(10, '기업 유형은 10자 이내로 입력해 주세요.'),
+    .max(20, '기업 유형은 20자 이내로 입력해 주세요.'),
   boothLocation: z.string().min(1, '부스 장소를 선택해 주세요.'),
   boothNumber: z.string().min(1, '부스 번호를 입력해 주세요.'),
   boothDescription: z
     .string()
-    .max(150, '부스 설명은 150자 이내로 입력해 주세요.'),
-  imageFile: z.instanceof(File).optional().or(z.null()),
+    .max(200, '부스 설명은 200자 이내로 입력해 주세요.'),
+  imageFile: z.any().optional(),
 });
 
 // 컨퍼런스 등록 스키마

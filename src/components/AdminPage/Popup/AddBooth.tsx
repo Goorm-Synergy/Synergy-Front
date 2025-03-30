@@ -14,12 +14,12 @@ import FileInputBox from '@components/FileInputBox';
 import { boothSchema } from '@utils/schemas/adminpopup-schema';
 import ErrorPopover from '@components/ErrorPopover';
 import { useBoothStore } from '@stores/client/useBoothStore';
-import { useCreateBooth } from '@stores/server/booth';
+import { useCreateBooth, useModifyBooth } from '@stores/server/booth';
 
-interface AddBoothProps{
+interface AddBoothProps {
   open: boolean;
   onClose: () => void;
-  mode? : 'add' | 'edit';
+  mode?: 'add' | 'edit';
   initialData?: any;
 }
 
@@ -41,14 +41,8 @@ const AddBooth = ({
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
 
-  const createBoothMutation = useCreateBooth();
-
-  const setIsBoothRegistered = useBoothStore(
-    (state) => state.setIsBoothRegistered,
-  );
-  const setHasAggregationData = useBoothStore(
-    (state) => state.setHasAggregationData,
-  );
+  const { mutate: createMutate } = useCreateBooth();
+  const { mutate: modifyMutate } = useModifyBooth();
 
   const locationOptions = [
     { code: 'hallA', name: 'Hall A' },
@@ -57,6 +51,10 @@ const AddBooth = ({
   ];
 
   useEffect(() => {
+    if (open) {
+      setFormError(null); // 다이얼로그 열릴 때 에러 초기화
+    }
+
     if (mode === 'edit' && initialData) {
       setCompanyName(initialData.companyName || '');
       setCompanyType(initialData.companyType || '');
@@ -95,34 +93,27 @@ const AddBooth = ({
     }
 
     const boothReqDtoBlob = new Blob(
-      [JSON.stringify({
-        companyName,
-        companyType,
-        progressDate,
-        boothLocation,
-        boothNumber,
-        boothDescription,
-      })],
-      { type: 'application/json'}
+      [
+        JSON.stringify({
+          companyName,
+          companyType,
+          progressDate,
+          boothLocation,
+          boothNumber,
+          boothDescription,
+        }),
+      ],
+      { type: 'application/json' },
     );
 
     const formData = new FormData();
     formData.append('request', boothReqDtoBlob);
     if (imageFile) formData.append('imageFile', imageFile);
 
-    try{
-      if (mode === 'add') {
-        console.log('등록 요청', result.data);
-        await createBoothMutation.mutateAsync(formData);
-        setIsBoothRegistered(true);
-        setHasAggregationData(false);
-      } else {
-      console.log('수정 요청', result.data);
-      }
-      onClose();
-    } catch (error){
-      setFormError('부스 등록 중 문제가 발생했습니다.');
-    }
+    if (mode === 'add') createMutate(formData);
+    else modifyMutate({ boothId: initialData.boothId, formData });
+
+    onClose();
   };
 
   return (
@@ -212,7 +203,7 @@ const AddBooth = ({
           id="boothDescription"
           isRequired
           placeholder="부스 설명을 입력해 주세요."
-          max_length={150}
+          max_length={200}
           value={boothDescription}
           onChange={setBoothDescription}
         />

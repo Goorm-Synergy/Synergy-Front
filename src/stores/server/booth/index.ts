@@ -4,7 +4,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import { boothQueries } from './queries';
-import { createBooth, deleteBooth } from '@api/booth-controller';
+import { createBooth, deleteBooth, modifyBooth } from '@api/booth-controller';
 import { dashboardQueries } from '../dashboard/queries';
 import { modifySession } from '@api/session-controller';
 
@@ -56,7 +56,7 @@ export const useModifyBooth = () => {
     }: {
       boothId: number;
       formData: FormData;
-    }) => modifySession(boothId, formData),
+    }) => modifyBooth(boothId, formData),
     onSuccess: () => {
       queryClient.invalidateQueries(dashboardQueries.boothDetail());
       alert('부스가 수정되었습니다.');

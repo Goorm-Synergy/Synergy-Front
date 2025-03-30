@@ -23,9 +23,9 @@ const RoleSelectionPage = (): React.JSX.Element => {
     align-items: center;
     justify-content: center;
     height: 812px;
-    min-widht: 375px;
+    min-width: 375px;
     max-width: 600px;
-    padding: 0px 16px;
+    padding: 16px;
     background-image: url(${loginBackground});
   `;
 
@@ -57,7 +57,7 @@ const RoleSelectionPage = (): React.JSX.Element => {
     display: flex;
     width: 100%;
     height: 54px;
-    padding: 16px 0px;
+    padding: 12px;
     font-size: 16px;
     font-weight: bold;
     font-family: ${typo.fontFamily.Pretendard};

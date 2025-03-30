@@ -81,9 +81,14 @@ const SessionParticipation = () => {
       {!isConferenceRegistered ? (
         <Paper
           css={css`
-            text-align: center;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 280px;
             color: ${palette.text.secondary};
-            border-radius: ${radius.sm}px;
+            border-radius: ${radius.xl};
             background-color: ${palette.background.secondary};
             padding: 50px;
             border: ${palette.divider_custom.primary};
@@ -106,9 +111,15 @@ const SessionParticipation = () => {
       ) : !data.length ? (
         <Paper
           css={css`
-            text-align: center;
-            color: ${palette.text.secondary};
-            border-radius: ${radius.sm}px;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 280px;
+            color: ${palette.text.primary};
+            border-radius: ${radius.xl};
             background-color: ${palette.background.secondary};
             padding: 50px;
             border: ${palette.divider_custom.primary};
@@ -118,10 +129,12 @@ const SessionParticipation = () => {
         >
           <AddIcon
             css={css`
-              font-size: 40px;
-              color: ${palette.text.secondary};
+              font-size: 70px;
               margin-bottom: 16px;
             `}
+            sx={{
+              color: palette.icon.primary,
+            }}
           />
           <Typography variant="body2">등록된 세션이 없습니다.</Typography>
           <Typography variant="body2">세션 등록 후 확인 가능합니다.</Typography>

@@ -107,7 +107,7 @@ const AddBooth = ({
     );
 
     const formData = new FormData();
-    formData.append('request', boothReqDtoBlob);
+    formData.append('requestDto', boothReqDtoBlob);
     if (imageFile) formData.append('imageFile', imageFile);
 
     if (mode === 'add') createMutate(formData);

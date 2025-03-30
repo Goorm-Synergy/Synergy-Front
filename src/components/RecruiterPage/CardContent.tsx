@@ -82,6 +82,8 @@ const CardContent = ({ filters }: CardContentProps) => {
             css={css`
               background-color: ${palette.background.tertiary};
               display: flex;
+              min-width: 166px;
+              max-width: 288px;
               border-radius: 18px;
               padding: 24px;
               flex-direction: column;

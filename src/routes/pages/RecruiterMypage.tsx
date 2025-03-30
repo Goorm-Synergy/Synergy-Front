@@ -26,7 +26,7 @@ const RecruiterMypage = () => {
   return (
     <Box
       css={css`
-        height: 100%;
+        width: 100%;
         overflow-y: auto;
         border-radius: 0px 0px var(--radius-18, 18px) var(--radius-18, 18px);
         backdrop-filter: blur(5px);
@@ -120,8 +120,6 @@ const RecruiterMypage = () => {
       <Box
         css={css`
           background-color: ${palette.background.primary};
-          padding: 20px;
-          
         `}
       >
         <Box
@@ -131,6 +129,7 @@ const RecruiterMypage = () => {
             justify-content: space-between;
             align-items: center;
             margin-bottom: 16px;
+            padding: 20px;
           `}
         >
           <Typography
@@ -151,7 +150,9 @@ const RecruiterMypage = () => {
             onClick={() => navigate('/recruiter/main')}
           />
         </Box>
-        <CardContent filters={{ liked: true }} onLikeUpdate={handleLikeUpdate} />
+
+        <CardContent filters={{ liked: true }} onLikeUpdate={handleLikeUpdate}/>
+      
       </Box>
     </Box>
   );

@@ -1,5 +1,5 @@
-import { useMutation } from '@tanstack/react-query';
-import { createConferenceQuery } from './queries';
+import { useMutation, useSuspenseQuery } from '@tanstack/react-query';
+import { conferenceQueries, createConferenceQuery } from './queries';
 
 export const useCreateConferenceMutation = () => {
   return useMutation({
@@ -12,4 +12,8 @@ export const useCreateConferenceMutation = () => {
       alert(error.message || '컨퍼런스 등록 중 오류가 발생했습니다.');
     },
   });
+};
+
+export const useConferenceUsers = () => {
+  return useSuspenseQuery(conferenceQueries.users());
 };

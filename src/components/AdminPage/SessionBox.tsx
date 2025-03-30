@@ -109,7 +109,7 @@ const SessionBox = ({
           {getTimeDifferenceText(startDate, endDate)}
         </Typography>
         <Typography css={infoStyle}>
-          {title} {speaker}
+          <strong css={{ ...typo.sub.s }}>{title}</strong> {speaker}
         </Typography>
 
         {/* 차트 데이터 영역 */}

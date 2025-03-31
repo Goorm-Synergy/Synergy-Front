@@ -18,6 +18,7 @@ const AdminLogin = (): React.JSX.Element => {
 
   const containerStyle = css`
     display: flex;
+    width: 100%;
     min-width: 375px;
     max-width: 600px;
     padding: 16px;

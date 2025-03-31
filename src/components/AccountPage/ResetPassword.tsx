@@ -60,7 +60,16 @@ const ResetPassword = (): React.JSX.Element => {
   };
 
   const handleAuthCodeConfirm = async () => {
-    confirmAuthCodeMutation.mutate({ email, code: authCode });
+    try {
+      const response = await confirmAuthCodeMutation.mutate({
+        email,
+        code: authCode,
+        purpose: 'PASSWORD_RESET',
+      });
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handlePasswordSubmit = async (e: React.FormEvent) => {
@@ -119,6 +128,7 @@ const ResetPassword = (): React.JSX.Element => {
     color: ${palette.text.primary};
     border-radius: 8px;
     background-color: ${palette.opacity.opa100};
+    width: 100%
   `;
 
   const buttonStyle = css`
@@ -152,7 +162,7 @@ const ResetPassword = (): React.JSX.Element => {
 
       {step === 1 ? (
         <form onSubmit={(e) => e.preventDefault()}>
-          <Grid container spacing={2} sx={{ width: '100%' }}>
+          <Grid container sx={{ width: '100%' }}>
             <Grid item xs={12}>
               <Typography variant="body1" css={labelStyle}>
                 성함
@@ -259,34 +269,41 @@ const ResetPassword = (): React.JSX.Element => {
         </form>
       ) : (
         <form onSubmit={handlePasswordSubmit}>
-          <Grid container spacing={2}>
+          <Grid container sx={{ width: '100%' }}>
             <Grid item xs={12}>
-              <Typography variant="body1" css={labelStyle}>
-                새 비밀번호
-              </Typography>
-              <TextField
-                fullWidth
-                type="password"
-                placeholder="새로운 비밀번호 입력"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                required
-                css={textFieldStyle}
-              />
-              <Typography
-                variant="body2"
-                css={css`
-                  font-size: 14px;
-                  color: ${palette.text.secondary};
-                  margin-bottom: ${spacing(2)};
-                  text-align: left;
-                `}
-              >
-                비밀번호는 영문자와 숫자를 조합하여 8-20자 이내로 설정합니다.
-              </Typography>
-              <Button type="submit" css={buttonStyle}>
-                확인
-              </Button>
+              <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+                <Typography variant="body1" css={labelStyle}>
+                  새 비밀번호
+                </Typography>
+                <TextField
+                  fullWidth
+                  type="password"
+                  placeholder="새로운 비밀번호 입력"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  required
+                  css={textFieldStyle}
+                />
+              </Box>
+            </Grid>
+
+            <Grid item xs={12}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+                <Typography
+                  variant="body2"
+                  css={css`
+                    font-size: 14px;
+                    color: ${palette.text.secondary};
+                    margin-bottom: ${spacing(2)};
+                    text-align: left;
+                  `}
+                >
+                  비밀번호는 영문자와 숫자를 조합하여 8-20자 이내로 설정합니다.
+                </Typography>
+                <Button type="submit" css={buttonStyle}>
+                  확인
+                </Button>
+              </Box>
             </Grid>
           </Grid>
         </form>

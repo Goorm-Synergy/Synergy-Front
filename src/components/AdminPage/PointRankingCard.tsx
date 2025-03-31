@@ -27,8 +27,6 @@ const GradeRankingCard = () => {
     <Box
       css={css`
         width: 100%;
-        max-width: 300px;
-        margin: 0 auto;
       `}
     >
       <Typography
@@ -52,7 +50,6 @@ const GradeRankingCard = () => {
           padding: 24px;
           text-align: center;
           width: 100%;
-          aspect-ratio: 1 / 1;
           display: flex;
           flex-direction: column;
           justify-content: center;
@@ -79,15 +76,18 @@ const GradeRankingCard = () => {
                       key={idx}
                       css={css`
                         display: flex;
+                        justify-content: space-between;
                         align-items: center;
                         height: 20px;
                       `}
                     >
-                      <span css={{ marginRight: '50px' }}>{idx + 1}</span>
-                      <span>{item.attendeeName}</span>
-                      <span css={{ width: '100%', textAlign: 'end' }}>
-                        {item.totalPoints}P
+                      <span css={{ width: '10px', marginRight: '20px' }}>
+                        {idx + 1}
                       </span>
+                      <span css={{ width: '80px', textAlign: 'start' }}>
+                        {item.attendeeName}
+                      </span>
+                      <span>{item.totalPoints}P</span>
                       <button
                         css={css`
                           position: relative;

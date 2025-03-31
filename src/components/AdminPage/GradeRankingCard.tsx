@@ -82,11 +82,13 @@ const GradeRankingCard = () => {
                       height: 20px;
                     `}
                   >
-                    <span css={{ marginRight: '50px' }}>
+                    <span css={{ width: '25px', marginRight: '40px' }}>
                       {translateLevel(item.membershipLevel)}
                     </span>
-                    <span>{item.attendeeName}</span>
-                    <span css={{ width: '100%', textAlign: 'end' }}>
+                    <span css={{ textAlign: 'start', width: '86px' }}>
+                      {item.attendeeName}
+                    </span>
+                    <span css={{ textAlign: 'start', width: '45px' }}>
                       {item.totalPoints}P
                     </span>
                     <button

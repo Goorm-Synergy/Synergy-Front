@@ -55,9 +55,9 @@ export const patchOnboardingDetails = async ({ form }: any) => {
     const formData = new FormData();
 
     const requestPayload = {
-      workplaceSelectionFactorCodes: form.company,
+      workplaceSelectionFactorCodes: form.company || [],
       techStacks: form.skills,
-      conferencePurposeCodes: form.purpose,
+      conferencePurposeCodes: form.purpose || [],
       selfIntroduction: form.cover_letter,
       experienceLevelCode: form.experience,
       desiredWorkRegionCodes: form.hope_location,
@@ -66,7 +66,7 @@ export const patchOnboardingDetails = async ({ form }: any) => {
       ageGroupCode: form.age,
       additionalInfo: form.others_experience,
       desiredJobPositionCode: form.hope_job_position,
-      preferredCorporateCultureCodes: form.culture,
+      preferredCorporateCultureCodes: form.culture || [],
     };
 
     // JSON 데이터를 Blob으로 감싸서 request 필드에 추가

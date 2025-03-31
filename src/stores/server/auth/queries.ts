@@ -23,7 +23,7 @@ export const authQueries = {
 // 참가자 로그인
 export const loginRequestQuery = {
   queryKey: authQueries.login(),
-  queryFn: (data: { email: string; password: string }) => loginRequest(data),
+  queryFn: (data: { email: string; password: string; redirectTo?: string }) => loginRequest(data),
 };
 
 // 관리자 로그인

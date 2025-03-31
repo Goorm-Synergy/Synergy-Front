@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { TextField, Button, Typography, Box } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import LockIcon from '@mui/icons-material/Lock';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { css, useTheme } from '@mui/material';
 import { useLoginMutation } from '@stores/server/auth';
 
@@ -12,14 +12,16 @@ const ParticipantLogin = (): React.JSX.Element => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const redirectTo = searchParams.get('redirectTo') || '';
 
   const loginMutation = useLoginMutation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    loginMutation.mutate({ email, password });
-  };
+    loginMutation.mutate({ email, password, redirectTo });
+  }; 
 
   const handleSignupRedirect = () => {
     navigate('/signup');

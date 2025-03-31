@@ -16,6 +16,7 @@ import { logoutRequest } from '@api/auth';
 export const useLoginMutation = () => {
   const { setAuth } = useAuthStore();
   const navigate = useNavigate();
+  const location = useLocation();
 
   return useMutation({
     mutationKey: loginRequestQuery.queryKey,
@@ -27,7 +28,9 @@ export const useLoginMutation = () => {
         role: data.role,
         id: data.id,
       });
-      navigate('/mypage');
+      const params = new URLSearchParams(location.search);
+      const redirectTo = params.get('redirectTo') || '/mypage';
+      navigate(redirectTo);
     },
     onError: (error: any) => {
       alert(error.message || '로그인 중 오류가 발생했습니다.');

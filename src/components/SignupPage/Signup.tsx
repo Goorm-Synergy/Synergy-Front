@@ -64,7 +64,7 @@ const Signup = (): React.JSX.Element => {
       setFormError(firstError);
       return;
     }
-    signupMutation.mutate({ name, email, password, phone });
+    signupMutation.mutate({ name, email, ticketCode,password, phone });
   };
 
   const handleRequestAuthCode = () => { 
@@ -75,8 +75,17 @@ const Signup = (): React.JSX.Element => {
     });
   };
 
-  const handleConfirmAuthCode = () => { 
-    confirmAuthCodeMutation.mutate({ email, code: authCode });
+  const handleConfirmAuthCode = async() => { 
+    try {
+      const response = await confirmAuthCodeMutation.mutate({
+        email,
+        code: authCode,
+        purpose: 'SIGNUP',
+      });
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const textFieldStyle = css`

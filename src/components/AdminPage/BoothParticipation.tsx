@@ -80,13 +80,18 @@ const BoothParticipation = () => {
       {!isConferenceRegistered ? (
         <Paper
           css={css`
-            text-align: center;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             color: ${palette.text.secondary};
-            border-radius: ${radius.sm}px;
+            border-radius: ${radius.xl};
             background-color: ${palette.background.secondary};
             padding: 50px;
             border: ${palette.divider_custom.primary};
             cursor: pointer;
+            min-height: 280px;
           `}
           onClick={handleAddIconClick}
         >
@@ -105,9 +110,15 @@ const BoothParticipation = () => {
       ) : !boothList.content.length ? (
         <Paper
           css={css`
-            text-align: center;
-            color: ${palette.text.secondary};
-            border-radius: ${radius.sm}px;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 280px;
+            color: ${palette.text.primary};
+            border-radius: ${radius.xl};
             background-color: ${palette.background.secondary};
             padding: 50px;
             border: ${palette.divider_custom.primary};
@@ -117,10 +128,12 @@ const BoothParticipation = () => {
         >
           <AddIcon
             css={css`
-              font-size: 40px;
-              color: ${palette.text.secondary};
+              font-size: 70px;
               margin-bottom: 16px;
             `}
+            sx={{
+              color: palette.icon.primary,
+            }}
           />
           <Typography variant="body2">등록된 부스가 없습니다.</Typography>
           <Typography variant="body2">부스 등록 후 확인 가능합니다.</Typography>
@@ -128,12 +141,17 @@ const BoothParticipation = () => {
       ) : !boothDashboard.boothParticipateDetailDtoList.length ? (
         <Paper
           css={css`
-            text-align: center;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             color: ${palette.text.secondary};
-            border-radius: ${radius.sm}px;
+            border-radius: ${radius.xl};
             background-color: ${palette.background.secondary};
             padding: 50px;
             border: ${palette.divider_custom.primary};
+            min-height: 280px;
           `}
         >
           <Typography variant="body2" mb={1}>

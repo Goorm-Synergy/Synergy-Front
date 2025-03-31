@@ -7,6 +7,7 @@ import { typography } from '@styles/foundation';
 import AddIcon from '@mui/icons-material/Add';
 import AddSession from '@components/AdminPage/Popup/AddSession';
 import { useDashboardSessionDetail } from '@stores/server/dashboard';
+import { useDeleteSession } from '@stores/server/session';
 
 export interface SessionData {
   sessionId: number;
@@ -28,6 +29,8 @@ const DashboardSessionDetail = () => {
   const {
     data: { data: sessions },
   } = useDashboardSessionDetail();
+
+  const { mutate: deleteMutate } = useDeleteSession();
 
   console.log(sessions);
 
@@ -126,7 +129,7 @@ const DashboardSessionDetail = () => {
             <SessionBox
               key={session.sessionId}
               {...session}
-              onDelete={() => handleDeleteSession(session.sessionId)}
+              onDelete={() => deleteMutate(session.sessionId)}
               onEdit={() => handleEditSession(session)}
             />
           ))}

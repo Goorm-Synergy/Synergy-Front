@@ -42,14 +42,51 @@ export const fetchBoothDetail = async (
 
 //부스 생성
 export const createBooth = async (formData: FormData) => {
-  try{
+  try {
     const res = await apiClient.post(
       `/api/v1/conference/${CONFERENCE_ID}/booths`,
-      formData, {
+      formData,
+      {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
-      }
+      },
+    );
+    return res.data;
+  } catch (err) {
+    if (err instanceof AxiosError) {
+      if (err.status === 403) return (window.location.href = '/');
+    }
+    return Promise.reject(err);
+  }
+};
+
+// 부스 삭제
+export const deleteBooth = async (boothId: number) => {
+  try {
+    const res = await apiClient.delete(
+      `/api/v1/conference/${CONFERENCE_ID}/booths/${boothId}`,
+    );
+    return res.data;
+  } catch (err) {
+    if (err instanceof AxiosError) {
+      if (err.status === 403) return (window.location.href = '/');
+    }
+    return Promise.reject(err);
+  }
+};
+
+// 부스 수정
+export const modifyBooth = async (boothId: number, formData: FormData) => {
+  try {
+    const res = await apiClient.put(
+      `/api/v1/conference/${CONFERENCE_ID}/booths/${boothId}`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
     );
     return res.data;
   } catch (err) {

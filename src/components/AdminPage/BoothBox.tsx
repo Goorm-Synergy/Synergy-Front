@@ -8,6 +8,7 @@ import ConfirmDeleteDialog from '../ConfirmDeleteDialog';
 import QRPopup from './Popup/QRPopup';
 import DetailChart from './DetailChart';
 import { BoothData } from '@routes/pages/DashboardBoothDetail';
+import dayjs from 'dayjs';
 
 interface BoothBoxProps {
   onDelete: () => void;
@@ -97,7 +98,7 @@ const BoothBox = ({
 
       {/* 정보 영역 */}
       <Typography css={infoStyle}>
-        {progressDate} {boothLocation}
+        {dayjs(progressDate).format('MM/DD')} {boothLocation}
       </Typography>
       <Typography css={infoStyle}>
         <strong css={{ ...typo.sub.s }}>{companyName}</strong> {companyType}

@@ -141,20 +141,13 @@ export const useResetPasswordRequestMutation = () => {
 //비밀번호 재설정
 export const useResetPasswordMutation = () => {
   const navigate = useNavigate();
-  const { setAuth } = useAuthStore();
 
   return useMutation({
     mutationKey: resetPasswordQuery.queryKey,
     mutationFn: resetPasswordQuery.queryFn,
-    onSuccess: (data) => {
+    onSuccess: () => {
       alert('비밀번호가 성공적으로 변경되었습니다.');
       useAuthStore.getState().clearAuth();
-      setAuth({
-        accessToken: data.accessToken,
-        identifier: data.identifier,
-        role: data.role,
-        id: data.id,
-      });
       navigate('/participant-login');
     },
     onError: (error: any) => {

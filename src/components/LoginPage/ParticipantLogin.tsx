@@ -24,7 +24,7 @@ const ParticipantLogin = (): React.JSX.Element => {
   }; 
 
   const handleSignupRedirect = () => {
-    navigate('/signup');
+    navigate(`/signup?redirectTo=${redirectTo}`);
   };
 
   const handleFindPasswordRedirect = () => {

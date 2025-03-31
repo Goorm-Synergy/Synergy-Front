@@ -21,10 +21,6 @@ const ParticipantLogin = (): React.JSX.Element => {
     loginMutation.mutate({ email, password });
   };
 
-  const handleKakaoLogin = () => {
-    console.log('카카오 로그인 시도');
-  };
-
   const handleSignupRedirect = () => {
     navigate('/signup');
   };
@@ -144,17 +140,6 @@ const ParticipantLogin = (): React.JSX.Element => {
           로그인
         </Button>
       </form>
-      <Box sx={{ height: '10px' }} />
-      <Button
-        variant="contained"
-        onClick={handleKakaoLogin}
-        fullWidth
-        css={css`
-          ${buttonStyle}
-        `}
-      >
-        카카오 로그인
-      </Button>
       <Box sx={{ textAlign: 'center', mt: '10px' }}>
         <Typography variant="body2" css={helperTextStyle}>
           처음이신가요?{' '}

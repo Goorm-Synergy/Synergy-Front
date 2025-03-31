@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '@stores/client/useAuthStore';
 import {
   loginRequestQuery,
@@ -65,13 +65,27 @@ export const useAdminLoginMutation = () => {
 // 회원가입
 export const useAuthSignupMutation = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { setAuth } = useAuthStore();
 
   return useMutation({
     mutationKey: signupRequestQuery.queryKey,
     mutationFn: signupRequestQuery.queryFn,
-    onSuccess: () => {
+    onSuccess: (data) => {
+      setAuth({
+        accessToken: data.data.accessToken,
+        identifier: data.data.identifier,
+        role: data.data.role,
+        id: data.data.id,
+      })
       alert('회원가입이 완료되었습니다.');
-      navigate('/onboarding');
+      
+      const params = new URLSearchParams(location.search);
+      const redirectTo = params.get('redirectTo') || '';
+
+      navigate(`/onboarding${redirectTo 
+        ? `?redirectTo=${encodeURIComponent(redirectTo)}` 
+        : ''}`);
     },
     onError: (error: any) => {
       alert(error.message || '회원가입 중 오류가 발생했습니다.');

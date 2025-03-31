@@ -21,7 +21,9 @@ const RecruiterMypage = () => {
     useRecruiterAttendees({ liked: true });
   };
 
-  const handleLogout = () => {logout();};
+  const handleLogout = () => {
+    logout();
+  };
 
   return (
     <Box

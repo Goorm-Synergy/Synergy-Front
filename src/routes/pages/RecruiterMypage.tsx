@@ -137,6 +137,7 @@ const RecruiterMypage = () => {
               font-size: 16px;
               font-weight: 700;
               color: ${palette.text.primary};
+              font-family: ${typo.fontFamily.Pretendard};
             `}
           >
             내가 저장한 인재 ({likedAttendees.length})
@@ -150,9 +151,14 @@ const RecruiterMypage = () => {
             onClick={() => navigate('/recruiter/main')}
           />
         </Box>
-
+      </Box>
+      <Box
+        css={css`
+          margin: 0 16px 10px;
+          
+        `}
+      >
         <CardContent filters={{ liked: true }} onLikeUpdate={handleLikeUpdate}/>
-      
       </Box>
     </Box>
   );

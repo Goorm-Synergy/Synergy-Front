@@ -114,7 +114,7 @@ const Signup = (): React.JSX.Element => {
     border: none;
     background-color: ${palette.background.quaternary};
     color: ${palette.text.primary};
-    border-radius: ${shape.borderRadius}px;
+    border-radius: 12px;
     &:hover {
       background-color: ${palette.background.tertiary};
     }

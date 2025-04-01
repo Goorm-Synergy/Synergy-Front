@@ -288,7 +288,7 @@ const ResetPassword = (): React.JSX.Element => {
                   id="newPassword"
                   label="새 비밀번호"
                   fullWidth
-                  placeholder="- 없이 숫자만 입력해주세요"
+                  placeholder="새로운 비밀번호를 입력해 주세요."
                   value={newPassword}
                   onChange={setNewPassword}
                   bgColor={palette.opacity.opa100}
